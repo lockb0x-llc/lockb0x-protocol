@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
+      <ProjectReference Include="..\Lockb0x.Storage\Lockb0x.Storage.csproj" />
+      <ProjectReference Include="..\Lockb0x.Signing\Lockb0x.Signing.csproj" />
+      <ProjectReference Include="..\Lockb0x.Anchor.Stellar\Lockb0x.Anchor.Stellar.csproj" />
+      <ProjectReference Include="..\Lockb0x.Verifier\Lockb0x.Verifier.csproj" />
+      <ProjectReference Include="..\Lockb0x.Certificates\Lockb0x.Certificates.csproj" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>
