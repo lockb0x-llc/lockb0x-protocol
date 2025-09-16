@@ -43,8 +43,8 @@ The schema reflects all required and optional fields described in Section 3 (Dat
       "properties": {
         "protocol": {
           "type": "string",
-          "enum": ["ipfs", "s3", "azureblob", "gcp", "ftp", "local"],
-          "description": "Storage backend protocol."
+          "enum": ["ipfs", "s3", "azureblob", "gcs", "ftp", "local"],
+          "description": "Storage backend protocol (IPFS, S3, Azure Blob, Google Cloud Storage, FTP, Local)."
         },
         "integrity_proof": {
           "type": "string",

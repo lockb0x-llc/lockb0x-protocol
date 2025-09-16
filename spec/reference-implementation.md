@@ -11,7 +11,7 @@ This section is informative and does not define new normative requirements.
 ## 12.1 Goals of the Reference Implementation
 
 - Demonstrate the end-to-end workflow of creating, signing, anchoring, and verifying Codex Entries.  
-- Provide working adapters for common storage systems (IPFS, S3, Azure Blob).  
+- Provide working adapters for common storage systems (IPFS, S3, Google Cloud Storage, Azure Blob).
 - Showcase blockchain anchoring with Stellar as the primary example.  
 - Offer CLI and API tools to simplify integration.  
 - Act as a foundation for conformance testing.  
@@ -32,8 +32,8 @@ The reference implementation SHOULD include:
   - Integration with external storage adapters.  
   - Middleware for certificate issuance.  
 
-- **Storage Adapters**  
-  - Reference adapters for IPFS, S3, and Azure Blob.  
+- **Storage Adapters**
+  - Reference adapters for IPFS, S3, Google Cloud Storage, and Azure Blob.
   - Mock adapters for testing (local filesystem, memory).  
 
 - **Verifier Library**  

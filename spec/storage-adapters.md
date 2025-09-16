@@ -31,19 +31,25 @@ Adapters MAY also implement:
 
 ## 4.2 Supported Backends
 
-The reference implementation MUST include at least two adapters:  
+The reference implementation MUST include at least three adapters:
 
-- **IPFS**:  
-  - Proof: CID (Content Identifier).  
-  - Expressed as `ipfs://<cid>` or `ni:///sha-256;<digest>`.  
-  - Location: IPFS gateway region or pinning service jurisdiction.  
+- **IPFS**:
+  - Proof: CID (Content Identifier).
+  - Expressed as `ipfs://<cid>` or `ni:///sha-256;<digest>`.
+  - Location: IPFS gateway region or pinning service jurisdiction.
 
-- **S3-Compatible (AWS, MinIO, etc.)**:  
-  - Proof: ETag checksum.  
-  - Location: `region`, `jurisdiction`, and provider (`AWS`, `MinIO`).  
-  - Media type and size MUST be provided.  
+- **S3-Compatible (AWS, MinIO, etc.)**:
+  - Proof: ETag checksum.
+  - Location: `region`, `jurisdiction`, and provider (`AWS`, `MinIO`).
+  - Media type and size MUST be provided.
 
-Implementations SHOULD also support:  
+- **Google Cloud Storage (GCS)**:
+  - Proof: The adapter MUST compute a SHA-256 digest of the object and express it as `ni:///sha-256;<digest>`.
+  - The adapter MUST capture the canonical `crc32c` checksum returned by GCS metadata when available.
+  - Location: MUST report the bucket location (e.g., `us-central1`), the governing jurisdiction (e.g., `US/CA`), and set `provider` to `Google Cloud`.
+  - Media type and size MUST be provided.
+
+Implementations SHOULD also support:
 
 - **Azure Blob Storage**:  
   - Proof: MD5/CRC64 checksum.  

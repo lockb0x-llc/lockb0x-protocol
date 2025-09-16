@@ -137,14 +137,14 @@ A single Codex Entry can generate multiple certificates for different consumers:
   "issuer": "did:example:org123",
   "subject": "did:example:asset789",
   "storage": {
-    "protocol": "ipfs",
+    "protocol": "gcs",
     "integrity_proof": "ni:///sha-256;4nq34kaf9djf23...",
     "media_type": "application/pdf",
     "size_bytes": 204800,
     "location": {
-      "region": "eu-west-1",
-      "jurisdiction": "EU/DE",
-      "provider": "AWS"
+      "region": "us-central1",
+      "jurisdiction": "US/CA",
+      "provider": "Google Cloud"
     }
   },
   "anchor": {
@@ -184,14 +184,14 @@ A single Codex Entry can generate multiple certificates for different consumers:
     "codexEntry": {
       "protocolVersion": "1.0.0",
       "storage": {
-        "protocol": "ipfs",
+        "protocol": "gcs",
         "integrityProof": "ni:///sha-256;4nq34kaf9djf23...",
         "mediaType": "application/pdf",
         "sizeBytes": 204800,
         "location": {
-          "region": "eu-west-1",
-          "jurisdiction": "EU/DE",
-          "provider": "AWS"
+          "region": "us-central1",
+          "jurisdiction": "US/CA",
+          "provider": "Google Cloud"
         }
       },
       "anchor": {
