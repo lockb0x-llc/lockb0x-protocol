@@ -120,7 +120,7 @@ It is designed for **interoperability, auditability, and compliance** across dec
 
 ## Getting Started
 
-- Read the [Specification](./spec/v1.0.0-public-draft) for the full protocol definition.
+- Read the [Specification](./spec/v1.0.0-public-draft.md) for the full draft protocol definition.
 - Try the [Reference Implementation](./cli/) to generate and verify Codex Entries.
 - Explore [Example Flows](./spec/appendix-a-flows.md) and [JSON Schema](./spec/appendix-b-schema.md).
 
