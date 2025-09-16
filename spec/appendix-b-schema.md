@@ -73,7 +73,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "encryption": {
       "type": "object",
-      "required": ["algorithm", "key_ownership"],
+      "required": ["algorithm", "key_ownership", "last_controlled_by"],
       "properties": {
         "algorithm": {
           "type": "string",
@@ -102,7 +102,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         "last_controlled_by": {
           "type": "array",
           "items": {"type": "string"},
-          "description": "Keys that executed the last control event."
+          "description": "Keys that executed the last control event. Required when encryption metadata is present."
         }
       }
     },
