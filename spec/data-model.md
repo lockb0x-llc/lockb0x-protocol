@@ -37,9 +37,10 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
     "last_controlled_by": ["stellar:GA123...", "stellar:GB456..."]
   },
   "identity": {
-    "org": "stellar:GA123...",
-    "project": "did:example:project456",
-    "context": "uuid-5678"
+    "org": "did:example:org123",
+    "project": "did:example:proj456",
+    "context": "workorder-789",
+    "subject": "did:example:asset999"
   },
   "timestamp": "2025-09-14T12:00:00Z",
   "anchor": {
@@ -63,31 +64,38 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
 
 - `id` MUST be a UUID v4.  
 - `version` MUST indicate the protocol version.  
-- `storage.protocol` MUST declare the backend adapter.  
-- `storage.integrity_proof` MUST use [RFC 6920] Named Information URIs.  
+- `storage.protocol` MUST declare the backend adapter.
+- `storage.integrity_proof` MUST be expressed as a canonical [RFC 6920] Named Information URI (ni-URI) derived from the stored payload. Deployments that operate directly against IPFS gateways MAY substitute an `ipfs://` CID when required for interoperability, but SHOULD prefer ni-URIs for cross-protocol consistency.
 - `storage.media_type` MUST use [RFC 6838] IANA-registered MIME types.  
 - `storage.size_bytes` MUST indicate the exact file size.  
-- `storage.location` MUST specify region, jurisdiction, and provider.  
-- `encryption.algorithm` MUST declare the encryption scheme.  
-- `encryption.key_ownership` MUST map to recognized KMS custodian roles.  
-- `` `encryption.policy` MUST define the control model (e.g., threshold, m-of-n).``  
-- `` `encryption.last_controlled_by` MUST list the key(s) that executed the last control event whenever the `encryption` object is present.``
-- `identity.org` MUST be either a Stellar account or a W3C DID.  
+- `storage.location` MUST specify region, jurisdiction, and provider.
+- When the `encryption` object is present:
+  - `encryption.algorithm` MUST declare the encryption scheme.
+  - `encryption.key_ownership` MUST map to recognized KMS custodian roles.
+  - `` `encryption.policy` MUST define the control model (e.g., threshold, m-of-n).``
+  - `` `encryption.last_controlled_by` MUST list the key(s) that executed the last control event.``
+- `identity.org` MUST be either a Stellar account or a W3C DID.
+- `identity.project` MUST be a DID or account under the control of `identity.org` when provided.
+- `identity.context` MUST be a stable identifier for the workflow, work order, or provenance track in which the entry participates.
+- `` `identity.subject` MAY reference the individual, entity, or asset that is the subject of the record; when present it MUST be expressed as a DID or account identifier.``
 - `timestamp` MUST be UTC ISO 8601.  
 - `anchor.chain` MUST use [CAIP-2] identifiers.  
 - `anchor.tx_hash` MUST contain a blockchain transaction reference.  
-- `signatures` MUST use [JOSE JWS] or [COSE Sign1] objects.  
-- `` `previous_id` MUST link to the UUID of the immediate prior Codex Entry when the record is a revision; it MUST be omitted for the first entry in a chain.``  
+- `signatures` MUST use [JOSE JWS] or [COSE Sign1] objects.
+- `` `previous_id` MUST link to the UUID of the immediate prior Codex Entry when the record is a revision; it MUST be omitted for the first entry in a chain.``
+
+The `identity` object forms a provenance hierarchy: `org` anchors the controlling organization, `project` narrows provenance to a program or initiative managed by that organization, and `context` binds the record to an operational workflow such as a work order or case identifier rooted in Pakana/UCC Article 12 practices. `subject` optionally identifies the individual, entity, or asset described by the entry without altering that hierarchy.
 
 ---
 
 ## 3.3 Optional Fields
 
 - `encryption.public_keys` MAY list public keys for multi-sig or escrow.  
-- Codex Entries MAY omit the entire `encryption` object when assets are stored without encryption.
+- Codex Entries MAY omit the entire `encryption` object when assets are stored without encryption. When omitted, the entry is assumed to describe a plaintext asset under custodian control. When the object is provided, it MUST satisfy the constraints defined in Section 3.2.
 - `encryption.policy` MAY be omitted for single-key ownership but MUST be present for multi-sig control models.  
 - `identity.project` MAY specify a sub-identity.  
-- `identity.context` MAY link to a business or compliance context (e.g., work order, case ID, transaction).  
+- `identity.context` MAY link to a business or compliance context (e.g., work order, case ID, transaction).
+- `identity.subject` MAY reference a DID for a person, organization, or asset that the Codex Entry concerns.
 - `extensions` MAY use JSON-LD for additional metadata.
 - `` `previous_id` MAY be omitted if the Codex Entry is the first version of an asset.``
 

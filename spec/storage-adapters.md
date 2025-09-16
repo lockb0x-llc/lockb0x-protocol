@@ -13,8 +13,8 @@ Adapters are responsible for extracting metadata, calculating checksums, and ass
 
 A Storage Adapter MUST implement at minimum:
 
-- `get_integrity_proof(file): string`  
-  Returns an [RFC 6920] `ni` URI or equivalent hash-based identifier of the file.  
+- `get_integrity_proof(file): string`
+  Returns the canonical [RFC 6920] `ni` URI for the file. When a backend exposes an alternate hash (e.g., CID, ETag), the adapter MUST transform it into the ni representation.
 
 - `get_location_metadata(file): object`  
   Returns metadata including region, jurisdiction, and provider.  
@@ -34,12 +34,12 @@ Adapters MAY also implement:
 The reference implementation MUST include at least three adapters:
 
 - **IPFS**:
-  - Proof: CID (Content Identifier).
-  - Expressed as `ipfs://<cid>` or `ni:///sha-256;<digest>`.
+  - Proof: RFC 6920 ni-URI derived from the CID.
+  - The adapter MAY also expose the native `ipfs://<cid>` identifier for compatibility with IPFS tooling.
   - Location: IPFS gateway region or pinning service jurisdiction.
 
 - **S3-Compatible (AWS, MinIO, etc.)**:
-  - Proof: ETag checksum.
+  - Proof: The adapter MUST convert the ETag checksum into a SHA-256 digest and express it as `ni:///sha-256;<digest>`.
   - Location: `region`, `jurisdiction`, and provider (`AWS`, `MinIO`).
   - Media type and size MUST be provided.
 
@@ -67,9 +67,10 @@ Implementations SHOULD also support:
 
 ## 4.3 Proof Formats
 
-- Integrity proofs MUST use [RFC 6920] `ni` URIs whenever possible.  
-- Backends that provide native identifiers (e.g., IPFS CIDs, S3 ETags) MAY include them in addition to `ni` URIs.  
-- Proofs MUST be collision-resistant and reproducible across verification attempts.  
+- Integrity proofs MUST use [RFC 6920] `ni` URIs as the canonical representation stored in `storage.integrity_proof`.
+- IPFS deployments MAY surface `ipfs://` CIDs for native compatibility, but the adapter MUST retain the ability to derive the equivalent `ni:///sha-256;...` value.
+- Backend-native hashes (e.g., S3 ETags) MUST be transformed into ni URIs before inclusion in a Codex Entry.
+- Proofs MUST be collision-resistant and reproducible across verification attempts.
 
 ---
 

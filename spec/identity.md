@@ -20,48 +20,46 @@ Identifiers MUST be unique, resolvable, and verifiable against their respective 
 
 ---
 
-## 7.2 Identity Contexts
+## 7.2 Canonical Identity Layout
 
-A Codex Entry MAY include multiple identity contexts:
-
-- `individual`: an identified natural person, represented by a public key or DID.  
-- `entity`: an organization or legal person, represented by a Stellar account, DID, or legal identifier.  
-- `asset`: a specific asset or digital object, identified by a DID or registry ID.  
-
-These contexts allow flexible mapping between technical and legal accountability.  
-
----
-
-## 7.3 Binding Rules
-
-- Each Codex Entry MUST declare at least one identity context (`individual` or `entity`).  
-- An `asset` identity MAY be included when the entry refers to a specific digital asset or resource.  
-- Identity contexts MUST be bound to the Codex Entry via cryptographic signatures (see Section 6).  
-- If multiple contexts are present, verifiers MUST confirm that the declared signers are authorized to act for each declared context.
-
----
-
-## 7.4 Hierarchical Contexts
-
-Codex Entries MAY define hierarchical identity relationships to support organizational workflows. For example:
+Codex Entries MUST encode identity using the canonical layout:
 
 ```json
 "identity": {
-  "entity": "did:example:org123",
-  "project": "did:example:project456",
-  "transaction_context": "uuid-7890"
+  "org": "did:example:org123",
+  "project": "did:example:proj456",
+  "context": "workorder-789",
+  "subject": "did:example:asset999"
 }
 ```
 
-This allows implementers to represent organizations, sub-projects, and compliance or transaction contexts (e.g., work orders, case IDs, contracts).  
-Such hierarchical contexts are OPTIONAL but RECOMMENDED for compliance frameworks requiring traceability.
+All fields are expressed as identifiers described in Section 7.1. `org` is REQUIRED; the remaining fields are OPTIONAL but strongly RECOMMENDED for full provenance traceability.
+
+---
+
+## 7.3 Structural Provenance Hierarchy
+
+- `org` anchors the Codex Entry to the accountable organization. It MUST resolve to a DID or account that can authorize protocol operations.
+- `project` narrows provenance to a program, legal entity, or initiative administered by `org`. When present, it MUST also resolve to a DID or account controlled by `org`.
+- `context` binds the entry to an operational workflow (e.g., work order, case ID, transaction reference). Context identifiers SHOULD align with traceability practices defined in Pakana/UCC Article 12.
+
+This hierarchy establishes structural provenance regardless of whether a Codex Entry references natural persons, enterprises, or assets.
+
+---
+
+## 7.4 Subject Binding and Authorization
+
+`subject` identifies the individual, organization, or asset that is the focus of the Codex Entry. It MAY be omitted when the subject is implicit in the workflow context, but when supplied it MUST be a DID or account identifier.
+
+Signatures associated with a Codex Entry (Section 6) MUST authorize the declared hierarchy. Verifiers MUST confirm that signers are permitted to act for the `org`, `project`, and—when present—`subject` values.
 
 ---
 
 ## 7.5 Privacy and Data Minimization
 
-- Identifiers MUST NOT expose sensitive personal information.  
-- Where possible, pseudonymous or derived identifiers SHOULD be used (e.g., DIDs, hashed identifiers).  
+- Identifiers MUST NOT expose sensitive personal information.
+- Where possible, pseudonymous or derived identifiers SHOULD be used (e.g., DIDs, hashed identifiers).
+- When declaring a `subject`, implementers SHOULD favor privacy-preserving identifiers that can be rotated or revoked.
 - Implementations MUST comply with GDPR and equivalent privacy laws when binding natural persons to Codex Entries.
 
 ---
