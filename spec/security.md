@@ -62,4 +62,4 @@ Implementers MUST consider the following attack vectors:
 
 ---
 
-[RF C8785]: https://www.rfc-editor.org/rfc/rfc8785
+[RFC 8785]: https://www.rfc-editor.org/rfc/rfc8785
