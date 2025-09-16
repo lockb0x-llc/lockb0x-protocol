@@ -11,7 +11,7 @@ These examples are non-normative and are intended to help implementers understan
 ## A.1 File → Codex Entry → Stellar Anchor → Verification
 
 1. User selects a file to be recorded.  
-2. Storage adapter computes integrity proof (e.g., IPFS CID or S3 ETag).  
+2. Storage adapter computes the canonical integrity proof by deriving an RFC 6920 ni-URI (transforming any backend-specific values such as IPFS CIDs or S3 ETags).
 3. Codex Entry is created with required fields: `id`, `storage`, `integrity_proof`, `signatures`.  
 4. Entry is signed locally with the user’s private key.  
 5. Entry is anchored on Stellar by embedding the Codex Entry hash in a transaction memo.  
@@ -37,11 +37,11 @@ These examples are non-normative and are intended to help implementers understan
 
 ## A.3 S3 Example
 
-1. File is uploaded to S3, producing an ETag checksum.  
+1. File is uploaded to S3, producing an ETag checksum.
 2. Codex Entry includes:
-   - `storage.protocol = "s3"`  
-   - `storage.integrity_proof = ETag`  
-   - `storage.location` with `region`, `jurisdiction`, and provider.  
+   - `storage.protocol = "s3"`
+   - `storage.integrity_proof = "ni:///sha-256;3f1a9e..."` (adapter transforms the ETag into a SHA-256 ni-URI)
+   - `storage.location` with `region`, `jurisdiction`, and provider.
 3. Entry is signed and anchored.  
 4. Verifier downloads file (or uses metadata), validates hash, and checks anchor.  
 

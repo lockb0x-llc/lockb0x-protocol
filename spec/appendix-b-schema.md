@@ -15,7 +15,6 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     "id",
     "version",
     "storage",
-    "encryption",
     "identity",
     "timestamp",
     "anchor",
@@ -48,8 +47,8 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         },
         "integrity_proof": {
           "type": "string",
-          "pattern": "^ni:///sha-256;[A-Za-z0-9_-]+$",
-          "description": "Integrity proof using RFC 6920 ni-URI."
+          "pattern": "^(ni:///sha-256;[A-Za-z0-9_-]+|ipfs://[A-Za-z0-9]+)$",
+          "description": "Integrity proof expressed as a canonical RFC 6920 ni-URI; ipfs:// CIDs MAY be used for native IPFS workflows."
         },
         "media_type": {
           "type": "string",
@@ -110,9 +109,10 @@ The schema reflects all required and optional fields described in Section 3 (Dat
       "type": "object",
       "required": ["org"],
       "properties": {
-        "org": {"type": "string", "description": "Stellar account or W3C DID."},
-        "project": {"type": "string", "description": "Optional project DID."},
-        "context": {"type": "string", "description": "Optional context ID (e.g., work order)."}
+        "org": {"type": "string", "description": "Root organizational DID or account."},
+        "project": {"type": "string", "description": "Project- or program-level DID anchoring provenance."},
+        "context": {"type": "string", "description": "Operational context identifier (e.g., work order, case ID)."},
+        "subject": {"type": "string", "description": "Optional DID referencing the individual, entity, or asset that is the subject of the entry."}
       }
     },
     "timestamp": {
