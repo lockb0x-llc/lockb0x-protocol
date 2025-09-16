@@ -9,9 +9,10 @@ This provides cryptographic proof that the Codex Entry existed at or before a sp
 
 - Every Codex Entry MUST include an `anchor` object when immutability and timestamp proofs are required.  
 - Anchors MUST reference:
-  - `chain`: a [CAIP-2] compliant blockchain identifier.  
-  - `tx_hash`: the transaction hash containing the anchor payload.  
-  - `hash_alg`: the algorithm used to produce the Codex Entry hash (e.g., SHA-256).  
+  - `chain`: a [CAIP-2] compliant blockchain identifier.
+  - `tx_hash`: the transaction hash containing the anchor payload.
+  - `hash_alg`: the algorithm used to produce the Codex Entry hash (e.g., SHA-256).
+- Anchors MAY include a `token_id` when referencing a specific on-chain asset; this field is REQUIRED for NFT-based anchors.
 
 - The Codex Entry content MUST be hashed and included in the blockchain transaction, either directly or via a Merkle root.  
 - Anchors MUST be reproducible: the same Codex Entry must yield the same anchor hash when re-hashed.  
@@ -41,17 +42,30 @@ Other chains MAY be supported, including but not limited to:
 
 ### 5.3.1 NFT Anchoring
 
-Implementations MAY use Non-Fungible Tokens (NFTs) as anchor carriers.  
+Implementations MAY use Non-Fungible Tokens (NFTs) as anchor carriers.
 In this model, the Codex Entry hash is embedded in the NFT’s metadata or in the minting transaction payload.
+When an NFT is used, the `token_id` field in the anchor object becomes mandatory and MUST reference the on-chain token identifier.
 
 Anchors using NFTs MUST declare:
 
-- `chain`: a [CAIP-2] blockchain identifier for the NFT’s chain.  
-- `tx_hash`: the transaction hash of the NFT minting or transfer that includes the Codex Entry hash.  
-- `hash_alg`: the algorithm used to produce the Codex Entry hash.  
-- `token_id`: the unique identifier of the NFT on-chain.  
+- `chain`: a [CAIP-2] blockchain identifier for the NFT’s chain.
+- `tx_hash`: the transaction hash of the NFT minting or transfer that includes the Codex Entry hash.
+- `hash_alg`: the algorithm used to produce the Codex Entry hash.
+- `token_id`: the unique identifier of the NFT on-chain.
 
-Example:
+Examples:
+
+Non-NFT anchor:
+
+```json
+"anchor": {
+  "chain": "eip155:1",
+  "tx_hash": "0xdef456...",
+  "hash_alg": "SHA256"
+}
+```
+
+NFT anchor:
 
 ```json
 "anchor": {
