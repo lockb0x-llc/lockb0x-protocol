@@ -15,14 +15,14 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
   "previous_id": "uuid-v4",
   "version": "1.0.0",
   "storage": {
-    "protocol": "ipfs|s3|azureblob|gcp|ftp|local",
+    "protocol": "ipfs|s3|azureblob|gcs|ftp|local",
     "integrity_proof": "ni:///sha-256;<digest>",
     "media_type": "application/pdf",
     "size_bytes": 204800,
     "location": {
-      "region": "eu-west-1",
-      "jurisdiction": "EU/DE",
-      "provider": "AWS"
+      "region": "us-central1",
+      "jurisdiction": "US/CA",
+      "provider": "Google Cloud"
     }
   },
   "encryption": {

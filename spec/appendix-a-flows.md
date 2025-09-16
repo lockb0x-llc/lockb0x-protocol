@@ -47,7 +47,20 @@ These examples are non-normative and are intended to help implementers understan
 
 ---
 
-## A.4 Multi-Sig Control Flow
+## A.4 Google Cloud Storage Example
+
+1. File is uploaded to Google Cloud Storage (GCS), yielding object metadata with `crc32c` and `md5Hash` values.
+2. Codex Entry includes:
+   - `storage.protocol = "gcs"`
+   - `storage.integrity_proof = "ni:///sha-256;..."`
+   - `storage.location` with bucket location (e.g., `us-central1`), legal jurisdiction (e.g., `US/CA`), and `provider = "Google Cloud"`.
+   - Optional recording of the object's `crc32c` for auditors.
+3. Entry is signed and anchored on Stellar.
+4. Verifier fetches object metadata via the GCS API, recomputes the SHA-256 digest, and validates the anchor.
+
+---
+
+## A.5 Multi-Sig Control Flow
 
 1. Organization defines a policy: 2-of-3 required for encryption/decryption.  
 2. Codex Entry includes `encryption.policy` and `encryption.public_keys`.  
@@ -58,7 +71,7 @@ These examples are non-normative and are intended to help implementers understan
 
 ---
 
-## A.5 Revision Chain Flow
+## A.6 Revision Chain Flow
 
 1. Original file is recorded as Codex Entry `id=UUID1`.  
 2. Later, a revised version is created as Codex Entry `id=UUID2`, with `previous_id=UUID1`.  
