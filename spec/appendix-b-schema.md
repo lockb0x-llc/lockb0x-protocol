@@ -126,7 +126,12 @@ The schema reflects all required and optional fields described in Section 3 (Dat
       "properties": {
         "chain": {"type": "string", "description": "CAIP-2 blockchain identifier."},
         "tx_hash": {"type": "string", "description": "Transaction hash referencing the anchor."},
-        "hash_alg": {"type": "string", "enum": ["SHA256", "SHA3-256"]}
+        "hash_alg": {"type": "string", "enum": ["SHA256", "SHA3-256"]},
+        "token_id": {
+          "type": "string",
+          "pattern": "^(0x[a-fA-F0-9]+|[A-Za-z0-9][A-Za-z0-9._:-]*)$",
+          "description": "Optional NFT identifier; accepts 0x-prefixed hex or alphanumeric strings with separators (:, -, _, .)."
+        }
       }
     },
     "signatures": {
