@@ -1,55 +1,57 @@
-# lockb0x-protocol
 
-A secure protocol implementation with a command-line interface.
 
-## Lockb0x CLI
+# Lockb0x Protocol
 
-The repository includes a C# command-line interface (CLI) application for interacting with the Lockb0x Protocol.
+The **Lockb0x Protocol** is an open standard for proving the **existence, integrity, and custodianship** of digital data.  
+It’s designed for developers who need **verifiable audit trails** without locking into a single vendor, storage backend, or blockchain.
 
-### Building the CLI
+At its core, Lockb0x provides a portable, signed JSON structure called a **Codex Entry**.  
+Each entry links together:
 
-```bash
-cd Lockb0xCli
-dotnet build
-```
+- **Storage Proofs** — showing *where* data is stored (IPFS, S3, Azure Blob, FTP/SFTP, or local storage).  
+- **Integrity Proofs** — hashes and checksums that prove the data hasn’t been tampered with.  
+- **Signatures** — cryptographic attestations from the data owner or organization.  
+- **Anchors** — blockchain transactions (e.g. Stellar, Ethereum, Avalanche) that provide immutable timestamps.  
 
-### Running the CLI
+By combining these, developers can create **tamper-evident, verifiable chains of custody** for files, records, or datasets.
 
-```bash
-cd Lockb0xCli
-dotnet run
-```
+---
 
-Or after building, you can run the executable directly:
+## Why Developers Use Lockb0x
 
-```bash
-cd Lockb0xCli/bin/Debug/net8.0
-./lockb0x
-```
+- **Cross-Backend Portability**: works the same whether you use IPFS, S3, or a private server.  
+- **Standards-Aligned**: builds on RFC 6920 (integrity URIs), RFC 7515 (JOSE signatures), W3C DIDs, and Verifiable Credentials.  
+- **Easy Verification**: a simple verifier can check hashes, signatures, and anchors.  
+- **Interoperable**: doesn’t replace your storage or blockchain — it ties them together.  
+- **Compliance Ready**: supports legal frameworks like GDPR (EU) and UCC Section 12 (US).  
 
-### Available Commands
+---
 
-- `--help`, `-h`: Show help information
-- `--version`, `-v`: Show version information  
-- `status`: Show the current status of the Lockb0x Protocol
-- `info`: Display information about the Lockb0x Protocol
+## Example Use Cases
 
-### Examples
+- Proving a dataset hasn’t changed between research collaborators.  
+- Providing auditors with cryptographically verifiable compliance documents.  
+- Anchoring invoices, contracts, or deliverables for cross-organization projects.  
+- Creating a digital chain of custody for supply chain or legal evidence.  
 
-```bash
-# Show help
-dotnet run -- --help
+---
 
-# Show version
-dotnet run -- --version
+## Specification
 
-# Check protocol status
-dotnet run -- status
+The full technical specification lives in [`spec/v1.0.0-public-draft.md`](spec/v1.0.0-public-draft.md).  
+Each section of the spec is broken out into its own file in the `spec/` folder for clarity.  
 
-# Get protocol information
-dotnet run -- info
-```
+---
 
-## Requirements
+## Contributing
 
-- .NET 8.0 SDK or later
+Lockb0x is at an early stage and we welcome feedback, contributions, and discussion.  
+- Open issues to suggest improvements or report problems.  
+- Submit pull requests to add adapters, verifiers, or clarifications.  
+- Join the discussion on standards alignment and compliance use cases.  
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
