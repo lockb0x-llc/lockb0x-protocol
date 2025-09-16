@@ -42,3 +42,5 @@ Normative references define binding requirements; informative references provide
 - Normative references MUST be followed to ensure protocol compliance and interoperability.  
 - Informative references MAY be used to enhance implementations with additional features, metadata, or compliance with legal frameworks.  
 - Future revisions of this specification MAY expand or refine this references list as new standards and regulations emerge.
+
+[RFC 8785]: https://www.rfc-editor.org/rfc/rfc8785
