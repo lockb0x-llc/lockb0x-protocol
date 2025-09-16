@@ -71,7 +71,7 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
 - `encryption.algorithm` MUST declare the encryption scheme.  
 - `encryption.key_ownership` MUST map to recognized KMS custodian roles.  
 - `` `encryption.policy` MUST define the control model (e.g., threshold, m-of-n).``  
-- `` `encryption.last_controlled_by` MUST list the key(s) that executed the last control event.``  
+- `` `encryption.last_controlled_by` MUST list the key(s) that executed the last control event whenever the `encryption` object is present.``
 - `identity.org` MUST be either a Stellar account or a W3C DID.  
 - `timestamp` MUST be UTC ISO 8601.  
 - `anchor.chain` MUST use [CAIP-2] identifiers.  
@@ -84,12 +84,47 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
 ## 3.3 Optional Fields
 
 - `encryption.public_keys` MAY list public keys for multi-sig or escrow.  
-- `encryption.last_controlled_by` MAY be omitted if encryption is not applied.  
+- Codex Entries MAY omit the entire `encryption` object when assets are stored without encryption.
 - `encryption.policy` MAY be omitted for single-key ownership but MUST be present for multi-sig control models.  
 - `identity.project` MAY specify a sub-identity.  
 - `identity.context` MAY link to a business or compliance context (e.g., work order, case ID, transaction).  
-- `extensions` MAY use JSON-LD for additional metadata.  
-- `` `previous_id` MAY be omitted if the Codex Entry is the first version of an asset.``  
+- `extensions` MAY use JSON-LD for additional metadata.
+- `` `previous_id` MAY be omitted if the Codex Entry is the first version of an asset.``
+
+### 3.3.1 Encryption Metadata Examples
+
+When encryption metadata is provided, it MUST include `last_controlled_by`:
+
+```json
+{
+  "encryption": {
+    "algorithm": "AES-256-GCM",
+    "key_ownership": "multi-sig",
+    "last_controlled_by": ["stellar:GA123...", "stellar:GB456..."]
+  }
+}
+```
+
+Codex Entries stored without encryption omit the entire `encryption` object (and thus `last_controlled_by`):
+
+```json
+{
+  "id": "uuid-v4",
+  "version": "1.0.0",
+  "storage": {
+    "protocol": "ipfs",
+    "integrity_proof": "ni:///sha-256;<digest>",
+    "media_type": "application/pdf",
+    "size_bytes": 204800,
+    "location": {
+      "region": "eu-west-1",
+      "jurisdiction": "EU/DE",
+      "provider": "AWS"
+    }
+  },
+  "timestamp": "2025-09-14T12:00:00Z"
+}
+```
 
 ---
 
