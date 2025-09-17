@@ -1,5 +1,3 @@
-
-
 # Appendix B. Codex Entry JSON Schema (Non-Normative)
 
 This appendix provides a full JSON Schema definition for Codex Entries.  
@@ -48,7 +46,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         "integrity_proof": {
           "type": "string",
           "pattern": "^(ni:///sha-256;[A-Za-z0-9_-]+|ipfs://[A-Za-z0-9]+)$",
-          "description": "Integrity proof expressed as a canonical RFC 6920 ni-URI; ipfs:// CIDs MAY be used for native IPFS workflows."
+          "description": "Integrity proof expressed as a canonical RFC 6920 ni-URI (REQUIRED); ipfs:// CIDs MAY be used for native IPFS workflows but ni-URI is preferred."
         },
         "media_type": {
           "type": "string",
@@ -72,7 +70,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "encryption": {
       "type": "object",
-      "required": ["algorithm", "key_ownership", "last_controlled_by"],
+      "required": ["algorithm", "key_ownership"],
       "properties": {
         "algorithm": {
           "type": "string",
@@ -101,13 +99,23 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         "last_controlled_by": {
           "type": "array",
           "items": {"type": "string"},
-          "description": "Keys that executed the last control event. Required when encryption metadata is present."
+          "description": "Keys that executed the last control event; required when key_ownership is 'multi-sig', MAY be single for 'org-managed', and omitted if no encryption."
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"key_ownership": {"const": "multi-sig"}}
+          },
+          "then": {
+            "required": ["last_controlled_by"]
+          }
+        }
+      ]
     },
     "identity": {
       "type": "object",
-      "required": ["org"],
+      "required": ["org", "context"],
       "properties": {
         "org": {"type": "string", "description": "Root organizational DID or account."},
         "project": {"type": "string", "description": "Project- or program-level DID anchoring provenance."},
@@ -151,7 +159,8 @@ The schema reflects all required and optional fields described in Section 3 (Dat
           },
           "signature": {"type": "string", "description": "Base64URL-encoded signature value."}
         }
-      }
+      },
+      "description": "Signatures MUST be generated after anchoring, covering the full Codex Entry including the anchor reference."
     },
     "extensions": {
       "type": "object",
@@ -160,5 +169,3 @@ The schema reflects all required and optional fields described in Section 3 (Dat
   }
 }
 ```
-
----

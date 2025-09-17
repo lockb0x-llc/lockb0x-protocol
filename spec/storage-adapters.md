@@ -1,6 +1,3 @@
-
-
-
 # 4. Storage Adapters (Normative)
 
 The Lockb0x Protocol is **storage-agnostic**.  
@@ -52,7 +49,8 @@ The reference implementation MUST include at least three adapters:
 Implementations SHOULD also support:
 
 - **Azure Blob Storage**:  
-  - Proof: MD5/CRC64 checksum.  
+  - Proof: Adapter MUST compute a SHA-256 digest as canonical proof (`ni:///sha-256;…`). MD5/CRC64 MAY be recorded if supplied by Azure metadata, but MUST NOT be used as the canonical proof.  
+  - For Stellar anchoring, an MD5 digest MAY be embedded in the transaction memo field when combined with the signing account’s public key, serving as a compact identifier within size constraints.  
   - Location: Azure region and legal jurisdiction.  
 
 - **FTP/SFTP**:  
@@ -67,7 +65,8 @@ Implementations SHOULD also support:
 
 ## 4.3 Proof Formats
 
-- Integrity proofs MUST use [RFC 6920] `ni` URIs as the canonical representation stored in `storage.integrity_proof`.
+- Integrity proofs MUST use [RFC 6920] `ni` URIs as the canonical representation stored in `storage.integrity_proof`.  
+- For Stellar anchors only, shortened digests such as MD5 MAY be used in memo fields for compactness, but MUST always correspond to the canonical SHA-256 proof recorded in the Codex Entry.
 - IPFS deployments MAY surface `ipfs://` CIDs for native compatibility, but the adapter MUST retain the ability to derive the equivalent `ni:///sha-256;...` value.
 - Backend-native hashes (e.g., S3 ETags) MUST be transformed into ni URIs before inclusion in a Codex Entry.
 - Proofs MUST be collision-resistant and reproducible across verification attempts.

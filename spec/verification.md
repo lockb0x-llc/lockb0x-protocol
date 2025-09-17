@@ -18,9 +18,11 @@ A Verifier MUST:
 2. **Signature Validation**  
    - Verify each signature object against its declared `alg` and `kid`.  
    - Ensure the number of valid signatures meets or exceeds the `policy.threshold` (see Section 6).  
+   - Verifiers MUST confirm that signatures were produced after anchoring and that they cover the `anchor` object.
 
 3. **Integrity Check**  
    - Validate that the file’s hash matches the `storage.integrity_proof`.  
+   - Integrity proofs MUST be expressed as [RFC 6920] ni-URIs; ipfs:// CIDs MAY be accepted for interoperability but MUST map to the canonical ni-URI.  
    - Hash algorithms MUST be collision-resistant (e.g., SHA-256, SHA-3).  
 
 4. **Location Verification**  
@@ -33,11 +35,11 @@ A Verifier MUST:
    - Validate Merkle inclusion proofs or NFT metadata where applicable.  
 
 6. **Encryption and Key Ownership Validation**  
-   - Confirm that the declared encryption algorithm matches supported parameters.  
-   - Validate that `last_controlled_by` (or equivalent) corresponds to authorized signers under the declared `policy`.  
+   - If the `encryption` object is omitted, the asset is considered plaintext. If present, verifiers MUST validate algorithm, parameters, and ensure `last_controlled_by` matches the signer(s) with effective control.  
 
 7. **Revision Chain Traversal**  
    - If `previous_id` is present, verifiers MUST traverse backward through the revision chain to reconstruct full CER history.  
+   - Verifiers MUST validate both `previous_id` and provenance metadata (e.g., `wasDerivedFrom`) for consistency across revisions.  
    - Each revision MUST independently pass all verification checks.  
 
 ---
@@ -55,7 +57,9 @@ A Verifier MUST:
 - Verifiers SHOULD be able to operate in offline mode using cached blockchain headers and storage proofs.  
 - Verifiers MUST reject entries that rely on deprecated algorithms or revoked keys.  
 - Implementations SHOULD allow pluggable adapters for custom storage systems and blockchains.  
+- Verifiers MUST validate jurisdiction claims in `storage.location.jurisdiction` against certificate and anchor references.  
 
 ---
 
 [RFC 8785]: https://www.rfc-editor.org/rfc/rfc8785
+[RFC 6920]: https://www.rfc-editor.org/rfc/rfc6920

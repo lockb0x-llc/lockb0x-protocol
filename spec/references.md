@@ -15,14 +15,22 @@ Normative references define binding requirements; informative references provide
 - **RFC 7515** — JSON Web Signature (JWS).  
 - **RFC 8152** — CBOR Object Signing and Encryption (COSE).  
 - **RFC 8785** — JSON Canonicalization Scheme (JCS).  
+- **RFC 8439** — ChaCha20 and Poly1305 for IETF Protocols.  
+- **NIST SP 800-38D** — Recommendation for Block Cipher Modes of Operation: GCM.  
+- **RFC 5280** — Internet X.509 Public Key Infrastructure Certificate and CRL Profile.  
+- **IETF JSON Schema (Draft 2020-12)** — JSON Schema Validation.  
 - **W3C DID Core** — Decentralized Identifiers (DID).  
 - **W3C Verifiable Credentials Data Model** — Verifiable Credentials.  
 - **W3C PROV-DM** — Provenance Data Model.  
+- **W3C PROV-O** — The PROV Ontology.  
 - **Data Privacy Vocabulary (DPV)** — Privacy metadata vocabulary.  
 - **CAIP-2** — Blockchain Reference Identifier Specification.  
 - **CAIP-10** — Blockchain Account ID Specification.  
 - **NIST SP 800-57** — Recommendation for Key Management.  
 - **ISO 3166-1** — Country Codes for Jurisdictional Metadata.  
+- **Stellar SEP-0023** — Muxed Accounts.  
+- **Stellar SEP-0005** — Key Derivation for Stellar Accounts.  
+- **RFC 7797** — JSON Web Signature (JWS) Unencoded Payload Option.  
 
 ---
 

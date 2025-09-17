@@ -8,10 +8,11 @@ This provides cryptographic proof that the Codex Entry existed at or before a sp
 ## 5.1 Anchoring Requirements
 
 - Every Codex Entry MUST include an `anchor` object when immutability and timestamp proofs are required.  
+- Anchors MUST be created before signatures are applied; the final signed Codex Entry MUST include the anchor object.  
 - Anchors MUST reference:
   - `chain`: a [CAIP-2] compliant blockchain identifier.
   - `tx_hash`: the transaction hash containing the anchor payload.
-  - `hash_alg`: the algorithm used to produce the Codex Entry hash (e.g., SHA-256).
+  - `hash_alg`: the algorithm used to produce the Codex Entry hash, which MUST correspond to the integrity proof scheme (ni-URI) declared in the Codex Entry.
 - Anchors MAY include a `token_id` when referencing a specific on-chain asset; this field is REQUIRED for NFT-based anchors.
 
 - The Codex Entry content MUST be hashed and included in the blockchain transaction, either directly or via a Merkle root.  
@@ -37,6 +38,7 @@ Other chains MAY be supported, including but not limited to:
   - The full hash of the Codex Entry, OR  
   - A Merkle root representing one or more Codex Entries.  
 
+- The payload content MUST map back to the Codex Entry’s `integrity_proof` field.  
 - Payloads SHOULD use efficient encoding formats (e.g., hex or base58).  
 - Anchors SHOULD minimize on-chain storage, relying on off-chain Codex Entries for details.  
 
@@ -94,6 +96,9 @@ A Verifier MUST:
 2. Confirm the transaction exists on the declared `chain` by querying a trusted node or API.  
 3. Confirm the `tx_hash` contains the declared Codex Entry hash (or Merkle inclusion proof).  
 4. Validate timestamp consistency with the blockchain’s block time.  
+5. If anchor verification fails, the Codex Entry MUST be rejected and no Certificate of Verification may be issued.
+
+When Codex Entries are bound to multi-sig identities, Verifiers MUST ensure the `last_controlled_by` record aligns with the anchored transaction signers.
 
 If any of these checks fail, the anchor MUST be considered invalid.
 

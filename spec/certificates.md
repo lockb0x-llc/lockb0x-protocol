@@ -34,6 +34,9 @@ A Certificate MUST be generated in at least one of the following formats:
   - Integrity proof (`storage.integrity_proof`).  
   - Anchor reference (`anchor.tx_hash`, `anchor.chain`).  
   - Signatures from authorized entities.  
+- Certificates MUST reflect encryption metadata if present in the Codex Entry, and omit it if not.  
+- If the Codex Entry includes a `last_controlled_by` field, it MUST be reproduced in the certificate.  
+- Signatures MUST be created after anchoring and MUST cover the full Codex Entry including the anchor reference.  
 - Where X.509 binding is used, the certificate MUST include the Codex Entry hash in a critical extension to prevent misuse.  
 
 ---
@@ -69,11 +72,13 @@ Different certificate formats serve different operational and compliance needs:
   - Best suited for developer tooling, APIs, and automated verification.  
   - Lightweight and easy to parse in any environment.  
   - Limited interoperability with identity frameworks outside JSON ecosystems.  
+  - Certificates MUST conform to Codex Entry schema rules for optional fields like encryption and identity.
 
 - **W3C Verifiable Credentials (VCs)**  
   - Ideal for decentralized identity, self-sovereign identity (SSI), and Web3 systems.  
   - Strong interoperability with DID methods and JSON-LD vocabularies.  
   - Heavier processing requirements due to JSON-LD and semantic validation.  
+  - Certificates MUST conform to Codex Entry schema rules for optional fields like encryption and identity.
 
 - **X.509 Certificates**  
   - Appropriate when integration with existing TLS/PKI infrastructure is required (e.g., corporate IT, HTTPS, VPNs).  
@@ -136,6 +141,16 @@ A single Codex Entry can generate multiple certificates for different consumers:
   "issued_at": "2025-09-15T12:00:00Z",
   "issuer": "did:example:org123",
   "subject": "did:example:asset789",
+  "identity": {
+    "org": "Example Org",
+    "project": "Lockb0x",
+    "context": "Enterprise Asset Management"
+  },
+  "encryption": {
+    "algorithm": "AES-256-GCM",
+    "key_ownership": "did:example:org123#key-1",
+    "last_controlled_by": "did:example:user456"
+  },
   "storage": {
     "protocol": "gcs",
     "integrity_proof": "ni:///sha-256;4nq34kaf9djf23...",
@@ -181,6 +196,16 @@ A single Codex Entry can generate multiple certificates for different consumers:
   "issuanceDate": "2025-09-15T12:00:00Z",
   "credentialSubject": {
     "id": "did:example:asset789",
+    "identity": {
+      "org": "Example Org",
+      "project": "Lockb0x",
+      "context": "Enterprise Asset Management"
+    },
+    "encryption": {
+      "algorithm": "AES-256-GCM",
+      "keyOwnership": "did:example:org123#key-1",
+      "lastControlledBy": "did:example:user456"
+    },
     "codexEntry": {
       "protocolVersion": "1.0.0",
       "storage": {

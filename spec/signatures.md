@@ -1,9 +1,7 @@
-
-
-
 # 6. Signatures (Normative)
 
 Codex Entries MUST be signed to ensure authenticity and non-repudiation.  
+Signatures MUST be created **after anchoring** so they cover the full Codex Entry including the anchor object.  
 Signatures provide cryptographic proof of authorship and are a core requirement for verification.
 
 ---
@@ -24,6 +22,7 @@ Signatures provide cryptographic proof of authorship and are a core requirement 
 - A Codex Entry MAY include multiple signatures.  
 - Multiple signatures are REQUIRED for multi-sig contexts defined in the `encryption.policy`.  
 - Each signer MUST sign the canonicalized Codex Entry payload.  
+- In multi-sig contexts, `last_controlled_by` MUST reflect the key(s) that actually signed most recently.  
 - Verification MUST succeed only if the required threshold of signatures is present and valid.
 
 ---
@@ -43,7 +42,8 @@ A Verifier MUST:
 1. Canonicalize the Codex Entry according to [RFC 8785].  
 2. Validate each signature against the declared `alg` and `kid`.  
 3. Confirm that the signer identity (`kid`) matches an expected key in the Codex Entry (e.g., `identity.org`, `encryption.public_keys`).  
-4. In multi-sig contexts, confirm that the number of valid signatures meets the declared `policy.threshold`.  
+4. Confirm that signatures cover the `anchor` object and were produced after anchoring.  
+5. In multi-sig contexts, confirm that the number of valid signatures meets the declared `policy.threshold`.  
 
 If any of these checks fail, the signature validation MUST be considered invalid.
 
@@ -57,6 +57,9 @@ The following algorithms MUST be supported in the reference implementation:
 - **ES256K (ECDSA secp256k1)** — REQUIRED for blockchain compatibility  
 - **RS256 (RSA SHA-256)** — RECOMMENDED for interoperability  
 
+Algorithms MUST follow current NIST and IETF cryptographic recommendations.  
+The spec also includes AES-GCM and ChaCha20-Poly1305 as encryption algorithms for encryption contexts; however, these are not signature algorithms and are referenced here for completeness.
+
 Implementations MAY support additional algorithms provided they meet current NIST and IETF cryptographic recommendations.
 
 ---
@@ -65,7 +68,7 @@ Implementations MAY support additional algorithms provided they meet current NIS
 
 - Signatures MUST bind the signer’s identity to the Codex Entry at the time of signing.  
 - Once recorded, a valid signature MUST be treated as legally binding evidence of authorship and custodianship under applicable frameworks (e.g., UCC Section 12, eIDAS).  
-- Revocation of keys does not retroactively invalidate signatures, but future entries MUST NOT accept revoked keys.
+- Revocation of keys does not retroactively invalidate signatures, but future Codex Entries MUST NOT accept revoked keys.
 
 ---
 
