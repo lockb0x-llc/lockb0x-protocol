@@ -18,8 +18,11 @@ By combining these, developers can create **tamper-evident, verifiable chains of
 ---
 Plain English: Store any kind of data, encrypted or not, on any storage media/platform and use any blockchain. With the lockb0x-protocol and a Codex Entry, you can always prove it hasn't been tampered with, when it was created and by "whom", and who has control, or "custody" of the data/asset. If the custody ever changes,the protocol follows it. lockb0x is not a storage provider or even a storage specification. 
 
-It is a solution for data sovereignty that also provides the basis for Controllable Electronic Records as defined in, and in compliance with, United States Uniform Commercial Code Sections 12, 9, 8, and 1. Which was revised in 2022 to handle using blockchain in commerce and has been adopted by all 50 states n the U.S. The lockb0x-protocol, by design supports the standards and ethos of GDPR and is an enabler of personal data ownership and control. 
-The lockb0x-protocol Verifier Reference Implementation is under development. Feel free to fork, contribute, and PR!
+It is a solution for data sovereignty that also provides the basis for Controllable Electronic Records as defined in, and in compliance with, United States Uniform Commercial Code Sections 12, 9, 8, and 1. Which was revised in 2022 to handle using blockchain in commerce and has been adopted by all 50 states in the U.S. 
+The lockb0x-protocol, by design supports the standards and ethos of GDPR and is an enabler of personal data ownership and control. 
+The lockb0x-protocol Verifier Reference Implementation is under development. 
+Feel free to fork, contribute, and submit a pull-request! 
+Please use the Issues tab to ask questions or report "issues". 
 ---
 
 ## Why Developers Should Adopt the lockb0x-protocol
