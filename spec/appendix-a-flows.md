@@ -2,6 +2,7 @@
 
 This appendix illustrates end-to-end flows for creating, anchoring, and verifying Codex Entries.  
 These examples are non-normative and are intended to help implementers understand typical usage patterns.
+Note: the "other" party that is a verifier can in some in some scenarios could be a smart-contract or other automated  process. 
 
 ---
 
