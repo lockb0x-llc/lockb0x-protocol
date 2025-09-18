@@ -1,6 +1,3 @@
-
-
-
 # 10. Provenance & Metadata (Normative + Informative)
 
 Provenance and metadata provide the contextual information necessary to interpret **Codex Entries** in compliance, audit, and interoperability settings.  
@@ -12,7 +9,8 @@ This section defines the requirements for recording provenance, mapping to exist
 
 - Provenance MUST be expressed in a structured, machine-readable format.  
 - Implementations SHOULD align with the [W3C PROV-DM] data model for representing entities, activities, and agents.  
-- Provenance MAY be serialized in JSON-LD to allow semantic linking with external ontologies.  
+- Provenance MAY be serialized in JSON-LD or RDF to allow semantic linking with external ontologies.  
+- Note: Codex provenance aligns with **PROV-O (W3C Provenance Ontology)**, not just PROV-DM, for semantic web interoperability.
 
 ### Core Provenance Assertions
 
@@ -36,6 +34,7 @@ If a **Codex Entry** is a revision (i.e., has a `previous_id` referencing a prio
 - If no `encryption` object is present, the metadata MUST omit this field.  
 - Additional metadata MAY be included using extension fields.  
 - Extensions SHOULD follow JSON-LD conventions to ensure semantic interoperability.  
+- RDF vocabularies such as PROV-O are acceptable alongside JSON-LD extensions, particularly when integrating with Solid Pods and linked data ecosystems.
 
 Recommended metadata vocabularies:
 
@@ -77,3 +76,4 @@ Recommended metadata vocabularies:
 [DCMI]: https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 [Schema.org]: https://schema.org/
 [ISO 3166-1]: https://www.iso.org/iso-3166-country-codes.html
+[PROV-O]: https://www.w3.org/TR/prov-o/

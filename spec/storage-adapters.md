@@ -1,4 +1,4 @@
-# 4. Storage Adapters (Normative)
+<file name=0 path=/Users/steven/Code/lockb0x-protocol/spec/storage-adapters.md># 4. Storage Adapters (Normative)
 
 The Lockb0x Protocol is **storage-agnostic**.  
 To support this, implementations MUST provide *Storage Adapters* that generate proofs for different backends.  
@@ -46,8 +46,6 @@ The reference implementation MUST include at least three adapters:
   - Location: MUST report the bucket location (e.g., `us-central1`), the governing jurisdiction (e.g., `US/CA`), and set `provider` to `Google Cloud`.
   - Media type and size MUST be provided.
 
-Implementations SHOULD also support:
-
 - **Azure Blob Storage**:  
   - Proof: Adapter MUST compute a SHA-256 digest as canonical proof (`ni:///sha-256;…`). MD5/CRC64 MAY be recorded if supplied by Azure metadata, but MUST NOT be used as the canonical proof.  
   - For Stellar anchoring, an MD5 digest MAY be embedded in the transaction memo field when combined with the signing account’s public key, serving as a compact identifier within size constraints.  
@@ -60,6 +58,13 @@ Implementations SHOULD also support:
 - **Local/On-Prem Storage**:  
   - Proof: SHA-256 checksum.  
   - Location: MUST specify controlling entity and physical jurisdiction.  
+
+- **Solid (gSolid / SolidProject.org)**:  
+  - Proof: Since Solid Pods expose resources via HTTPS without standardized checksums, the adapter MUST download the resource content and compute a SHA-256 digest, expressing it as an RFC 6920 ni URI (`ni:///sha-256;<digest>`).  
+  - Identity Binding: Solid uses WebID for identity and access control via WAC (Web Access Control) or ACP (Access Control Policies), enabling strong identity binding and permission management.  
+  - Provenance: The adapter SHOULD integrate provenance metadata expressed in RDF and Linked Data formats with Lockb0x Codex Entries to enhance traceability and context.  
+  - Location: MUST include jurisdiction and provider information based on the Solid Pod hosting environment and relevant legal controls.  
+  - Using Solid with Lockb0x enables data sovereignty, aligns with EU data protection initiatives, and promotes interoperability through decentralized, user-controlled data storage.
 
 ---
 
@@ -92,4 +97,4 @@ Implementations SHOULD also support:
 ---
 
 [RFC 6920]: https://www.rfc-editor.org/rfc/rfc6920
-[RFC 6838]: https://www.rfc-editor.org/rfc/rfc6838
+[RFC 6838]: https://www.rfc-editor.org/rfc/rfc6838</file>

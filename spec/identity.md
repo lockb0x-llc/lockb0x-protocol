@@ -12,6 +12,7 @@ Codex Entries MUST use one of the following identifier formats:
 - **Stellar Account Address** — in [SEP-0020] format (`G...` public key).  
 - **W3C Decentralized Identifier (DID)** — conforming to [DID Core].  
 - **Other Blockchain Account Identifiers** — following [CAIP-10] for cross-chain identities.  
+- **Solid WebID** — conforming to [Solid WebID].
 
 Identifiers MUST be unique, resolvable, and verifiable against their respective network or DID method.
 
@@ -41,6 +42,16 @@ A minimal valid identity object includes only the required fields:
 }
 ```
 
+An example using a Solid WebID for `subject`:
+
+```json
+"identity": {
+  "org": "did:example:org123",
+  "context": "workorder-789",
+  "subject": "https://user.solidcommunity.net/profile/card#me"
+}
+```
+
 ---
 
 ## 7.3 Structural Provenance Hierarchy
@@ -51,6 +62,8 @@ A minimal valid identity object includes only the required fields:
 
 This hierarchy establishes structural provenance regardless of whether a Codex Entry references natural persons, enterprises, or assets.
 
+When Solid WebIDs are used, the `org`, `project`, or `subject` MAY resolve to a WebID profile document and associated access control metadata.
+
 ---
 
 ## 7.4 Subject Binding and Authorization
@@ -58,6 +71,8 @@ This hierarchy establishes structural provenance regardless of whether a Codex E
 `subject` identifies the individual, organization, or asset that is the focus of the Codex Entry. It MAY be omitted when the subject is implicit in the workflow context, but when supplied it MUST be a DID or account identifier.
 
 Signatures associated with a Codex Entry (Section 6) MUST authorize the declared hierarchy. Verifiers MUST confirm that signers are permitted to act for the `org`, `project`, and—when present—`subject` values. Additionally, verifiers MUST ensure that keys in `last_controlled_by` (when present in Codex Entries) are associated with the declared `org` or `project` identities.
+
+Verifiers MUST confirm that Solid WebIDs and associated access control lists (WAC/ACP) authorize the claimed identities.
 
 ---
 
@@ -73,3 +88,4 @@ Signatures associated with a Codex Entry (Section 6) MUST authorize the declared
 [SEP-0020]: https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0020.md
 [DID Core]: https://www.w3.org/TR/did-core/
 [CAIP-10]: https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md
+[Solid WebID]: https://solidproject.org/

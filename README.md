@@ -10,11 +10,15 @@ Each entry links together:
 
 - **Storage Proofs** — showing *where* data is stored (IPFS, S3, Azure Blob, FTP/SFTP, or local storage).  
 - **Integrity Proofs** — hashes and checksums that prove the data hasn’t been tampered with.  
-- **Signatures** — cryptographic attestations from the data owner or organization.  
+- **Signatures** — cryptographic signatures/attestations from the data owner or organization.  
 - **Anchors** — blockchain transactions (e.g. Stellar, Ethereum, Avalanche) that provide immutable timestamps.  
 
 By combining these, developers can create **tamper-evident, verifiable chains of custody** for files, records, or datasets.
 
+---
+# Plain English: Store any kind of data, encrypted or not on any storage media/platform, and you can always prove it hasn't been tampered with, when it was created and by "whom". And who has control, or "custody" of the data, if the custody ever changes. lockb0x ii snot a storage provider or even a storage specification. 
+It is a solution for data sovereignty that also provides the basis for Controllable Electronic Records as defined in, and in compliance with, United States Uniform Commercial Code Sections 12, 9, 8, and 1. As revised in 2022 to handle using blockchain in commerce. lockb0x by design supports the standards and ethos of GDPR and personal data ownership and control. 
+The lockb0x-protocol Verifier Reference Implementation is under development. Feel free to fork, contribute, and PR!
 ---
 
 ## Why Developers Use Lockb0x

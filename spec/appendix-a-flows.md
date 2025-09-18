@@ -60,7 +60,21 @@ These examples are non-normative and are intended to help implementers understan
 
 ---
 
-## A.5 Multi-Sig Control Flow
+## A.5 Solid Pod Example
+
+1. File is uploaded to a Solid Pod at a specific HTTPS URI (e.g., `https://alice.solidcommunity.net/private/myfile.txt`).  
+2. Codex Entry includes:
+   - `storage.protocol = "solid"`  
+   - `storage.integrity_proof = "ni:///sha-256;..."` (computed by downloading the file and hashing its contents)  
+   - `storage.location` with the Pod URL, legal jurisdiction, and provider (e.g., `provider = "Solid Community Pod"`).  
+   - `identity` is bound via the WebID of the Pod owner (e.g., `https://alice.solidcommunity.net/profile/card#me`).  
+3. Codex Entry is anchored on Stellar.  
+4. Signatures are generated after anchoring.  
+5. Verifier retrieves the file from the Solid Pod using the HTTPS URI, recomputes the hash, validates the anchor on Stellar, and checks the WebID binding/authorization.
+
+---
+
+## A.6 Multi-Sig Control Flow
 
 1. Organization defines a policy: 2-of-3 required for encryption/decryption.  
 2. Codex Entry includes `encryption.policy` and `encryption.public_keys`.  
@@ -71,7 +85,7 @@ These examples are non-normative and are intended to help implementers understan
 
 ---
 
-## A.6 Revision Chain Flow
+## A.7 Revision Chain Flow
 
 1. Original file is recorded as Codex Entry `id=UUID1`.  
 2. Later, a revised version is created as Codex Entry `id=UUID2`, with `previous_id=UUID1` and provenance assertion `wasDerivedFrom: UUID1`.  
