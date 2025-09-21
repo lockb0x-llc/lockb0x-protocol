@@ -1,6 +1,3 @@
-
-
-
 # Appendix C. Security Threat Models (Non-Normative)
 
 This appendix outlines potential threats to the Lockb0x Protocol and recommended mitigations.  

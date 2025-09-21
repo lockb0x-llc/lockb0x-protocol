@@ -115,12 +115,24 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "identity": {
       "type": "object",
-      "required": ["org", "context"],
+      "required": ["org", "process", "artifact"],
       "properties": {
-        "org": {"type": "string", "description": "Root organizational DID or account."},
-        "project": {"type": "string", "description": "Project- or program-level DID anchoring provenance."},
-        "context": {"type": "string", "description": "Operational context identifier (e.g., work order, case ID)."},
-        "subject": {"type": "string", "description": "Optional DID referencing the individual, entity, or asset that is the subject of the entry."}
+        "org": {
+          "type": "string",
+          "description": "Root organizational DID or account."
+        },
+        "process": {
+          "type": "string",
+          "description": "Process- or activity-level DID anchoring provenance."
+        },
+        "artifact": {
+          "type": "string",
+          "description": "Artifact identifier (e.g., work order, case ID, document ID)."
+        },
+        "subject": {
+          "type": "string",
+          "description": "Optional DID referencing the individual, entity, or asset that is the subject of the entry."
+        }
       }
     },
     "timestamp": {

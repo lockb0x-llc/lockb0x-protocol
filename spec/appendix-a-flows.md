@@ -11,6 +11,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
 1. User selects a file to be recorded.  
 2. Storage adapter computes the canonical integrity proof by deriving an RFC 6920 ni-URI (transforming any backend-specific values such as IPFS CIDs or S3 ETags).  
 3. Codex Entry is created with required fields: `id`, `storage`, `integrity_proof` (no signatures yet).  
+
+```json
+{
+  "id": "UUID1",
+  "storage": { "protocol": "ipfs", "integrity_proof": "ni:///sha-256;..." },
+  "identity": {
+    "org": "Org123",
+    "process": "Onboarding2025",
+    "artifact": "EmployeeHandbook-v1"
+  }
+}
+```
+
 4. Codex Entry is anchored on Stellar by embedding the Codex Entry hash in a transaction memo.  
 5. Codex Entry is signed locally with the user’s private key after anchoring.  
 6. A Certificate of Verification is generated (JSON, VC, or X.509).  
@@ -28,6 +41,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
    - `storage.protocol = "ipfs"`  
    - `storage.integrity_proof = "ni:///sha-256;..."`  
    - `storage.location` with pinning region/jurisdiction.  
+
+```json
+{
+  "id": "UUID1",
+  "storage": { "protocol": "ipfs", "integrity_proof": "ni:///sha-256;..." },
+  "identity": {
+    "org": "Org123",
+    "process": "Onboarding2025",
+    "artifact": "EmployeeHandbook-v1"
+  }
+}
+```
+
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  
 5. Verifier retrieves file from IPFS using CID, recomputes hash, and validates anchor.  
@@ -41,6 +67,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
    - `storage.protocol = "s3"`  
    - `storage.integrity_proof = "ni:///sha-256;3f1a9e..."` (adapter transforms the ETag into a SHA-256 ni-URI)  
    - `storage.location` with `region`, `jurisdiction`, and provider.  
+
+```json
+{
+  "id": "UUID2",
+  "storage": { "protocol": "s3", "integrity_proof": "ni:///sha-256;3f1a9e..." },
+  "identity": {
+    "org": "Org123",
+    "process": "Onboarding2025",
+    "artifact": "EmployeeHandbook-v1"
+  }
+}
+```
+
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  
 5. Verifier downloads file (or uses metadata), validates hash, and checks anchor.  
@@ -55,6 +94,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
    - `storage.integrity_proof = "ni:///sha-256;..."`  
    - `storage.location` with bucket location (e.g., `us-central1`), legal jurisdiction (e.g., `US/CA`), and `provider = "Google Cloud"`.  
    - Optional recording of the object's `crc32c` for auditors.  
+
+```json
+{
+  "id": "UUID3",
+  "storage": { "protocol": "gcs", "integrity_proof": "ni:///sha-256;..." },
+  "identity": {
+    "org": "Org123",
+    "process": "Onboarding2025",
+    "artifact": "EmployeeHandbook-v1"
+  }
+}
+```
+
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  
 5. Verifier fetches object metadata via the GCS API, recomputes the SHA-256 digest, and validates the anchor.
@@ -68,7 +120,16 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
    - `storage.protocol = "solid"`  
    - `storage.integrity_proof = "ni:///sha-256;..."` (computed by downloading the file and hashing its contents)  
    - `storage.location` with the Pod URL, legal jurisdiction, and provider (e.g., `provider = "Solid Community Pod"`).  
-   - `identity` is bound via the WebID of the Pod owner (e.g., `https://alice.solidcommunity.net/profile/card#me`).  
+
+```json
+"identity": {
+  "org": "Org456",
+  "process": "ResearchProject",
+  "artifact": "Dataset2025",
+  "webid": "https://alice.solidcommunity.net/profile/card#me"
+}
+```
+
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  
 5. Verifier retrieves the file from the Solid Pod using the HTTPS URI, recomputes the hash, validates the anchor on Stellar, and checks the WebID binding/authorization.
