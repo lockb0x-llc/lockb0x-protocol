@@ -145,6 +145,16 @@
         Detailed scenarios include: key compromise, malicious storage providers, replay attacks, hash collisions, false jurisdiction claims, insider threats, denial-of-service, and post-quantum risks. Mitigations include HSMs, multi-sig, canonicalization, crypto-agility, and redundant anchors.
       </t>
     </section>
+      <section title="Security Considerations">
+        <t>
+          Security considerations for the Lockb0x Protocol are discussed in detail in the "Security Threat Models" section. Implementers should review the threat scenarios and recommended mitigations, including the use of HSMs, multi-signature controls, canonicalization, and crypto-agility. Additional risks may arise from improper implementation or integration with external systems.
+        </t>
+      </section>
+      <section title="IANA Considerations">
+        <t>
+          This document makes no request of IANA.
+        </t>
+      </section>
   </middle>
 
   <back>
@@ -225,8 +235,7 @@
         </front>
       </reference>
     </references>
-  </back>
-
+</references>
   <section title="Appendix B. Codex Entry JSON Schema" numbered="false">
     <t>
       This appendix contains the full JSON Schema for Codex Entries. This schema is normative
@@ -297,4 +306,5 @@
       ]]></artwork>
     </figure>
   </section>
+  </back>
 </rfc>
