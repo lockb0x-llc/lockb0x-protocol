@@ -101,4 +101,127 @@ public static class CodexEntryValidator
 		errors = new List<string> { "Validation not implemented." };
 		return false;
 	}
+
+	/// <summary>
+	/// Validates a JSON string against the Codex Entry schema with strict additionalProperties=false
+	/// </summary>
+	public static bool ValidateJson(string jsonString, out List<string> errors)
+	{
+		errors = new List<string>();
+		
+		try
+		{
+			// Parse JSON to check for unknown fields
+			using var document = System.Text.Json.JsonDocument.Parse(jsonString);
+			var root = document.RootElement;
+			
+			// Check for unknown properties at root level
+			var allowedRootProperties = new HashSet<string>
+			{
+				"id", "previous_id", "version", "storage", "encryption", "identity", 
+				"timestamp", "anchor", "signatures", "extensions"
+			};
+			
+			foreach (var property in root.EnumerateObject())
+			{
+				if (!allowedRootProperties.Contains(property.Name))
+				{
+					errors.Add($"Unknown field '{property.Name}' is not allowed in Codex Entry");
+				}
+			}
+			
+			// Check nested objects for unknown fields
+			if (root.TryGetProperty("storage", out var storage))
+			{
+				ValidateObjectProperties(storage, new HashSet<string>
+				{
+					"protocol", "integrity_proof", "media_type", "size_bytes", "location"
+				}, "storage", errors);
+				
+				if (storage.TryGetProperty("location", out var location))
+				{
+					ValidateObjectProperties(location, new HashSet<string>
+					{
+						"region", "jurisdiction", "provider"
+					}, "storage.location", errors);
+				}
+			}
+			
+			if (root.TryGetProperty("encryption", out var encryption))
+			{
+				ValidateObjectProperties(encryption, new HashSet<string>
+				{
+					"algorithm", "key_ownership", "policy", "public_keys", "last_controlled_by"
+				}, "encryption", errors);
+				
+				if (encryption.TryGetProperty("policy", out var policy))
+				{
+					ValidateObjectProperties(policy, new HashSet<string>
+					{
+						"type", "threshold", "total"
+					}, "encryption.policy", errors);
+				}
+			}
+			
+			if (root.TryGetProperty("identity", out var identity))
+			{
+				ValidateObjectProperties(identity, new HashSet<string>
+				{
+					"org", "process", "artifact", "subject"
+				}, "identity", errors);
+			}
+			
+			if (root.TryGetProperty("anchor", out var anchor))
+			{
+				ValidateObjectProperties(anchor, new HashSet<string>
+				{
+					"chain", "tx_hash", "hash_alg", "token_id"
+				}, "anchor", errors);
+			}
+			
+			if (root.TryGetProperty("signatures", out var signatures))
+			{
+				if (signatures.ValueKind == System.Text.Json.JsonValueKind.Array)
+				{
+					int index = 0;
+					foreach (var signature in signatures.EnumerateArray())
+					{
+						ValidateObjectProperties(signature, new HashSet<string>
+						{
+							"protected", "signature"
+						}, $"signatures[{index}]", errors);
+						
+						if (signature.TryGetProperty("protected", out var protectedObj))
+						{
+							ValidateObjectProperties(protectedObj, new HashSet<string>
+							{
+								"alg", "kid"
+							}, $"signatures[{index}].protected", errors);
+						}
+						index++;
+					}
+				}
+			}
+			
+			return errors.Count == 0;
+		}
+		catch (System.Text.Json.JsonException ex)
+		{
+			errors.Add($"Invalid JSON: {ex.Message}");
+			return false;
+		}
+	}
+
+	private static void ValidateObjectProperties(System.Text.Json.JsonElement element, HashSet<string> allowedProperties, string path, List<string> errors)
+	{
+		if (element.ValueKind != System.Text.Json.JsonValueKind.Object) return;
+		
+		foreach (var property in element.EnumerateObject())
+		{
+			if (!allowedProperties.Contains(property.Name))
+			{
+				errors.Add($"Unknown field '{property.Name}' is not allowed in {path}");
+			}
+		}
+	}
 }

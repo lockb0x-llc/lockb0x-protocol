@@ -4,11 +4,14 @@ This appendix provides a full JSON Schema definition for Codex Entries.
 It is intended as a reference for validation and interoperability.  
 The schema reflects all required and optional fields described in Section 3 (Data Model).
 
+**Note on Additional Properties:** This schema explicitly sets `"additionalProperties": false` on all object types to ensure strict validation. Verifiers MUST reject Codex Entries containing any fields not defined in this schema. This approach ensures forward compatibility while maintaining cryptographic security by preventing injection of unexpected metadata that could compromise verification processes.
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Lockb0x Codex Entry",
   "type": "object",
+  "additionalProperties": false,
   "required": [
     "id",
     "version",
@@ -36,6 +39,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "storage": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["protocol", "integrity_proof", "media_type", "size_bytes", "location"],
       "properties": {
         "protocol": {
@@ -59,6 +63,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         },
         "location": {
           "type": "object",
+          "additionalProperties": false,
           "required": ["region", "jurisdiction", "provider"],
           "properties": {
             "region": {"type": "string"},
@@ -70,6 +75,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "encryption": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["algorithm", "key_ownership"],
       "properties": {
         "algorithm": {
@@ -84,6 +90,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
         },
         "policy": {
           "type": "object",
+          "additionalProperties": false,
           "required": ["type"],
           "properties": {
             "type": {"type": "string", "enum": ["threshold"]},
@@ -115,6 +122,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "identity": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["org", "process", "artifact"],
       "properties": {
         "org": {
@@ -142,6 +150,7 @@ The schema reflects all required and optional fields described in Section 3 (Dat
     },
     "anchor": {
       "type": "object",
+      "additionalProperties": false,
       "required": ["chain", "tx_hash", "hash_alg"],
       "properties": {
         "chain": {"type": "string", "description": "CAIP-2 blockchain identifier."},
@@ -159,10 +168,12 @@ The schema reflects all required and optional fields described in Section 3 (Dat
       "minItems": 1,
       "items": {
         "type": "object",
+        "additionalProperties": false,
         "required": ["protected", "signature"],
         "properties": {
           "protected": {
             "type": "object",
+            "additionalProperties": false,
             "required": ["alg", "kid"],
             "properties": {
               "alg": {"type": "string", "description": "Algorithm identifier (e.g., EdDSA)."},
