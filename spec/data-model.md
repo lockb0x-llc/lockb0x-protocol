@@ -7,7 +7,8 @@ This is the fundamental unit of the protocol, capturing proofs of integrity, sto
 
 ## 3.1 Codex Entry Schema
 
-A Codex Entry MUST be expressed as JSON and include the following fields:
+A Codex Entry MUST be expressed as JSON. The following example shows a  
+comprehensive Codex Entry with all possible fields:
 
 ```json
 {
@@ -57,6 +58,11 @@ A Codex Entry MUST be expressed as JSON and include the following fields:
   "extensions": {}
 }
 ```
+
+**Note:** The above example shows a comprehensive entry with all possible fields.  
+Many fields are optional, including the entire `encryption` object which MUST be  
+omitted when assets are stored without encryption. See Section 3.2 for required  
+fields and Section 3.3 for optional fields.
 
 ---
 

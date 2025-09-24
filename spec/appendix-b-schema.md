@@ -4,6 +4,10 @@ This appendix provides a full JSON Schema definition for Codex Entries.
 It is intended as a reference for validation and interoperability.  
 The schema reflects all required and optional fields described in Section 3 (Data Model).
 
+**Note:** The `encryption` object is intentionally NOT included in the  
+root-level `required` array, making it optional in compliance with the protocol  
+specification that allows plaintext assets.
+
 **Note on Additional Properties:** This schema explicitly sets `"additionalProperties": false` on all object types to ensure strict validation. Verifiers MUST reject Codex Entries containing any fields not defined in this schema. This approach ensures forward compatibility while maintaining cryptographic security by preventing injection of unexpected metadata that could compromise verification processes.
 
 ```json
