@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "label": "Lint Markdown",
+      "type": "shell",
+      "command": "npx markdownlint **/*.md"
+    },
+    {
+      "label": "Validate JSON",
+      "type": "shell",
+      "command": "npx jsonlint **/*.json"
+    }
+  ],
+  "copilotAgent": {
+    "enabled": true,
+    "specFiles": ["spec/*.md"],
+    "referenceImpl": ["Lockb0x.*/*.cs"]
+  }
+}
