@@ -1,0 +1,13 @@
+{
+  "name": "lockb0x-protocol",
+  "version": "1.0.0",
+  "description": "Lockb0x Protocol development environment",
+  "scripts": {
+    "lint:md": "markdownlint **/*.md",
+    "lint:json": "ajv validate -s ./.vscode/package.schema.json -d '**/*.json' --strict=false || true"
+  },
+  "devDependencies": {
+    "ajv-cli": "^5.0.0",
+    "markdownlint": "^0.29.0"
+  }
+}

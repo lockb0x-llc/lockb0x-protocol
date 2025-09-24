@@ -1,0 +1,394 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" version="3" category="info" docName="draft-tomlinson-lockb0x-00" ipr="trust200902" obsoletes="" updates="" submissionType="independent" xml:lang="en" prepTime="2025-09-20T20:50:47" indexInclude="true" scripts="Common,Latin" sortRefs="false" symRefs="true" tocDepth="3" tocInclude="true">
+  <front>
+    <title abbrev="Lockb0x Protocol">The Lockb0x Protocol: Codex Entries for Verifiable Data Sovereignty</title>
+    <author fullname="Steven Tomlinson" initials="S." surname="Tomlinson">
+      <organization showOnFrontPage="true">Lockb0x LLC</organization>
+      <address>
+        <email>contact@steventomlinson.dev</email>
+      </address>
+    </author>
+    <date month="09" year="2025" day="20"/>
+    <area>Security</area>
+    <workgroup>Independent Submission</workgroup>
+    <abstract pn="section-abstract">
+      <t indent="0" pn="section-abstract-1">
+        This document specifies the Lockb0x Protocol, a standards-based framework
+        for creating Codex Entries (machine-readable Controllable Electronic Records)
+        that bind together storage proofs, blockchain anchors, encryption metadata,
+        signatures, and provenance. The protocol enables interoperability across
+        decentralized and cloud storage systems while providing auditability and
+        compliance with legal frameworks such as UCC Article 12.
+      </t>
+    </abstract>
+    <boilerplate>
+      <section anchor="status-of-memo" numbered="false" removeInRFC="false" toc="exclude" pn="section-boilerplate.1">
+        <name slugifiedName="name-status-of-this-memo">Status of This Memo</name>
+        <t indent="0" pn="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.
+        </t>
+        <t indent="0" pn="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <eref target="https://datatracker.ietf.org/drafts/current/" brackets="none"/>.
+        </t>
+        <t indent="0" pn="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."
+        </t>
+        <t indent="0" pn="section-boilerplate.1-4">
+        This Internet-Draft will expire on 24 March 2026.
+        </t>
+      </section>
+      <section anchor="copyright" numbered="false" removeInRFC="false" toc="exclude" pn="section-boilerplate.2">
+        <name slugifiedName="name-copyright-notice">Copyright Notice</name>
+        <t indent="0" pn="section-boilerplate.2-1">
+            Copyright (c) 2025 IETF Trust and the persons identified as the
+            document authors. All rights reserved.
+        </t>
+        <t indent="0" pn="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<eref target="https://trustee.ietf.org/license-info" brackets="none"/>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document.
+        </t>
+      </section>
+    </boilerplate>
+    <toc>
+      <section anchor="toc" numbered="false" removeInRFC="false" toc="exclude" pn="section-toc.1">
+        <name slugifiedName="name-table-of-contents">Table of Contents</name>
+        <ul bare="true" empty="true" indent="2" spacing="compact" pn="section-toc.1-1">
+          <li pn="section-toc.1-1.1">
+            <t indent="0" keepWithNext="true" pn="section-toc.1-1.1.1"><xref derivedContent="1" format="counter" sectionFormat="of" target="section-1"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-introduction">Introduction</xref></t>
+          </li>
+          <li pn="section-toc.1-1.2">
+            <t indent="0" keepWithNext="true" pn="section-toc.1-1.2.1"><xref derivedContent="2" format="counter" sectionFormat="of" target="section-2"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-scope">Scope</xref></t>
+          </li>
+          <li pn="section-toc.1-1.3">
+            <t indent="0" keepWithNext="true" pn="section-toc.1-1.3.1"><xref derivedContent="3" format="counter" sectionFormat="of" target="section-3"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-terminology">Terminology</xref></t>
+          </li>
+          <li pn="section-toc.1-1.4">
+            <t indent="0" pn="section-toc.1-1.4.1"><xref derivedContent="4" format="counter" sectionFormat="of" target="section-4"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-data-model">Data Model</xref></t>
+          </li>
+          <li pn="section-toc.1-1.5">
+            <t indent="0" pn="section-toc.1-1.5.1"><xref derivedContent="5" format="counter" sectionFormat="of" target="section-5"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-storage-adapters">Storage Adapters</xref></t>
+          </li>
+          <li pn="section-toc.1-1.6">
+            <t indent="0" pn="section-toc.1-1.6.1"><xref derivedContent="6" format="counter" sectionFormat="of" target="section-6"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-anchoring">Anchoring</xref></t>
+          </li>
+          <li pn="section-toc.1-1.7">
+            <t indent="0" pn="section-toc.1-1.7.1"><xref derivedContent="7" format="counter" sectionFormat="of" target="section-7"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-verification">Verification</xref></t>
+          </li>
+          <li pn="section-toc.1-1.8">
+            <t indent="0" pn="section-toc.1-1.8.1"><xref derivedContent="8" format="counter" sectionFormat="of" target="section-8"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-certificates">Certificates</xref></t>
+          </li>
+          <li pn="section-toc.1-1.9">
+            <t indent="0" pn="section-toc.1-1.9.1"><xref derivedContent="9" format="counter" sectionFormat="of" target="section-9"/>.  <xref derivedContent="" format="title" sectionFormat="of" target="name-codex-entry-json-schema">Codex Entry JSON Schema</xref></t>
+          </li>
+          <li pn="section-toc.1-1.10">
+            <t indent="0" pn="section-toc.1-1.10.1"><xref derivedContent="10" format="counter" sectionFormat="of" target="section-10"/>. <xref derivedContent="" format="title" sectionFormat="of" target="name-example-flows">Example Flows</xref></t>
+          </li>
+          <li pn="section-toc.1-1.11">
+            <t indent="0" pn="section-toc.1-1.11.1"><xref derivedContent="11" format="counter" sectionFormat="of" target="section-11"/>. <xref derivedContent="" format="title" sectionFormat="of" target="name-security-threat-models">Security Threat Models</xref></t>
+          </li>
+          <li pn="section-toc.1-1.12">
+            <t indent="0" pn="section-toc.1-1.12.1"><xref derivedContent="12" format="counter" sectionFormat="of" target="section-12"/>. <xref derivedContent="" format="title" sectionFormat="of" target="name-security-considerations">Security Considerations</xref></t>
+          </li>
+          <li pn="section-toc.1-1.13">
+            <t indent="0" pn="section-toc.1-1.13.1"><xref derivedContent="13" format="counter" sectionFormat="of" target="section-13"/>. <xref derivedContent="" format="title" sectionFormat="of" target="name-iana-considerations">IANA Considerations</xref></t>
+          </li>
+          <li pn="section-toc.1-1.14">
+            <t indent="0" pn="section-toc.1-1.14.1"><xref derivedContent="14" format="counter" sectionFormat="of" target="section-14"/>. <xref derivedContent="" format="title" sectionFormat="of" target="name-normative-references">Normative References</xref></t>
+          </li>
+          <li pn="section-toc.1-1.15">
+            <t indent="0" pn="section-toc.1-1.15.1"><xref derivedContent="" format="none" sectionFormat="of" target="section-appendix.a"/><xref derivedContent="" format="title" sectionFormat="of" target="name-appendix-b-codex-entry-json">Appendix B. Codex Entry JSON Schema</xref></t>
+          </li>
+          <li pn="section-toc.1-1.16">
+            <t indent="0" pn="section-toc.1-1.16.1"><xref derivedContent="" format="none" sectionFormat="of" target="section-appendix.b"/><xref derivedContent="" format="title" sectionFormat="of" target="name-authors-address">Author's Address</xref></t>
+          </li>
+        </ul>
+      </section>
+    </toc>
+  </front>
+  <middle>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-1">
+      <name slugifiedName="name-introduction">Introduction</name>
+      <t indent="0" pn="section-1-1">
+        The Lockb0x Protocol defines a mechanism for verifiable data provenance and
+        sovereignty across heterogeneous storage backends and blockchains. This
+        Internet-Draft provides a reference specification.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-2">
+      <name slugifiedName="name-scope">Scope</name>
+      <t indent="0" pn="section-2-1">
+        The Lockb0x Protocol defines a verification and provenance layer for digital data.
+        It is <spanx style="strong" xml:space="preserve">not a storage protocol</spanx>; rather, it operates with existing storage and
+        blockchain systems to provide integrity, custodianship, and auditability.
+      </t>
+      <t indent="0" pn="section-2-2">Objectives of the protocol include:</t>
+      <t indent="0" pn="section-2-3">
+      <list style="symbols" pn="section-2-3.1">
+          <t indent="0" pn="section-2-3.1.1"><spanx style="strong" xml:space="preserve">Data Sovereignty</spanx>: demonstrating control over how and where data is stored.</t>
+          <t indent="0" pn="section-2-3.1.2"><spanx style="strong" xml:space="preserve">Compliance</spanx>: enabling a verifiable chain of custody applicable to frameworks
+        such as UCC Article 12 in the United States and GDPR in the European Union.</t>
+          <t indent="0" pn="section-2-3.1.3"><spanx style="strong" xml:space="preserve">Cross-Organization Trust</spanx>: allowing independent parties to verify shared data
+        without relying on a central authority.</t>
+        </list>
+      </t>
+      <t indent="0" pn="section-2-4">
+        The protocol introduces a <spanx style="strong" xml:space="preserve">Codex Entry</spanx> abstraction that unifies storage proofs,
+        cryptographic signatures, identity bindings, and blockchain anchors in a consistent,
+        verifiable format.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-3">
+      <name slugifiedName="name-terminology">Terminology</name>
+      <t indent="0" pn="section-3-1">
+        The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT,
+        RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as
+        described in <xref target="RFC2119" format="default" sectionFormat="of" derivedContent="RFC2119"/>.
+      </t>
+      <t indent="0" pn="section-3-2">
+      <list style="symbols" pn="section-3-2.1">
+          <t indent="0" pn="section-3-2.1.1"><spanx style="strong" xml:space="preserve">Codex Entry</spanx>: A structured, signed data object that encapsulates integrity proofs, storage references, anchors, identity bindings, and optional encryption metadata.</t>
+          <t indent="0" pn="section-3-2.1.2"><spanx style="strong" xml:space="preserve">Storage Adapter</spanx>: A module that interfaces with an external storage system (e.g., IPFS, S3, GCS, Azure, Solid Pod) and produces verifiable proofs of storage.</t>
+          <t indent="0" pn="section-3-2.1.3"><spanx style="strong" xml:space="preserve">Anchor</spanx>: A blockchain transaction or equivalent immutable record that cryptographically attests to the existence of a Codex Entry at a specific point in time.</t>
+          <t indent="0" pn="section-3-2.1.4"><spanx style="strong" xml:space="preserve">Verifier</spanx>: A tool or process that checks the validity of a Codex Entry by verifying signatures, integrity proofs, storage claims, and anchors.</t>
+          <t indent="0" pn="section-3-2.1.5"><spanx style="strong" xml:space="preserve">Certificate</spanx>: A human- or machine-readable document generated from a Codex Entry that provides evidence of integrity, custodianship, and anchoring. Formats MAY include JSON, W3C Verifiable Credentials, or X.509.</t>
+          <t indent="0" pn="section-3-2.1.6"><spanx style="strong" xml:space="preserve">Identity Context</spanx>: Identifiers bound to a Codex Entry that describe the controlling party (individual, entity, or asset) and optional hierarchy fields (<spanx style="verb" xml:space="preserve">org</spanx>, <spanx style="verb" xml:space="preserve">process</spanx>, <spanx style="verb" xml:space="preserve">artifact</spanx>). An additional <spanx style="verb" xml:space="preserve">subject</spanx> field MAY be included to represent an individual, entity, or asset referenced by the entry.</t>
+          <t indent="0" pn="section-3-2.1.7"><spanx style="strong" xml:space="preserve">Encryption Metadata</spanx>: Information included in a Codex Entry when assets are encrypted, specifying algorithm, key identifiers, and the last_controlled_by field.</t>
+        </list>
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-4">
+      <name slugifiedName="name-data-model">Data Model</name>
+      <t indent="0" pn="section-4-1">
+        The Lockb0x Protocol defines a structured JSON object called a Codex Entry. This is the fundamental unit of the protocol, capturing proofs of integrity, storage, identity, and blockchain anchoring.
+      </t>
+      <t indent="0" pn="section-4-2">
+        The full normative Codex Entry <xref target="JSON-Schema" format="default" sectionFormat="of" derivedContent="JSON-Schema"/> is provided in Appendix B. This section
+        provides only an overview of the object structure and its role in the protocol.
+      </t>
+      <t indent="0" pn="section-4-3">
+        See the specification for required and optional fields, key ownership semantics, and revision chains. UUIDs MUST conform to <xref target="RFC4122" format="default" sectionFormat="of" derivedContent="RFC4122"/>.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-5">
+      <name slugifiedName="name-storage-adapters">Storage Adapters</name>
+      <t indent="0" pn="section-5-1">
+        Storage Adapters translate provider-specific metadata into canonical proofs (e.g., ni-URIs). Supported adapters include IPFS, S3, GCS, Azure Blob, and Solid Pods. Each adapter defines:
+      </t>
+      <t indent="0" pn="section-5-2">
+      <list style="symbols" pn="section-5-2.1">
+          <t indent="0" pn="section-5-2.1.1">Protocol identifier (e.g., "ipfs", "s3", "solid")</t>
+          <t indent="0" pn="section-5-2.1.2">Method for computing <xref target="RFC6920" format="default" sectionFormat="of" derivedContent="RFC6920"/> integrity proof</t>
+          <t indent="0" pn="section-5-2.1.3">Required metadata fields (e.g., region, jurisdiction, provider)</t>
+        </list>
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-6">
+      <name slugifiedName="name-anchoring">Anchoring</name>
+      <t indent="0" pn="section-6-1">
+        Anchoring links a Codex Entry to an immutable, time-stamped record on a blockchain or equivalent ledger. Anchors MUST be created before certificates are issued. Signatures MAY be applied before or after anchoring, but certificates MUST bind both signatures and the anchor. Required fields: chain (<xref target="CAIP-2" format="default" sectionFormat="of" derivedContent="CAIP-2"/>), tx_hash, hash_alg. Optional: token_id (NFT anchor).
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-7">
+      <name slugifiedName="name-verification">Verification</name>
+      <t indent="0" pn="section-7-1">
+        Verification requires recomputing integrity proofs, validating signatures, and confirming anchors. Verifiers MUST implement <xref target="RFC8785" format="default" sectionFormat="of" derivedContent="RFC8785"/> JSON canonicalization. Automated verifiers MAY be smart contracts.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-8">
+      <name slugifiedName="name-certificates">Certificates</name>
+      <t indent="0" pn="section-8-1">
+        Certificates provide human/machine-readable evidence derived from Codex Entries. Formats: JSON, W3C VC, X.509. Certificates MUST bind to anchor transaction IDs, integrity proofs, and signatures. They MAY include expiry or revocation metadata.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-9">
+      <name slugifiedName="name-codex-entry-json-schema">Codex Entry JSON Schema</name>
+      <figure align="left" suppress-title="false" pn="figure-1">
+        <name slugifiedName="name-codex-entry-schema-referenc">Codex Entry Schema Reference</name>
+        <artwork type="json" align="left" pn="section-9-1.1">
+          { ... see appendix-b-schema.md for full JSON Schema ... }
+        </artwork>
+      </figure>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-10">
+      <name slugifiedName="name-example-flows">Example Flows</name>
+      <t indent="0" pn="section-10-1">End-to-end flows for Codex Entries:</t>
+      <t indent="0" pn="section-10-2">
+      <list style="numbers" pn="section-10-2.1">
+          <t indent="0" pn="section-10-2.1.1">File → Codex Entry → Stellar Anchor → Verification</t>
+          <t indent="0" pn="section-10-2.1.2">IPFS Example</t>
+          <t indent="0" pn="section-10-2.1.3">S3 Example</t>
+          <t indent="0" pn="section-10-2.1.4">Google Cloud Storage Example</t>
+          <t indent="0" pn="section-10-2.1.5">Solid Pod Example</t>
+          <t indent="0" pn="section-10-2.1.6">Multi-Sig Control Flow</t>
+          <t indent="0" pn="section-10-2.1.7">Revision Chain Flow</t>
+        </list>
+      </t>
+      <t indent="0" pn="section-10-3">(Full example flows are provided in Appendix A.)</t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-11">
+      <name slugifiedName="name-security-threat-models">Security Threat Models</name>
+      <t indent="0" pn="section-11-1">
+        Detailed scenarios include: key compromise, malicious storage providers, replay attacks, hash collisions, false jurisdiction claims, insider threats, denial-of-service, and post-quantum risks. Mitigations include HSMs, multi-sig, canonicalization, crypto-agility, and redundant anchors.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-12">
+      <name slugifiedName="name-security-considerations">Security Considerations</name>
+      <t indent="0" pn="section-12-1">
+        Security considerations for the Lockb0x Protocol are discussed in detail in the "Security Threat Models" section. Implementers should review the threat scenarios and recommended mitigations, including the use of HSMs, multi-signature controls, canonicalization, and crypto-agility. Additional risks may arise from improper implementation or integration with external systems.
+      </t>
+    </section>
+    <section numbered="true" removeInRFC="false" toc="include" pn="section-13">
+      <name slugifiedName="name-iana-considerations">IANA Considerations</name>
+      <t indent="0" pn="section-13-1">This document makes no request of IANA.</t>
+    </section>
+  </middle>
+  <back>
+    <references pn="section-14">
+      <name slugifiedName="name-normative-references">Normative References</name>
+      <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119" quoteTitle="true" derivedAnchor="RFC2119">
+        <front>
+          <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+          <author fullname="S. Bradner"/>
+          <date year="1997"/>
+        </front>
+        <seriesInfo name="RFC" value="2119"/>
+      </reference>
+      <reference anchor="RFC6920" target="https://www.rfc-editor.org/info/rfc6920" quoteTitle="true" derivedAnchor="RFC6920">
+        <front>
+          <title>Named Information (ni) URI Scheme</title>
+          <author>
+            <organization showOnFrontPage="true">IETF</organization>
+          </author>
+          <date year="2013"/>
+        </front>
+        <seriesInfo name="RFC" value="6920"/>
+      </reference>
+      <reference anchor="RFC8785" target="https://www.rfc-editor.org/info/rfc8785" quoteTitle="true" derivedAnchor="RFC8785">
+        <front>
+          <title>JSON Canonicalization Scheme (JCS)</title>
+          <author fullname="M. Jones"/>
+          <date year="2020"/>
+        </front>
+        <seriesInfo name="RFC" value="8785"/>
+      </reference>
+      <reference anchor="RFC4122" target="https://www.rfc-editor.org/info/rfc4122" quoteTitle="true" derivedAnchor="RFC4122">
+        <front>
+          <title>A Universally Unique Identifier (UUID) URN Namespace</title>
+          <author fullname="P. Leach"/>
+          <date year="2005"/>
+        </front>
+        <seriesInfo name="RFC" value="4122"/>
+      </reference>
+      <reference anchor="JSON-Schema" target="https://json-schema.org/specification-links.html#draft-7" quoteTitle="true" derivedAnchor="JSON-Schema">
+        <front>
+          <title>JSON Schema: A Media Type for Describing JSON Documents (Draft 7)</title>
+          <author>
+            <organization showOnFrontPage="true">JSON Schema</organization>
+          </author>
+          <date year="2018"/>
+        </front>
+      </reference>
+      <reference anchor="CAIP-2" target="https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md" quoteTitle="true" derivedAnchor="CAIP-2">
+        <front>
+          <title>CAIP-2: Blockchain ID Specification</title>
+          <author>
+            <organization showOnFrontPage="true">Chain Agnostic Standards Alliance</organization>
+          </author>
+          <date year="2020"/>
+        </front>
+      </reference>
+    </references>
+    <section numbered="false" removeInRFC="false" toc="include" pn="section-appendix.a">
+      <name slugifiedName="name-appendix-b-codex-entry-json">Appendix B. Codex Entry JSON Schema</name>
+      <t indent="0" pn="section-appendix.a-1">
+        This appendix contains the full JSON Schema for Codex Entries. This schema is normative
+        and defines required and optional fields, their types, and constraints.
+      </t>
+      <figure align="left" suppress-title="false" pn="figure-2">
+        <name slugifiedName="name-codex-entry-full-json-schem">Codex Entry Full JSON Schema</name>
+        <artwork type="json" align="left" pn="section-appendix.a-2.1">
+        {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "Codex Entry",
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid" },
+            "version": { "type": "string" },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "protocol": { "type": "string" },
+                "location": { "type": "string" },
+                "integrity_proof": { "type": "string" },
+                "jurisdiction": { "type": "string" }
+              },
+              "required": ["protocol", "integrity_proof"]
+            },
+            "encryption": {
+              "type": "object",
+              "properties": {
+                "alg": { "type": "string" },
+                "key_id": { "type": "string" },
+                "last_controlled_by": { "type": "string" }
+              }
+            },
+            "identity": {
+              "type": "object",
+              "properties": {
+                "org": { "type": "string" },
+                "process": { "type": "string" },
+                "artifact": { "type": "string" },
+                "subject": { "type": "string" }
+              },
+              "required": ["org", "process", "artifact"]
+            },
+            "anchor": {
+              "type": "object",
+              "properties": {
+                "chain": { "type": "string" },
+                "tx_hash": { "type": "string" },
+                "hash_alg": { "type": "string" }
+              },
+              "required": ["chain", "tx_hash", "hash_alg"]
+            },
+            "signatures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "alg": { "type": "string" },
+                  "kid": { "type": "string" },
+                  "signature": { "type": "string" }
+                },
+                "required": ["alg", "signature"]
+              }
+            },
+            "previous_id": { "type": "string", "format": "uuid" }
+          },
+          "required": ["id", "version", "storage", "identity", "anchor", "signatures"]
+        }
+        </artwork>
+      </figure>
+    </section>
+    <section anchor="authors-addresses" numbered="false" removeInRFC="false" toc="include" pn="section-appendix.b">
+      <name slugifiedName="name-authors-address">Author's Address</name>
+      <author fullname="Steven Tomlinson" initials="S." surname="Tomlinson">
+        <organization showOnFrontPage="true">Lockb0x LLC</organization>
+        <address>
+          <email>contact@steventomlinson.dev</email>
+        </address>
+      </author>
+    </section>
+  </back>
+</rfc>

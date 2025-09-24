@@ -1,0 +1,73 @@
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-tomlinson-lockb0x-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="independent"
+  xml:lang="en"
+  version="3">  
+  <front>
+    <title abbrev="Example Draft">An Example Internet-Draft Template</title>
+    <author fullname="First Last" initials="F." surname="Last" role="author">
+      <organization>Example Org</organization>
+      <address>
+        <email>first.last@example.com</email>
+      </address>
+    </author>
+    <date year="2025" month="09" day="20"/>
+    <area>General</area>
+    <workgroup>Independent Submission</workgroup>
+    <abstract>
+      <t>
+        This document is an example template for creating an Internet-Draft in
+        RFC XML v3 format.
+      </t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Introduction">
+      <t>
+        This section introduces the document. You can add paragraphs with &lt;t&gt;.
+      </t>
+    </section>
+    <section title="Conventions and Terminology">
+      <t>
+        The key words "MUST", "MUST NOT", "SHOULD", "MAY", etc. are to be
+        interpreted as described in [RFC2119].
+      </t>
+    </section>
+    <section title="Main Content">
+      <t>
+        Add your specification text here. Use lists:
+      </t>
+      <list style="symbols">
+        <t>Item 1</t>
+        <t>Item 2</t>
+      </list>
+    </section>
+    <section title="IANA Considerations">
+      <t>This document makes no request of IANA.</t>
+    </section>
+    <section title="Security Considerations">
+      <t>
+        All RFCs must contain a section that discusses the security
+        considerations of the protocol or procedures defined.
+      </t>
+    </section>
+  </middle>
+  <back>
+    <references>
+      <name>Normative References</name>
+      <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
+        <front>
+          <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+          <author fullname="S. Bradner"/>
+          <date year="1997"/>
+        </front>
+        <seriesInfo name="RFC" value="2119"/>
+      </reference>
+    </references>
+  </back>
+</rfc>

@@ -1,9 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rfc xmlns="http://bib.ietf.org/rfc"
-     submissionType="IETF"
-     category="info"
-     docName="draft-tomlinson-lockb0x-00"
-     ipr="trust200902">
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  category="info"
+  docName="draft-tomlinson-lockb0x-00"
+  ipr="trust200902"
+  obsoletes=""
+  updates=""
+  submissionType="independent"
+  xml:lang="en"
+  version="3">  
   <front>
     <title abbrev="Lockb0x Protocol">The Lockb0x Protocol: Codex Entries for Verifiable Data Sovereignty</title>
     <author fullname="Steven Tomlinson" initials="S." surname="Tomlinson">
@@ -12,7 +16,9 @@
         <email>contact@steventomlinson.dev</email>
       </address>
     </author>
-    <date year="2025" month="September"/>
+    <date year="2025" month="09" day="20"/>
+    <area>Security</area>
+    <workgroup>Independent Submission</workgroup>
     <abstract>
       <t>
         This document specifies the Lockb0x Protocol, a standards-based framework
@@ -35,53 +41,68 @@
     </section>
 
     <section title="Scope">
-  <t>
-    The Lockb0x Protocol defines a verification and provenance layer for digital data. 
-    It is <b>not a storage protocol</b>; rather, it operates with existing storage and 
-    blockchain systems to provide integrity, custodianship, and auditability.
-  </t>
-  <t>
-    Objectives of the protocol include:
-  </t>
-  <list style="symbols">
-    <t><b>Data Sovereignty</b>: demonstrating control over how and where data is stored.</t>
-    <t><b>Compliance</b>: enabling a verifiable chain of custody applicable to frameworks 
-    such as UCC Article 12 in the United States and GDPR in the European Union.</t>
-    <t><b>Cross-Organization Trust</b>: allowing independent parties to verify shared data 
-    without relying on a central authority.</t>
-  </list>
-  <t>
-    The protocol introduces a <b>Codex Entry</b> abstraction that unifies storage proofs, 
-    cryptographic signatures, identity bindings, and blockchain anchors in a consistent, 
-    verifiable format.
-  </t>
-</section>
+      <t>
+        The Lockb0x Protocol defines a verification and provenance layer for digital data.
+        It is <strong>not a storage protocol</strong>; rather, it operates with existing storage and
+        blockchain systems to provide integrity, custodianship, and auditability.
+      </t>
+      <t>Objectives of the protocol include:</t>
+      <ul>
+        <li><strong>Data Sovereignty</strong>: demonstrating control over how and where data is stored.</li>
+        <li><strong>Compliance</strong>: enabling a verifiable chain of custody applicable to frameworks
+        such as UCC Article 12 in the United States and GDPR in the European Union.</li>
+        <li><strong>Cross-Organization Trust</strong>: allowing independent parties to verify shared data
+        without relying on a central authority.</li>
+      </ul>
+      <t>
+        The protocol introduces a <strong>Codex Entry</strong> abstraction that unifies storage proofs,
+        cryptographic signatures, identity bindings, and blockchain anchors in a consistent,
+        verifiable format.
+      </t>
+    </section>
 
     <section title="Terminology">
-      <t>The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as described in [RFC2119].</t>
-      <list style="symbols">
-        <t><b>Codex Entry</b>: A structured, signed data object that encapsulates integrity proofs, storage references, anchors, identity bindings, and optional encryption metadata.</t>
-        <t><b>Storage Adapter</b>: A module that interfaces with an external storage system (e.g., IPFS, S3, GCS, Azure, Solid Pod) and produces verifiable proofs of storage.</t>
-        <t><b>Anchor</b>: A blockchain transaction or equivalent immutable record that cryptographically attests to the existence of a Codex Entry at a specific point in time.</t>
-        <t><b>Verifier</b>: A tool or process that checks the validity of a Codex Entry by verifying signatures, integrity proofs, storage claims, and anchors.</t>
-        <t><b>Certificate</b>: A human- or machine-readable document generated from a Codex Entry that provides evidence of integrity, custodianship, and anchoring. Formats MAY include JSON, W3C Verifiable Credentials, or X.509.</t>
-        <t><b>Identity Context</b>: Identifiers bound to a Codex Entry that describe the controlling party (individual, entity, or asset) and optional hierarchy fields (<tt>org</tt>, <tt>process</tt>, <tt>artifact</tt>). An additional <tt>subject</tt> field MAY be included to represent an individual, entity, or asset referenced by the entry.</t>
-        <t><b>Encryption Metadata</b>: Information included in a Codex Entry when assets are encrypted, specifying algorithm, key identifiers, and the last_controlled_by field.</t>
-      </list>
+      <t>
+        The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT,
+        RECOMMENDED, MAY, and OPTIONAL in this document are to be interpreted as
+        described in <xref target="RFC2119"/>.
+      </t>
+      <ul>
+        <li><strong>Codex Entry</strong>: A structured, signed data object that encapsulates integrity proofs, storage references, anchors, identity bindings, and optional encryption metadata.</li>
+        <li><strong>Storage Adapter</strong>: A module that interfaces with an external storage system (e.g., IPFS, S3, GCS, Azure, Solid Pod) and produces verifiable proofs of storage.</li>
+        <li><strong>Anchor</strong>: A blockchain transaction or equivalent immutable record that cryptographically attests to the existence of a Codex Entry at a specific point in time.</li>
+        <li><strong>Verifier</strong>: A tool or process that checks the validity of a Codex Entry by verifying signatures, integrity proofs, storage claims, and anchors.</li>
+        <li><strong>Certificate</strong>: A human- or machine-readable document generated from a Codex Entry that provides evidence of integrity, custodianship, and anchoring. Formats MAY include JSON, W3C Verifiable Credentials, or X.509.</li>
+        <li><strong>Identity Context</strong>: Identifiers bound to a Codex Entry that describe the controlling party (individual, entity, or asset) and optional hierarchy fields (<tt>org</tt>, <tt>process</tt>, <tt>artifact</tt>). An additional <tt>subject</tt> field MAY be included to represent an individual, entity, or asset referenced by the entry.</li>
+        <li><strong>Encryption Metadata</strong>: Information included in a Codex Entry when assets are encrypted, specifying algorithm, key identifiers, and the last_controlled_by field.</li>
+      </ul>
+    </section>
+
+    <section title="Requirements Language">
+    <t>
+      This document uses the key words defined in BCP 14 (RFC 2119 and RFC 8174).
+    </t>
+    <t>
+      The key words <bcp14>MUST</bcp14>, <bcp14>MUST NOT</bcp14>, 
+      <bcp14>REQUIRED</bcp14>, <bcp14>SHALL</bcp14>, <bcp14>SHALL NOT</bcp14>, 
+      <bcp14>SHOULD</bcp14>, <bcp14>SHOULD NOT</bcp14>, 
+      <bcp14>RECOMMENDED</bcp14>, <bcp14>MAY</bcp14>, and <bcp14>OPTIONAL</bcp14>
+      in this document are to be interpreted as described in BCP 14 
+      (<xref target="RFC2119"/>, <xref target="RFC8174"/>) 
+      when, and only when, they appear in all capitals, as shown here.
+    </t>
     </section>
 
     <section title="Data Model">
       <t>
         The Lockb0x Protocol defines a structured JSON object called a Codex Entry. This is the fundamental unit of the protocol, capturing proofs of integrity, storage, identity, and blockchain anchoring.
       </t>
-      <figure>
-        <t>
-          The full normative Codex Entry JSON Schema is provided in Appendix B. This section
-          provides only an overview of the object structure and its role in the protocol.
-        </t>
-      </figure>
       <t>
-        See the specification for required and optional fields, key ownership semantics, and revision chains.
+        The full normative Codex Entry <xref target="JSON-Schema"/> is provided in Appendix B. This section
+        provides only an overview of the object structure and its role in the protocol.
+      </t>
+      <t>
+        See the specification for required and optional fields, key ownership semantics, and revision chains. UUIDs MUST conform to <xref target="RFC9562"/>.
       </t>
     </section>
 
@@ -89,22 +110,22 @@
       <t>
         Storage Adapters translate provider-specific metadata into canonical proofs (e.g., ni-URIs). Supported adapters include IPFS, S3, GCS, Azure Blob, and Solid Pods. Each adapter defines:
       </t>
-      <list style="symbols">
-        <t>Protocol identifier (e.g., "ipfs", "s3", "solid")</t>
-        <t>Method for computing RFC6920 integrity proof</t>
-        <t>Required metadata fields (e.g., region, jurisdiction, provider)</t>
-      </list>
+      <ul>
+        <li>Protocol identifier (e.g., "ipfs", "s3", "solid")</li>
+        <li>Method for computing <xref target="RFC6920"/> integrity proof</li>
+        <li>Required metadata fields (e.g., region, jurisdiction, provider)</li>
+      </ul>
     </section>
 
     <section title="Anchoring">
       <t>
-        Anchoring links a Codex Entry to an immutable, time-stamped record on a blockchain or equivalent ledger. Anchors MUST be created before certificates are issued. Signatures MAY be applied before or after anchoring, but certificates MUST bind both signatures and the anchor. Required fields: chain (CAIP-2), tx_hash, hash_alg. Optional: token_id (NFT anchor).
+        Anchoring links a Codex Entry to an immutable, time-stamped record on a blockchain or equivalent ledger. Anchors MUST be created before certificates are issued. Signatures MAY be applied before or after anchoring, but certificates MUST bind both signatures and the anchor. Required fields: chain (<xref target="CAIP-2"/>), tx_hash, hash_alg. Optional: token_id (NFT anchor).
       </t>
     </section>
 
     <section title="Verification">
       <t>
-        Verification requires recomputing integrity proofs, validating signatures, and confirming anchors. Verifiers MUST implement RFC8785 JSON canonicalization. Automated verifiers MAY be smart contracts.
+        Verification requires recomputing integrity proofs, validating signatures, and confirming anchors. Verifiers MUST implement <xref target="RFC8785"/> JSON canonicalization. Automated verifiers MAY be smart contracts.
       </t>
     </section>
 
@@ -116,6 +137,7 @@
 
     <section title="Codex Entry JSON Schema">
       <figure>
+        <name>Codex Entry Schema Reference</name>
         <artwork type="json">
           { ... see appendix-b-schema.md for full JSON Schema ... }
         </artwork>
@@ -123,21 +145,17 @@
     </section>
 
     <section title="Example Flows">
-      <t>
-        End-to-end flows for Codex Entries:
-      </t>
-      <list style="numbers">
-        <t>File → Codex Entry → Stellar Anchor → Verification</t>
-        <t>IPFS Example</t>
-        <t>S3 Example</t>
-        <t>Google Cloud Storage Example</t>
-        <t>Solid Pod Example</t>
-        <t>Multi-Sig Control Flow</t>
-        <t>Revision Chain Flow</t>
-      </list>
-      <t>
-        (Full example flows are provided in Appendix A.)
-      </t>
+      <t>End-to-end flows for Codex Entries:</t>
+      <ol>
+        <li>File -&gt; Codex Entry -&gt; Stellar Anchor -&gt; Verification</li>
+        <li>IPFS Example</li>
+        <li>S3 Example</li>
+        <li>Google Cloud Storage Example</li>
+        <li>Solid Pod Example</li>
+        <li>Multi-Sig Control Flow</li>
+        <li>Revision Chain Flow</li>
+      </ol>
+      <t>(Full example flows are provided in Appendix A.)</t>
     </section>
 
     <section title="Security Threat Models">
@@ -145,49 +163,67 @@
         Detailed scenarios include: key compromise, malicious storage providers, replay attacks, hash collisions, false jurisdiction claims, insider threats, denial-of-service, and post-quantum risks. Mitigations include HSMs, multi-sig, canonicalization, crypto-agility, and redundant anchors.
       </t>
     </section>
-      <section title="Security Considerations">
-        <t>
-          Security considerations for the Lockb0x Protocol are discussed in detail in the "Security Threat Models" section. Implementers should review the threat scenarios and recommended mitigations, including the use of HSMs, multi-signature controls, canonicalization, and crypto-agility. Additional risks may arise from improper implementation or integration with external systems.
-        </t>
-      </section>
-      <section title="IANA Considerations">
-        <t>
-          This document makes no request of IANA.
-        </t>
-      </section>
+
+    <section title="Security Considerations">
+      <t>
+        Security considerations for the Lockb0x Protocol are discussed in detail in the "Security Threat Models" section. Implementers should review the threat scenarios and recommended mitigations, including the use of HSMs, multi-signature controls, canonicalization, and crypto-agility. Additional risks may arise from improper implementation or integration with external systems.
+      </t>
+    </section>
+
+    <section title="IANA Considerations">
+      <t>This document makes no request of IANA.</t>
+    </section>
   </middle>
 
   <back>
     <references>
       <name>Normative References</name>
+
       <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
         <front>
           <title>Key words for use in RFCs to Indicate Requirement Levels</title>
           <author fullname="S. Bradner"/>
           <date year="1997"/>
         </front>
+        <seriesInfo name="RFC" value="2119"/>
       </reference>
+
+      <reference anchor="RFC8174" target="https://www.rfc-editor.org/info/rfc8174">
+        <front>
+          <title>Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</title>
+          <author fullname="B. Leiba"/>
+          <date year="2017"/>
+        </front>
+        <seriesInfo name="RFC" value="8174"/>
+      </reference>
+
       <reference anchor="RFC6920" target="https://www.rfc-editor.org/info/rfc6920">
         <front>
           <title>Named Information (ni) URI Scheme</title>
           <author><organization>IETF</organization></author>
           <date year="2013"/>
         </front>
+        <seriesInfo name="RFC" value="6920"/>
       </reference>
+
       <reference anchor="RFC8785" target="https://www.rfc-editor.org/info/rfc8785">
         <front>
           <title>JSON Canonicalization Scheme (JCS)</title>
           <author fullname="M. Jones"/>
           <date year="2020"/>
         </front>
+        <seriesInfo name="RFC" value="8785"/>
       </reference>
-      <reference anchor="RFC4122" target="https://www.rfc-editor.org/info/rfc4122">
+
+      <reference anchor="RFC9562" target="https://www.rfc-editor.org/info/rfc9562">
         <front>
-          <title>A Universally Unique Identifier (UUID) URN Namespace</title>
+          <title>Universally Unique IDentifiers (UUIDs)</title>
           <author fullname="P. Leach"/>
-          <date year="2005"/>
+          <date year="2023"/>
         </front>
+        <seriesInfo name="RFC" value="9562"/>
       </reference>
+
       <reference anchor="JSON-Schema" target="https://json-schema.org/specification-links.html#draft-7">
         <front>
           <title>JSON Schema: A Media Type for Describing JSON Documents (Draft 7)</title>
@@ -195,6 +231,7 @@
           <date year="2018"/>
         </front>
       </reference>
+
       <reference anchor="CAIP-2" target="https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-2.md">
         <front>
           <title>CAIP-2: Blockchain ID Specification</title>
@@ -202,109 +239,88 @@
           <date year="2020"/>
         </front>
       </reference>
+
     </references>
 
-    <references>
-      <name>Informative References</name>
-      <reference anchor="UCC12" target="https://www.uniformlaws.org/committees/community-home?CommunityKey=67f92d5b-0574-4a40-89d7-6f2f7292c71a">
-        <front>
-          <title>Uniform Commercial Code, Article 12: Controllable Electronic Records</title>
-          <author><organization>Uniform Law Commission</organization></author>
-          <date year="2022"/>
-        </front>
-      </reference>
-      <reference anchor="Solid" target="https://solidproject.org/TR/protocol">
-        <front>
-          <title>Solid Protocol Specification</title>
-          <author><organization>Solid Project</organization></author>
-          <date year="2021"/>
-        </front>
-      </reference>
-      <reference anchor="PROV-O" target="https://www.w3.org/TR/prov-o/">
-        <front>
-          <title>PROV-O: The PROV Ontology</title>
-          <author><organization>W3C</organization></author>
-          <date year="2013"/>
-        </front>
-      </reference>
-      <reference anchor="eIDAS" target="https://digital-strategy.ec.europa.eu/en/policies/eidas-regulation">
-        <front>
-          <title>eIDAS Regulation</title>
-          <author><organization>European Union</organization></author>
-          <date year="2014"/>
-        </front>
-      </reference>
-    </references>
-</references>
-  <section title="Appendix B. Codex Entry JSON Schema" numbered="false">
-    <t>
-      This appendix contains the full JSON Schema for Codex Entries. This schema is normative
-      and defines required and optional fields, their types, and constraints.
-    </t>
-    <figure>
-      <artwork type="json"><![CDATA[
-      {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "title": "Codex Entry",
-        "type": "object",
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "version": { "type": "string" },
-          "storage": {
-            "type": "object",
-            "properties": {
-              "protocol": { "type": "string" },
-              "location": { "type": "string" },
-              "integrity_proof": { "type": "string" },
-              "jurisdiction": { "type": "string" }
+
+
+    <section title="Appendix B. Codex Entry JSON Schema" numbered="false">
+      <t>
+        This appendix contains the full JSON Schema for Codex Entries. This schema is normative
+        and defines required and optional fields, their types, and constraints.
+      </t>
+      <figure>
+        <name>Codex Entry Full JSON Schema</name>
+        <artwork type="json"><![CDATA[
+        {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "title": "Codex Entry",
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid" },
+            "version": { "type": "string" },
+            "storage": {
+              "type": "object",
+              "properties": {
+                "protocol": { "type": "string" },
+                "location": { "type": "string" },
+                "integrity_proof": { "type": "string" },
+                "jurisdiction": { "type": "string" }
+              },
+              "required": ["protocol", "integrity_proof"]
             },
-            "required": ["protocol", "integrity_proof"]
-          },
-          "encryption": {
-            "type": "object",
-            "properties": {
-              "alg": { "type": "string" },
-              "key_id": { "type": "string" },
-              "last_controlled_by": { "type": "string" }
-            }
-          },
-          "identity": {
-            "type": "object",
-            "properties": {
-              "org": { "type": "string" },
-              "process": { "type": "string" },
-              "artifact": { "type": "string" },
-              "subject": { "type": "string" }
-            },
-            "required": ["org", "process", "artifact"]
-          },
-          "anchor": {
-            "type": "object",
-            "properties": {
-              "chain": { "type": "string" },
-              "tx_hash": { "type": "string" },
-              "hash_alg": { "type": "string" }
-            },
-            "required": ["chain", "tx_hash", "hash_alg"]
-          },
-          "signatures": {
-            "type": "array",
-            "items": {
+            "encryption": {
               "type": "object",
               "properties": {
                 "alg": { "type": "string" },
-                "kid": { "type": "string" },
-                "signature": { "type": "string" }
+                "key_id": { "type": "string" },
+                "last_controlled_by": { "type": "string" }
+              }
+            },
+            "identity": {
+              "type": "object",
+              "properties": {
+                "org": { "type": "string" },
+                "process": { "type": "string" },
+                "artifact": { "type": "string" },
+                "subject": { "type": "string" }
               },
-              "required": ["alg", "signature"]
-            }
+              "required": ["org", "process", "artifact"]
+            },
+            "anchor": {
+              "type": "object",
+              "properties": {
+                "chain": { "type": "string" },
+                "tx_hash": { "type": "string" },
+                "hash_alg": { "type": "string" }
+              },
+              "required": ["chain", "tx_hash", "hash_alg"]
+            },
+            "signatures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "alg": { "type": "string" },
+                  "kid": { "type": "string" },
+                  "signature": { "type": "string" }
+                },
+                "required": ["alg", "signature"]
+              }
+            },
+            "previous_id": { "type": "string", "format": "uuid" }
           },
-          "previous_id": { "type": "string", "format": "uuid" }
-        },
-        "required": ["id", "version", "storage", "identity", "anchor", "signatures"]
-      }
-      ]]></artwork>
-    </figure>
-  </section>
+          "required": [
+            "id",
+            "version",
+            "storage",
+            "identity",
+            "anchor",
+            "signatures"
+          ]
+        }
+        ]]></artwork>
+      </figure>
+    </section>
   </back>
 </rfc>

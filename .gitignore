@@ -102,3 +102,22 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# MCP and development tooling configs
+.msp.json
+.vscode/
+.github/
+
+# Exclude secrets and sensitive files
+.env
+secrets.json
+*.key
+*.pem
+*.crt
+*.pfx
+
+# Do not ignore documentation, config, or setup files
+!README.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!SETUP.md
