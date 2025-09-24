@@ -1,5 +1,7 @@
 # Python virtual environments
 venv/
+# Node.js dependencies
+node_modules/
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
