@@ -1,58 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lockb0x.Core;
 
 namespace Lockb0x.Verifier;
 
-// Minimal Codex Entry model for verification, based on the normative schema
-public class CodexEntry
+// Stub interfaces for dependencies
+public interface ISigningService 
 {
-    public string Id { get; set; } = string.Empty;
-    public StorageProof Storage { get; set; } = new();
-    public string IntegrityProof { get; set; } = string.Empty;
-    public List<SignatureProof> Signatures { get; set; } = new();
-    public AnchorProof? Anchor { get; set; }
-    public EncryptionPolicy? Encryption { get; set; }
-    public string? PreviousId { get; set; }
-    public Dictionary<string, object>? Extensions { get; set; }
+    Task<bool> VerifySignatureAsync(string signature, string keyId, byte[] data);
 }
 
-public class StorageProof
+public interface IKeyStore 
 {
-    public string Protocol { get; set; } = string.Empty;
-    public string Location { get; set; } = string.Empty;
-    public string IntegrityProof { get; set; } = string.Empty;
-    public string? Jurisdiction { get; set; }
-    public string? Provider { get; set; }
-}
-
-public class SignatureProof
-{
-    public string KeyId { get; set; } = string.Empty;
-    public string Algorithm { get; set; } = string.Empty;
-    public string Signature { get; set; } = string.Empty;
-    public string? Controller { get; set; }
-}
-
-public class AnchorProof
-{
-    public string Chain { get; set; } = string.Empty;
-    public string TxHash { get; set; } = string.Empty;
-    public string HashAlg { get; set; } = string.Empty;
-}
-
-public class EncryptionPolicy
-{
-    public int? Threshold { get; set; }
-    public List<string>? PublicKeys { get; set; }
-    public List<string>? LastControlledBy { get; set; }
-}
-
-public class VerificationResult
-{
-    public bool IsValid { get; set; }
-    public List<string> Errors { get; set; } = new();
-    public List<string> Warnings { get; set; } = new();
+    Task<string?> GetPublicKeyAsync(string keyId);
 }
 
 public class CodexEntryVerifier
@@ -80,10 +41,10 @@ public class CodexEntryVerifier
         // 6. Traverse revision chain (stub)
         // TODO: Implement each step per spec
 
-        return new VerificationResult
+        return await Task.FromResult(new VerificationResult
         {
             IsValid = false,
             Errors = new List<string> { "Verification pipeline not yet implemented." }
-        };
+        });
     }
 }

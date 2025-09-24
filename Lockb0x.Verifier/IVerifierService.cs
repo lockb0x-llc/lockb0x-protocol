@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Lockb0x.Core;
 
 namespace Lockb0x.Verifier;
 
 public interface IVerifierService
 {
-    Task<VerificationResult> VerifyAsync(CodexEntry entry);
+    Task<VerificationResult> VerifyAsync(Lockb0x.Core.CodexEntry entry);
 }
 
 public class VerificationResult
@@ -19,7 +20,7 @@ public class VerificationResult
 // Stub implementation
 public class VerifierService : IVerifierService
 {
-    public async Task<VerificationResult> VerifyAsync(CodexEntry entry)
+    public async Task<VerificationResult> VerifyAsync(Lockb0x.Core.CodexEntry entry)
     {
         var result = new VerificationResult();
 
@@ -63,25 +64,25 @@ public class VerifierService : IVerifierService
     }
 
     // --- Utility validation methods (stubs) ---
-    private bool ValidateIntegrity(CodexEntry entry)
+    private bool ValidateIntegrity(Lockb0x.Core.CodexEntry entry)
     {
         // TODO: Implement real integrity proof validation
         return entry.Integrity.Count > 0;
     }
 
-    private bool ValidateSignatures(CodexEntry entry)
+    private bool ValidateSignatures(Lockb0x.Core.CodexEntry entry)
     {
         // TODO: Implement real signature validation
         return entry.Signatures.Count > 0;
     }
 
-    private bool ValidateStorage(CodexEntry entry)
+    private bool ValidateStorage(Lockb0x.Core.CodexEntry entry)
     {
         // TODO: Implement real storage proof validation
         return true;
     }
 
-    private bool ValidateAnchors(CodexEntry entry)
+    private bool ValidateAnchors(Lockb0x.Core.CodexEntry entry)
     {
         // TODO: Implement real anchor proof validation
         return true;
