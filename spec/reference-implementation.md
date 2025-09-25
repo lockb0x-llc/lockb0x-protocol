@@ -37,7 +37,7 @@ The reference implementation SHOULD include:
 - **Storage Adapters**
   - Reference adapters for IPFS, S3, Google Cloud Storage, and Azure Blob.
   - Mock adapters for testing (local filesystem, memory).  
-  - Adapters MUST output ni-URI proofs for asset references, but MAY accept `ipfs://` CIDs for interoperability.  
+  - Adapters MUST output ni-URI proofs for asset references. Provider-specific identifiers (CIDs, ETags, etc.) MUST be canonically mapped to ni-URIs before inclusion in Codex Entries.  
 
 - **Verifier Library**  
   - Functions to validate signatures, storage proofs, anchors, and certificates.  

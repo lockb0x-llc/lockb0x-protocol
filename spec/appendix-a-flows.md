@@ -36,16 +36,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
 
 ## A.2 IPFS Example
 
-1. File is added to IPFS, producing a CID (e.g., `Qm...`).  
+1. File is added to IPFS, producing a CIDv0 (e.g., `QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o`).  
 2. Codex Entry includes:
    - `storage.protocol = "ipfs"`  
-   - `storage.integrity_proof = "ni:///sha-256;..."`  
+   - `storage.integrity_proof = "ni:///sha-256;b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"`  
    - `storage.location` with pinning region/jurisdiction.  
 
 ```json
 {
   "id": "UUID1",
-  "storage": { "protocol": "ipfs", "integrity_proof": "ni:///sha-256;..." },
+  "storage": { 
+    "protocol": "ipfs", 
+    "integrity_proof": "ni:///sha-256;b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9" 
+  },
   "identity": {
     "org": "Org123",
     "process": "Onboarding2025",
@@ -53,6 +56,8 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
   }
 }
 ```
+
+**Note:** The original IPFS CID `QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o` contained a SHA-256 multihash which was extracted and canonically mapped to the ni-URI format. The adapter retains the ability to resolve the file using the original CID for IPFS tooling compatibility.
 
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  
@@ -62,16 +67,19 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
 
 ## A.3 S3 Example
 
-1. File is uploaded to S3, producing an ETag checksum.  
+1. File is uploaded to S3, producing an ETag checksum (e.g., `"d41d8cd98f00b204e9800998ecf8427e"`).  
 2. Codex Entry includes:
    - `storage.protocol = "s3"`  
-   - `storage.integrity_proof = "ni:///sha-256;3f1a9e..."` (adapter transforms the ETag into a SHA-256 ni-URI)  
+   - `storage.integrity_proof = "ni:///md5;1B2M2Y8AsgTpgAmY7PhCfg"` (adapter transforms the S3 ETag using canonicalization rules - ETag was MD5, so mapped to `ni:///md5;...`)  
    - `storage.location` with `region`, `jurisdiction`, and provider.  
 
 ```json
 {
   "id": "UUID2",
-  "storage": { "protocol": "s3", "integrity_proof": "ni:///sha-256;3f1a9e..." },
+  "storage": { 
+    "protocol": "s3", 
+    "integrity_proof": "ni:///md5;1B2M2Y8AsgTpgAmY7PhCfg"
+  },
   "identity": {
     "org": "Org123",
     "process": "Onboarding2025",
@@ -79,6 +87,8 @@ Note: the "other" party that is a verifier can in some in some scenarios could b
   }
 }
 ```
+
+**Note:** The original S3 ETag `d41d8cd98f00b204e9800998ecf8427e` was recognized as a valid MD5 hash and canonically mapped to the ni-URI format. For multipart uploads or unrecognized ETags, the adapter would download the file content and compute SHA-256 instead.
 
 3. Codex Entry is anchored on Stellar.  
 4. Signatures are generated after anchoring.  

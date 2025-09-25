@@ -53,8 +53,8 @@ specification that allows plaintext assets.
         },
         "integrity_proof": {
           "type": "string",
-          "pattern": "^(ni:///sha-256;[A-Za-z0-9_-]+|ipfs://[A-Za-z0-9]+)$",
-          "description": "Integrity proof expressed as a canonical RFC 6920 ni-URI (REQUIRED); ipfs:// CIDs MAY be used for native IPFS workflows but ni-URI is preferred."
+          "pattern": "^ni:///[a-z0-9\\-]+;[A-Za-z0-9\\-_]+$",
+          "description": "Integrity proof expressed as a canonical RFC 6920 ni-URI (REQUIRED). Provider-specific identifiers (e.g., S3 ETags, IPFS CIDs) MUST be canonically mapped to ni-URIs before inclusion."
         },
         "media_type": {
           "type": "string",

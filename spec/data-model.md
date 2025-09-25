@@ -71,7 +71,7 @@ fields and Section 3.3 for optional fields.
 - `id` MUST be a UUID v4.  
 - `version` MUST indicate the protocol version.  
 - `storage.protocol` MUST declare the backend adapter.
-- `storage.integrity_proof` MUST be expressed as a canonical [RFC 6920] Named Information URI (ni-URI) derived from the stored payload. Deployments that operate directly against IPFS gateways MAY substitute an `ipfs://` CID when required for interoperability, but SHOULD prefer ni-URIs for cross-protocol consistency.
+- `storage.integrity_proof` MUST be expressed as a canonical [RFC 6920] Named Information URI (ni-URI) derived from the stored payload. Provider-specific identifiers (such as IPFS CIDs or S3 ETags) MUST be canonically mapped to ni-URIs by storage adapters before inclusion in the Codex Entry.
 - `storage.media_type` MUST use [RFC 6838] IANA-registered MIME types.  
 - `storage.size_bytes` MUST indicate the exact file size.  
 - `storage.location` MUST specify region, jurisdiction, and provider.
