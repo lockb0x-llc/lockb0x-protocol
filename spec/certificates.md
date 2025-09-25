@@ -143,8 +143,8 @@ A single Codex Entry can generate multiple certificates for different consumers:
   "subject": "did:example:asset789",
   "identity": {
     "org": "Example Org",
-    "project": "Lockb0x",
-    "context": "Enterprise Asset Management"
+    "process": "Lockb0x",
+    "artifact": "Enterprise Asset Management"
   },
   "encryption": {
     "algorithm": "AES-256-GCM",
@@ -198,8 +198,8 @@ A single Codex Entry can generate multiple certificates for different consumers:
     "id": "did:example:asset789",
     "identity": {
       "org": "Example Org",
-      "project": "Lockb0x",
-      "context": "Enterprise Asset Management"
+      "process": "Lockb0x",
+      "artifact": "Enterprise Asset Management"
     },
     "encryption": {
       "algorithm": "AES-256-GCM",

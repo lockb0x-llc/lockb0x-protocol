@@ -16,7 +16,7 @@ This section is informative and does not define new normative requirements.
 - Offer CLI and API tools to simplify integration.  
 - Act as a foundation for conformance testing.  
 - Support both encrypted and plaintext assets throughout the workflow.  
-- Enforce the required identity hierarchy: `org` and `context` are required, while `project` and `subject` are optional.  
+- Enforce the required identity hierarchy: `org`, `process`, and `artifact` are required, while `subject` is optional.  
 
 ---
 
@@ -44,7 +44,7 @@ The reference implementation SHOULD include:
   - Support for revision chain traversal.  
   - Responsible for validating the `last_controlled_by` field and handling multi-signature scenarios.  
   - Must handle both plaintext and encrypted Codex Entries.  
-  - Enforces identity hierarchy rules: `org` and `context` are required, `project` and `subject` are optional.  
+  - Enforces identity hierarchy rules: `org`, `process`, and `artifact` are required, `subject` is optional.  
   - Traverses revision chains using both `previous_id` and `wasDerivedFrom` fields.  
 
 - **Certificate Generator**  
