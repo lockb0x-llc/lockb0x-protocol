@@ -19,6 +19,8 @@ Normative references define binding requirements; informative references provide
 - **NIST SP 800-38D** — Recommendation for Block Cipher Modes of Operation: GCM.  
 - **RFC 5280** — Internet X.509 Public Key Infrastructure Certificate and CRL Profile.  
 - **IETF JSON Schema (Draft 2020-12)** — JSON Schema Validation.  
+- **RFC 8174** — Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words.  
+- **RFC 9562** — Universally Unique IDentifiers (UUIDs).  
 - **W3C DID Core** — Decentralized Identifiers (DID).  
 - **W3C Verifiable Credentials Data Model** — Verifiable Credentials.  
 - **W3C PROV-DM** — Provenance Data Model.  
