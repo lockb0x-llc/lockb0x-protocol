@@ -224,11 +224,165 @@
         <seriesInfo name="RFC" value="9562"/>
       </reference>
 
-      <reference anchor="JSON-Schema" target="https://json-schema.org/specification-links.html#draft-7">
+      <reference anchor="JSON-Schema" target="https://json-schema.org/draft/2020-12/schema">
         <front>
-          <title>JSON Schema: A Media Type for Describing JSON Documents (Draft 7)</title>
+          <title>JSON Schema: A Media Type for Describing JSON Documents (Draft 2020-12)</title>
           <author><organization>JSON Schema</organization></author>
+          <date year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="RFC7515" target="https://www.rfc-editor.org/info/rfc7515">
+        <front>
+          <title>JSON Web Signature (JWS)</title>
+          <author fullname="M. Jones"/>
+          <author fullname="J. Bradley"/>
+          <author fullname="N. Sakimura"/>
+          <date year="2015"/>
+        </front>
+        <seriesInfo name="RFC" value="7515"/>
+      </reference>
+
+      <reference anchor="RFC8152" target="https://www.rfc-editor.org/info/rfc8152">
+        <front>
+          <title>CBOR Object Signing and Encryption (COSE)</title>
+          <author fullname="J. Schaad"/>
+          <date year="2017"/>
+        </front>
+        <seriesInfo name="RFC" value="8152"/>
+      </reference>
+
+      <reference anchor="RFC8439" target="https://www.rfc-editor.org/info/rfc8439">
+        <front>
+          <title>ChaCha20 and Poly1305 for IETF Protocols</title>
+          <author fullname="Y. Nir"/>
+          <author fullname="A. Langley"/>
           <date year="2018"/>
+        </front>
+        <seriesInfo name="RFC" value="8439"/>
+      </reference>
+
+      <reference anchor="RFC5280" target="https://www.rfc-editor.org/info/rfc5280">
+        <front>
+          <title>Internet X.509 Public Key Infrastructure Certificate and CRL Profile</title>
+          <author fullname="D. Cooper"/>
+          <author fullname="S. Santesson"/>
+          <author fullname="S. Farrell"/>
+          <author fullname="S. Boeyen"/>
+          <author fullname="R. Housley"/>
+          <author fullname="W. Polk"/>
+          <date year="2008"/>
+        </front>
+        <seriesInfo name="RFC" value="5280"/>
+      </reference>
+
+      <reference anchor="RFC7797" target="https://www.rfc-editor.org/info/rfc7797">
+        <front>
+          <title>JSON Web Signature (JWS) Unencoded Payload Option</title>
+          <author fullname="M. Jones"/>
+          <date year="2016"/>
+        </front>
+        <seriesInfo name="RFC" value="7797"/>
+      </reference>
+
+      <reference anchor="RFC6838" target="https://www.rfc-editor.org/info/rfc6838">
+        <front>
+          <title>Media Type Specifications and Registration Procedures</title>
+          <author fullname="N. Freed"/>
+          <author fullname="J. Klensin"/>
+          <author fullname="T. Hansen"/>
+          <date year="2013"/>
+        </front>
+        <seriesInfo name="RFC" value="6838"/>
+      </reference>
+
+      <reference anchor="W3C-DID-Core" target="https://www.w3.org/TR/did-core/">
+        <front>
+          <title>Decentralized Identifiers (DIDs) v1.0</title>
+          <author><organization>W3C</organization></author>
+          <date year="2022"/>
+        </front>
+      </reference>
+
+      <reference anchor="W3C-VC-Data-Model" target="https://www.w3.org/TR/vc-data-model/">
+        <front>
+          <title>Verifiable Credentials Data Model v1.1</title>
+          <author><organization>W3C</organization></author>
+          <date year="2022"/>
+        </front>
+      </reference>
+
+      <reference anchor="W3C-PROV-DM" target="https://www.w3.org/TR/prov-dm/">
+        <front>
+          <title>PROV-DM: The PROV Data Model</title>
+          <author><organization>W3C</organization></author>
+          <date year="2013"/>
+        </front>
+      </reference>
+
+      <reference anchor="W3C-PROV-O" target="https://www.w3.org/TR/prov-o/">
+        <front>
+          <title>PROV-O: The PROV Ontology</title>
+          <author><organization>W3C</organization></author>
+          <date year="2013"/>
+        </front>
+      </reference>
+
+      <reference anchor="NIST-SP-800-38D" target="https://csrc.nist.gov/publications/detail/sp/800-38d/final">
+        <front>
+          <title>Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC</title>
+          <author><organization>NIST</organization></author>
+          <date year="2007"/>
+        </front>
+        <seriesInfo name="NIST Special Publication" value="800-38D"/>
+      </reference>
+
+      <reference anchor="NIST-SP-800-57" target="https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final">
+        <front>
+          <title>Recommendation for Key Management: Part 1 – General</title>
+          <author><organization>NIST</organization></author>
+          <date year="2020"/>
+        </front>
+        <seriesInfo name="NIST Special Publication" value="800-57 Part 1 Rev. 5"/>
+      </reference>
+
+      <reference anchor="ISO-3166-1" target="https://www.iso.org/iso-3166-country-codes.html">
+        <front>
+          <title>ISO 3166-1: Codes for the representation of names of countries and their subdivisions – Part 1: Country codes</title>
+          <author><organization>ISO</organization></author>
+          <date year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="CAIP-10" target="https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-10.md">
+        <front>
+          <title>CAIP-10: Account ID Specification</title>
+          <author><organization>Chain Agnostic Standards Alliance</organization></author>
+          <date year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="SEP-0023" target="https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0023.md">
+        <front>
+          <title>SEP-0023: Strkeys</title>
+          <author><organization>Stellar Development Foundation</organization></author>
+          <date year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="SEP-0005" target="https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0005.md">
+        <front>
+          <title>SEP-0005: Key Derivation Methods for Stellar Accounts</title>
+          <author><organization>Stellar Development Foundation</organization></author>
+          <date year="2021"/>
+        </front>
+      </reference>
+
+      <reference anchor="DPV" target="https://w3c.github.io/dpv/dpv/">
+        <front>
+          <title>Data Privacy Vocabulary (DPV)</title>
+          <author><organization>W3C</organization></author>
+          <date year="2022"/>
         </front>
       </reference>
 
@@ -237,6 +391,59 @@
           <title>CAIP-2: Blockchain ID Specification</title>
           <author><organization>Chain Agnostic Standards Alliance</organization></author>
           <date year="2020"/>
+        </front>
+      </reference>
+
+    </references>
+
+    <references>
+      <name>Informative References</name>
+
+      <reference anchor="Dublin-Core" target="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">
+        <front>
+          <title>DCMI Metadata Terms</title>
+          <author><organization>Dublin Core Metadata Initiative</organization></author>
+          <date year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="Schema-org" target="https://schema.org/">
+        <front>
+          <title>Schema.org</title>
+          <author><organization>Schema.org Community Group</organization></author>
+          <date year="2011"/>
+        </front>
+      </reference>
+
+      <reference anchor="SEP-0020" target="https://github.com/stellar/stellar-protocol/blob/master/ecosystem/sep-0020.md">
+        <front>
+          <title>SEP-0020: Self-Verification of Validator Nodes</title>
+          <author><organization>Stellar Development Foundation</organization></author>
+          <date year="2019"/>
+        </front>
+      </reference>
+
+      <reference anchor="Ed25519Signature2020" target="https://w3c-ccg.github.io/lds-ed25519-2020/">
+        <front>
+          <title>Ed25519Signature2020</title>
+          <author><organization>W3C Credentials Community Group</organization></author>
+          <date year="2020"/>
+        </front>
+      </reference>
+
+      <reference anchor="eIDAS" target="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=uriserv:OJ.L_.2014.257.01.0073.01.ENG">
+        <front>
+          <title>eIDAS Regulation - Regulation (EU) No 910/2014</title>
+          <author><organization>European Parliament and Council</organization></author>
+          <date year="2014"/>
+        </front>
+      </reference>
+
+      <reference anchor="UCC-Article-12" target="https://www.uniformlaws.org/committees/community-home?CommunityKey=e104aaa5-1c9d-446c-8e5d-d6bdb8e4763c">
+        <front>
+          <title>Uniform Commercial Code Article 12: Controllable Electronic Records</title>
+          <author><organization>Uniform Law Commission</organization></author>
+          <date year="2022"/>
         </front>
       </reference>
 
@@ -253,7 +460,7 @@
         <name>Codex Entry Full JSON Schema</name>
         <artwork type="json"><![CDATA[
         {
-          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
           "title": "Codex Entry",
           "type": "object",
           "properties": {
