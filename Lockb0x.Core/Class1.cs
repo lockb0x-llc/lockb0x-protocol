@@ -212,6 +212,48 @@ public static class CodexEntryValidator
 		}
 	}
 
+	/// <summary>
+	/// Validates Stellar-specific constraints for anchor proofs
+	/// </summary>
+	public static bool ValidateStellarAnchor(AnchorProof anchor, out List<string> errors)
+	{
+		errors = new List<string>();
+		
+		if (anchor == null)
+		{
+			errors.Add("AnchorProof cannot be null");
+			return false;
+		}
+		
+		// Check if this is a Stellar chain
+		if (anchor.ChainId?.StartsWith("stellar:") == true)
+		{
+			// For Stellar anchors, the memo field is constrained to 28 bytes
+			// This method can be extended to validate memo content when available
+			
+			// Ensure hash algorithm is supported
+			if (string.IsNullOrEmpty(anchor.HashAlgorithm))
+			{
+				errors.Add("Stellar anchors must specify a hash_alg field");
+			}
+			else if (anchor.HashAlgorithm.ToLowerInvariant() != "sha-256")
+			{
+				errors.Add($"Stellar anchors must use SHA-256 hash algorithm, but got '{anchor.HashAlgorithm}'");
+			}
+			
+			// Validate transaction hash format
+			if (string.IsNullOrEmpty(anchor.TxHash))
+			{
+				errors.Add("Stellar anchors must have a valid tx_hash");
+			}
+			
+			// Additional Stellar-specific validations can be added here
+			// For example, validating that the memo was properly constructed with MD5+publickey
+		}
+		
+		return errors.Count == 0;
+	}
+
 	private static void ValidateObjectProperties(System.Text.Json.JsonElement element, HashSet<string> allowedProperties, string path, List<string> errors)
 	{
 		if (element.ValueKind != System.Text.Json.JsonValueKind.Object) return;

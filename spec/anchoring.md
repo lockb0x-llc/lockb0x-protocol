@@ -30,6 +30,16 @@ Other chains MAY be supported, including but not limited to:
 - Bitcoin (via OP_RETURN)  
 - Hyperledger-based ledgers  
 
+### 5.2.1 Stellar Network Constraints
+
+Stellar transaction memos are limited to 28 bytes maximum. Due to this constraint:
+
+- The full SHA-256 hash of a Codex Entry (32 bytes) cannot fit directly in a Stellar memo field.
+- Implementations MUST use a shortened identifier approach for Stellar anchoring while maintaining uniqueness and traceability.
+- The recommended approach is to combine an MD5 hash (16 bytes) of the Codex Entry with the signing account's public key to generate a unique 28-byte identifier for the memo field.
+- The canonical SHA-256 hash MUST still be recorded in the Codex Entry's `anchor.hash_alg` field and used for verification purposes.
+- Verifiers MUST be able to reconstruct the memo identifier from the Codex Entry and validate it against the on-chain transaction memo.
+
 ---
 
 ## 5.3 Transaction Payloads

@@ -53,4 +53,87 @@ public class CodexEntryTests
         Assert.False(result);
         Assert.NotEmpty(errors);
     }
+
+    [Fact]
+    public void ValidateStellarAnchor_RejectsNullAnchor()
+    {
+        var result = CodexEntryValidator.ValidateStellarAnchor(null!, out var errors);
+        Assert.False(result);
+        Assert.Contains("AnchorProof cannot be null", errors);
+    }
+
+    [Fact]
+    public void ValidateStellarAnchor_ValidatesStellarChain()
+    {
+        var anchor = new AnchorProof
+        {
+            ChainId = "stellar:testnet",
+            TxHash = "abc123",
+            HashAlgorithm = "sha-256"
+        };
+        
+        var result = CodexEntryValidator.ValidateStellarAnchor(anchor, out var errors);
+        Assert.True(result);
+        Assert.Empty(errors);
+    }
+
+    [Fact]
+    public void ValidateStellarAnchor_RejectsMissingHashAlgorithm()
+    {
+        var anchor = new AnchorProof
+        {
+            ChainId = "stellar:testnet",
+            TxHash = "abc123",
+            HashAlgorithm = ""
+        };
+        
+        var result = CodexEntryValidator.ValidateStellarAnchor(anchor, out var errors);
+        Assert.False(result);
+        Assert.Contains("Stellar anchors must specify a hash_alg field", errors);
+    }
+
+    [Fact]
+    public void ValidateStellarAnchor_RejectsWrongHashAlgorithm()
+    {
+        var anchor = new AnchorProof
+        {
+            ChainId = "stellar:testnet",
+            TxHash = "abc123",
+            HashAlgorithm = "md5"
+        };
+        
+        var result = CodexEntryValidator.ValidateStellarAnchor(anchor, out var errors);
+        Assert.False(result);
+        Assert.Contains("Stellar anchors must use SHA-256 hash algorithm, but got 'md5'", errors);
+    }
+
+    [Fact]
+    public void ValidateStellarAnchor_RejectsMissingTxHash()
+    {
+        var anchor = new AnchorProof
+        {
+            ChainId = "stellar:testnet",
+            TxHash = "",
+            HashAlgorithm = "sha-256"
+        };
+        
+        var result = CodexEntryValidator.ValidateStellarAnchor(anchor, out var errors);
+        Assert.False(result);
+        Assert.Contains("Stellar anchors must have a valid tx_hash", errors);
+    }
+
+    [Fact]
+    public void ValidateStellarAnchor_IgnoresNonStellarChains()
+    {
+        var anchor = new AnchorProof
+        {
+            ChainId = "ethereum:1",
+            TxHash = "abc123",
+            HashAlgorithm = "sha-256"
+        };
+        
+        var result = CodexEntryValidator.ValidateStellarAnchor(anchor, out var errors);
+        Assert.True(result);  // Non-Stellar chains pass validation
+        Assert.Empty(errors);
+    }
 }
