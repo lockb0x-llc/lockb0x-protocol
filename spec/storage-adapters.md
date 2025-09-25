@@ -31,12 +31,12 @@ Adapters MAY also implement:
 The reference implementation MUST include at least three adapters:
 
 - **IPFS**:
-  - Proof: RFC 6920 ni-URI derived from the CID.
-  - The adapter MAY also expose the native `ipfs://<cid>` identifier for compatibility with IPFS tooling.
+  - Proof: RFC 6920 ni-URI derived from the CID using canonicalization rules in Section 4.3.1.
+  - The adapter MAY also expose the native `ipfs://<cid>` identifier for compatibility with IPFS tooling, but the canonical `storage.integrity_proof` MUST be the ni-URI.
   - Location: IPFS gateway region or pinning service jurisdiction.
 
 - **S3-Compatible (AWS, MinIO, etc.)**:
-  - Proof: The adapter MUST convert the ETag checksum into a SHA-256 digest and express it as `ni:///sha-256;<digest>`.
+  - Proof: The adapter MUST convert the ETag checksum into an ni-URI using canonicalization rules in Section 4.3.1.
   - Location: `region`, `jurisdiction`, and provider (`AWS`, `MinIO`).
   - Media type and size MUST be provided.
 
@@ -71,10 +71,40 @@ The reference implementation MUST include at least three adapters:
 ## 4.3 Proof Formats
 
 - Integrity proofs MUST use [RFC 6920] `ni` URIs as the canonical representation stored in `storage.integrity_proof`.  
+- Provider-specific identifiers (e.g., S3 ETags, IPFS CIDs) are permitted as inputs to adapters but MUST be canonically mapped to ni-URIs before inclusion in a Codex Entry.
 - For Stellar anchors only, shortened digests such as MD5 MAY be used in memo fields for compactness, but MUST always correspond to the canonical SHA-256 proof recorded in the Codex Entry.
-- IPFS deployments MAY surface `ipfs://` CIDs for native compatibility, but the adapter MUST retain the ability to derive the equivalent `ni:///sha-256;...` value.
-- Backend-native hashes (e.g., S3 ETags) MUST be transformed into ni URIs before inclusion in a Codex Entry.
 - Proofs MUST be collision-resistant and reproducible across verification attempts.
+
+### 4.3.1 Canonicalization Rules
+
+The following rules define how provider-specific identifiers MUST be mapped to canonical ni-URIs:
+
+**S3 ETag → ni-URI:**
+- S3 ETags are typically MD5 digests for single-part uploads (objects ≤ 5GB).  
+- For multipart uploads, S3 ETags contain a dash (e.g., `d41d8cd98f00b204e9800998ecf8427e-1`).  
+- **Rule:** If ETag is a 32-character hex string without dash, interpret as MD5 digest:  
+  `ni:///md5;<base64url-encode(hex-decode(etag))>`  
+- **Rule:** If ETag contains dash or is not recognizable as MD5, adapter MUST download file content and compute SHA-256:  
+  `ni:///sha-256;<base64url-encode(sha256(file_content))>`  
+
+**IPFS CID → ni-URI:**
+- IPFS CIDv0 (starting with `Qm`) uses SHA-256 multihash.  
+- IPFS CIDv1 can use various hash functions (inspect multihash).  
+- **Rule:** Extract the hash from CID multihash and verify it is SHA-256 (code 0x12):  
+  `ni:///sha-256;<base64url-encode(extracted_sha256_bytes)>`  
+- **Rule:** If CID uses non-SHA-256 hash, adapter MUST download file content and compute SHA-256.  
+
+**Azure Blob MD5/CRC64 → ni-URI:**
+- Azure may provide Content-MD5 headers for blobs.  
+- **Rule:** If MD5 is available, use: `ni:///md5;<base64url-encode(md5_bytes)>`  
+- **Rule:** If no usable hash metadata, download content and compute SHA-256.  
+
+**GCS CRC32C/MD5 → ni-URI:**
+- Google Cloud Storage provides crc32c and sometimes md5Hash metadata.  
+- **Rule:** Prefer MD5 if available: `ni:///md5;<base64url-encode(md5_bytes)>`  
+- **Rule:** If only CRC32C available, download content and compute SHA-256.  
+
+All canonicalization MUST produce deterministic results across multiple adapter invocations for the same file.
 
 ---
 

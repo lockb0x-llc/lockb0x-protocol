@@ -27,7 +27,7 @@ A Verifier MUST:
 
 4. **Integrity Check**  
    - Validate that the file’s hash matches the `storage.integrity_proof`.  
-   - Integrity proofs MUST be expressed as [RFC 6920] ni-URIs; ipfs:// CIDs MAY be accepted for interoperability but MUST map to the canonical ni-URI.  
+   - Integrity proofs MUST be expressed as [RFC 6920] ni-URIs only. Provider-specific identifiers (e.g., ipfs:// CIDs, S3 ETags) are not permitted in the canonical Codex Entry representation.  
    - Hash algorithms MUST be collision-resistant (e.g., SHA-256, SHA-3).  
 
 5. **Location Verification**  
