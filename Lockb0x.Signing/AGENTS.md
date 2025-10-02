@@ -1,3 +1,10 @@
+# Implementation Status (October 2025)
+
+- Only Ed25519, ES256K, and RS256 signing/verification are implemented and tested.
+- Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
+- Integration with external key stores, anchoring, certificates, and storage adapters are not yet available; APIs are documented for future work.
+- See `Lockb0x.Tests/SigningServiceTests.cs` for reference test coverage and usage patterns.
+
 # Lockb0x.Signing — Agent Implementation Guide
 
 This document provides comprehensive guidance for AI Agents and developers integrating with the Lockb0x.Signing module of the Lockb0x Protocol reference implementation. It covers responsibilities, integration patterns, extension points, and best practices for secure, interoperable signing workflows.

@@ -4,7 +4,7 @@ using System.Formats.Asn1;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Lockb0x.Core;
+using Lockb0x.Core.Models;
 
 namespace Lockb0x.Signing;
 
@@ -261,14 +261,18 @@ public sealed class JoseCoseSigningService : ISigningService
     private static byte[] SignEd25519(ReadOnlySpan<byte> payload, string privateKeyMaterial)
     {
         var privateKey = DecodeKeyMaterial(privateKeyMaterial);
-        if (privateKey.Length != Ed25519.PrivateKeySeedSize * 2)
+        if (privateKey.Length != 32)
         {
-            throw new InvalidOperationException("Ed25519 private keys must be 64 bytes long (seed || public key).");
+            throw new InvalidOperationException("Ed25519 private keys must be 32 bytes long (seed).");
         }
 
-        Span<byte> signature = stackalloc byte[Ed25519.SignatureSize];
-        Ed25519.Sign(payload, privateKey, signature);
-        return signature.ToArray();
+        var key = NSec.Cryptography.Key.Import(
+            NSec.Cryptography.SignatureAlgorithm.Ed25519,
+            privateKey,
+            NSec.Cryptography.KeyBlobFormat.RawPrivateKey,
+            new NSec.Cryptography.KeyCreationParameters { ExportPolicy = NSec.Cryptography.KeyExportPolicies.AllowPlaintextExport }
+        );
+        return NSec.Cryptography.SignatureAlgorithm.Ed25519.Sign(key, payload.ToArray());
     }
 
     private static byte[] SignEs256K(ReadOnlySpan<byte> payload, string privateKeyMaterial, string publicKeyMaterial)
@@ -287,12 +291,13 @@ public sealed class JoseCoseSigningService : ISigningService
     private static bool VerifyEd25519(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> signature, string publicKeyMaterial)
     {
         var publicKey = DecodeKeyMaterial(publicKeyMaterial);
-        if (publicKey.Length != Ed25519.PublicKeySize)
+        if (publicKey.Length != 32)
         {
             throw new InvalidOperationException("Ed25519 public keys must be 32 bytes long.");
         }
 
-        return Ed25519.Verify(payload, publicKey, signature);
+        var pubKey = NSec.Cryptography.PublicKey.Import(NSec.Cryptography.SignatureAlgorithm.Ed25519, publicKey, NSec.Cryptography.KeyBlobFormat.RawPublicKey);
+        return NSec.Cryptography.SignatureAlgorithm.Ed25519.Verify(pubKey, payload.ToArray(), signature.ToArray());
     }
 
     private static bool VerifyEs256K(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> signature, string publicKeyMaterial)
@@ -435,7 +440,7 @@ public sealed class JoseCoseSigningService : ISigningService
 
     private static byte[] DerToIeeeP1363(ReadOnlySpan<byte> der, int size)
     {
-        var reader = new AsnReader(der, AsnEncodingRules.DER);
+        var reader = new AsnReader(new ReadOnlyMemory<byte>(der.ToArray()), AsnEncodingRules.DER);
         var sequence = reader.ReadSequence();
         var r = sequence.ReadIntegerBytes();
         var s = sequence.ReadIntegerBytes();

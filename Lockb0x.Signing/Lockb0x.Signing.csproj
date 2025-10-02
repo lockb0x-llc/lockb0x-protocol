@@ -8,5 +8,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="NSec.Cryptography" Version="25.4.0" />
+    </ItemGroup>
 
 </Project>

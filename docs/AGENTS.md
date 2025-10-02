@@ -1,3 +1,11 @@
+# Implementation Status (October 2025)
+
+- **Lockb0x.Core** and **Lockb0x.Signing** are the only modules currently implemented and tested.
+- Storage, anchoring, certificate, and verifier modules are not yet implemented; their APIs and flows are documented for future work.
+- All tests and workflows currently focus on canonicalization, Codex Entry modeling, and cryptographic signing/verification (Ed25519, ES256K, RS256).
+- Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
+- See `Lockb0x.Tests/SigningServiceTests.cs` and `Lockb0x.Tests/CoreTests.cs` for reference test coverage.
+
 # AGENTS.md
 
 ## Lockb0x Protocol — Technical Design for AI Agents

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Lockb0x.Core;
+using Lockb0x.Core.Models;
 
 namespace Lockb0x.Signing;
 

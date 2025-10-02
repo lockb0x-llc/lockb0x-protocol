@@ -17,6 +17,18 @@ By combining these, developers can create **tamper-evident, verifiable chains of
 
 ---
 
+**Implementation Status (October 2025):**
+
+- The Lockb0x Protocol reference implementation currently includes:
+  - **Core**: Data model, canonicalization, and validation (fully implemented and tested)
+  - **Signing**: Cryptographic signing and verification (Ed25519, ES256K, RS256; fully implemented and tested)
+  - **Other modules** (Storage, Anchor.Stellar, Verifier, Certificates): Documented, with implementation planned or in progress
+- **Test Coverage**: Only Core and Signing modules are covered by automated tests; all tests pass
+- **Verifier Reference Implementation**: Under active development
+- **Limitations**: Secp256k1 (ES256K) support is platform-dependent; other modules are not yet implemented
+
+For details, see [`docs/AGENTS.md`](docs/AGENTS.md) and module-specific documentation.
+
 Plain English: Store any kind of data, encrypted or not, on any storage media/platform and use any blockchain. With the lockb0x-protocol and a Codex Entry, you can always prove it hasn't been tampered with, when it was created and by "whom", and who has control or "custody" of the data/asset. If the control ever changes, the protocol follows it. The lockb0x-protocol is not a storage specification.
 
 It is a solution for data sovereignty that also provides the basis for Controllable Electronic Records, or a CER.

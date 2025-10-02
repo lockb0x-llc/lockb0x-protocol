@@ -7,12 +7,8 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
-      <ProjectReference Include="..\Lockb0x.Storage\Lockb0x.Storage.csproj" />
-      <ProjectReference Include="..\Lockb0x.Signing\Lockb0x.Signing.csproj" />
-      <ProjectReference Include="..\Lockb0x.Anchor.Stellar\Lockb0x.Anchor.Stellar.csproj" />
-      <ProjectReference Include="..\Lockb0x.Verifier\Lockb0x.Verifier.csproj" />
-      <ProjectReference Include="..\Lockb0x.Certificates\Lockb0x.Certificates.csproj" />
+  <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
+  <ProjectReference Include="..\Lockb0x.Signing\Lockb0x.Signing.csproj" />
     </ItemGroup>
 
   <ItemGroup>
