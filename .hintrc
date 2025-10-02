@@ -1,5 +1,18 @@
 {
   "extends": [
     "development"
-  ]
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "orphans",
+          "widows",
+          "break-after: avoid-page",
+          "break-before: avoid-page"
+        ]
+      }
+    ]
+  }
 }

@@ -1,10 +1,22 @@
 1. Current State Assessment
-The repository only contains a stub CLI that prints informational messages; it does not create Codex Entries, interact with storage, sign data, anchor on Stellar, or verify anything.
+
+## Current State (as of October 2025)
+
+### Lockb0x.Core
+
+- Project targets .NET 8.0, with nullable and implicit usings enabled.
+- Core folder structure includes:
+  - Canonicalization (RFC 8785/JCS): interfaces and partial implementation.
+  - Models: CodexEntry model started, needs expansion for all required fields.
+  - Revision: revision graph and traversal logic present.
+  - Utilities: ni-URI helpers present.
+  - Validation: validator interfaces and partial logic present.
+- No storage adapters, signing, anchoring, or certificate logic yet.
 
 The specification expects the reference implementation to demonstrate the full workflow—create, sign, anchor (on Stellar), certify, and verify Codex Entries—with supporting adapters, verifier library, and certificate tooling.
 
 2. Minimal Specification Surface to Cover
-Codex Entry data model: JSON structure with required fields for storage, identity, timestamp, anchor, and signatures, including revision support.
+   Codex Entry data model: JSON structure with required fields for storage, identity, timestamp, anchor, and signatures, including revision support.
 
 Identity rules: identifiers must be Stellar accounts, DIDs, or CAIP-10 accounts, following the canonical provenance hierarchy.
 
@@ -23,7 +35,7 @@ Provenance metadata & security: preserve provenance assertions, support revision
 Reference flow: exemplar sequence is file → storage adapter → signed Codex Entry → Stellar anchor → certificate → verification, which should drive CLI/API UX and testing.
 
 3. Proposed Architectural Refactor
-Solution layout
+   Solution layout
 
 Lockb0x.Core: Codex Entry models, JSON schema validation, canonicalization, provenance utilities, revision-chain handling.
 
@@ -52,72 +64,46 @@ Logging/auditing aligned with provenance assertions (e.g., wasGeneratedBy, wasAn
 Security posture (client-side encryption hooks, revocation checks, replay protection).
 
 4. Implementation Roadmap
-Repository & tooling setup
 
-Convert solution to multi-project structure above, add shared packages (e.g., System.Text.Json, stellar-dotnet-sdk, jose-jwt, JSON schema validator), and establish consistent dependency injection.
+## Next Tasks (Milestone: Basic Reference Implementation)
 
-Core data model & validation
+### 1. Complete Core Data Model
 
-Implement strongly typed models reflecting required/optional Codex Entry fields, JCS canonicalization, ni URI helpers, and JSON schema validation against Appendix B schema.
+- Expand `CodexEntry` to include all required fields per spec and example flows (id, storage, integrity_proof, identity, etc.).
+- Ensure support for revision chains and provenance assertions.
 
-Provide provenance helper objects for wasGeneratedBy/wasAnchoredIn assertions and revision linkage.
+### 2. Canonicalization & ni-URI
 
-Storage adapters
+- Implement full RFC 8785 canonicalization for JSON objects.
+- Finalize ni-URI helpers for all supported hash algorithms.
 
-Define IStorageAdapter contract (integrity proof, size, media type, location metadata, optional notarize/fetch) per Section 4.1.
+### 3. Validation Logic
 
-Implement IPFS (CID + ni conversion), S3 (ETag → SHA-256 ni), and GCS (SHA-256 + crc32c) adapters with credential/config support, plus mock/local adapters for testing.
+- Expand `CodexEntryValidator` to cover all required checks:
+  - Field presence and format
+  - Integrity proof validation
+  - Revision/provenance chain validation
 
-Add jurisdiction metadata enforcement and MIME/size capture.
+### 4. Storage Adapter Interfaces
 
-Signing & key management
+- Define interfaces for storage adapters (IPFS, S3, GCS, Solid, etc.).
+- Prepare for backend-specific integrity proof mapping (see appendix-a-flows.md).
 
-Build JOSE-based signing service supporting Ed25519, secp256k1 (via COSE or JWS), and RSA SHA-256, handling canonical payloads and multi-sig thresholds.
+### 5. Basic Test Coverage
 
-Implement key stores referencing Stellar accounts/DIDs and revocation checks in line with security guidance.
+- Add unit tests for canonicalization, ni-URI, and validation logic.
 
-Stellar anchoring
+### 6. Documentation & Example Flows
 
-Create Stellar service to derive entry hashes, build/submit transactions with memo payloads, map CAIP-2 chain IDs, and expose verification (Horizon queries, timestamp validation).
+- Document the file → Codex Entry → anchor → verify flow.
+- Ensure flows from appendix-a-flows.md are covered in tests and docs.
 
-Support dry-run/testnet workflows for automated tests and CLI sandboxing.
+---
 
-Verifier library
-
-Orchestrate verification steps (canonicalization → signatures → integrity → location → anchor → encryption policy → revision traversal) with detailed diagnostics.
-
-Leverage adapters for metadata retrieval and anchor service for Stellar checks.
-
-Certificate generation
-
-Implement JSON certificate issuance using JWS, binding storage, anchor, and signer data; design extension points for VC and X.509 bindings and revocation endpoints.
-
-Ensure certificates cite the correct Codex Entry ID and integrate with verifier.
-
-CLI expansion
-
-Add commands: init (configure adapters/keys), create (ingest file via adapter), sign, anchor, certify, verify, revision (history), aligning with Appendix A flow.
-
-Provide JSON import/export, offline verification mode, and environment-aware config.
-
-API service
-
-Expose REST endpoints mirroring CLI operations for automation pipelines, with authentication hooks and streaming support for large files.
-
-Testing & compliance assets
-
-Create deterministic test vectors (sample entries, signatures, Stellar tx hashes) and automated tests covering adapters, signature validation, canonicalization, and verification matrix.
-
-Add integration tests against Stellar testnet and mocked storage services.
-
-Documentation & samples
-
-Document CLI/API usage, adapter setup, key management, and Stellar anchoring instructions, referencing compliance and security considerations.
-
-Publish example workflows matching Appendix A for users to replicate.
+**Note:** Once these tasks are complete, proceed to implement storage adapters, signing subsystem, anchoring, and certificate generation as described in the technical design and refactor plan.
 
 5. Risk & Dependency Notes
-Stellar SDK integration: confirm availability of .NET Horizon client and handle rate limiting; support memo hash length limits to fit Codex Entry hash.
+   Stellar SDK integration: confirm availability of .NET Horizon client and handle rate limiting; support memo hash length limits to fit Codex Entry hash.
 
 Cryptography libraries: ensure JOSE/COSE packages support required algorithms without violating security policies.
 
