@@ -1,3 +1,11 @@
+# Implementation Status (October 2025)
+
+- Only **Lockb0x.Core** and **Lockb0x.Signing** modules are implemented and tested.
+- Storage, anchoring, certificate, and verifier modules are not yet available; their APIs and flows are documented for future work.
+- All tests and workflows currently focus on canonicalization, Codex Entry modeling, and cryptographic signing/verification (Ed25519, ES256K, RS256).
+- Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
+- See `Lockb0x.Tests/SigningServiceTests.cs` and `Lockb0x.Tests/CoreTests.cs` for reference test coverage.
+
 1. Current State Assessment
 
 ## Current State (as of October 2025)

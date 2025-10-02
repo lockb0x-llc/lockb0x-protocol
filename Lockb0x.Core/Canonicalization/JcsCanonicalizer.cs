@@ -24,12 +24,12 @@ public sealed class JcsCanonicalizer : IJsonCanonicalizer
     public string Canonicalize<T>(T payload)
     {
         using var document = JsonSerializer.SerializeToDocument(payload, SerializerOptions);
-        using var buffer = new ArrayBufferWriter<byte>();
+        var buffer = new ArrayBufferWriter<byte>();
         using (var writer = new Utf8JsonWriter(buffer, new JsonWriterOptions
-               {
-                   Indented = false,
-                   SkipValidation = false
-               }))
+        {
+            Indented = false,
+            SkipValidation = false
+        }))
         {
             WriteCanonicalElement(document.RootElement, writer);
         }
