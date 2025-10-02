@@ -112,3 +112,13 @@ bool isValid = signingService.Verify(
 ---
 
 For further details, see the protocol specification and module-level AGENTS.md files in Lockb0x.Core and related projects.
+
+---
+
+## 10. Reference Implementation Notes (2024-05)
+
+- The `JoseCoseSigningService` reference implementation normalizes algorithm identifiers to JOSE values (`EdDSA`, `ES256K`, `RS256`) and enforces key/algorithm compatibility during sign and verify operations.
+- Ed25519 keys must be provided as Base64-encoded 64-byte material (seed concatenated with the public key). Secp256k1 (ES256K) and RSA keys accept PEM, PKCS#8, PKCS#1, or SubjectPublicKeyInfo encodings.
+- Signatures are emitted in Base64Url (JOSE) form; ECDSA signatures are canonicalized to 64-byte IEEE P1363 format for interoperability with COSE and JWS.
+- The in-memory key store clones stored key metadata and records revocation timestamps. Verification automatically rejects revoked keys and duplicate signatures when enforcing multi-signature thresholds.
+- Tests covering all supported algorithms, revocation handling, and multi-signature enforcement live in `Lockb0x.Tests/SigningServiceTests.cs`.
