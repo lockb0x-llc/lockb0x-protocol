@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
-<meta content="initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>The Lockb0x Protocol: Codex Entries for Verifiable Data Sovereignty</title>
 <meta content="Steven Tomlinson" name="author">
 <meta content="
-       
+
         This document specifies the Lockb0x Protocol, a standards-based framework
         for creating Codex Entries (machine-readable Controllable Electronic Records)
         that bind together storage proofs, blockchain anchors, encryption metadata,
         signatures, and provenance. The protocol enables interoperability across
         decentralized and cloud storage systems while providing auditability and
         compliance with legal frameworks such as UCC Article 12.
-       
+
     " name="description">
 <meta content="xml2rfc 3.30.2" name="generator">
 <meta content="draft-tomlinson-lockb0x-00" name="ietf.draft">
@@ -67,8 +67,6 @@
   zoom: 1.0;
 }
 /* general and mobile first */
-html {
-}
 body {
   max-width: 90%;
   margin: 1.5em auto;
@@ -229,13 +227,12 @@ ol.compact, .olCompact {
 }
 
 /* definition lists */
-dl {
-}
+/* removed empty dl ruleset */
 dl > dt {
   float: left;
   margin-right: 1em;
 }
-/* 
+/*
 dl.nohang > dt {
   float: none;
 }
@@ -363,12 +360,12 @@ a.pilcrow {
   color: #666; /* Arlen: AHDJ 2019 */
   text-decoration: none;
   visibility: hidden;
-  user-select: none;
+  -webkit-user-select: none;
   -ms-user-select: none;
   -o-user-select:none;
   -moz-user-select: none;
   -khtml-user-select: none;
-  -webkit-user-select: none;
+  user-select: none;
   -webkit-touch-callout: none;
 }
 @media screen {
@@ -503,11 +500,15 @@ nav.toc li {
 @media (min-width: 600px) {
   .index ul {
     -moz-column-count: 2;
+    column-count: 2;
     -moz-column-gap: 20px;
+    column-gap: 20px;
   }
   .index ul ul {
     -moz-column-count: 1;
+    column-count: 1;
     -moz-column-gap: 0;
+    column-gap: 0;
   }
 }
 
@@ -1357,10 +1358,10 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.16.1"><a href="#section-16" class="auto internal xref">16</a>. <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.17">
-            <p id="section-toc.1-1.17.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-appendix-b-codex-entry-json" class="internal xref">Appendix B. Codex Entry JSON Schema</a></p>
+            <p id="section-toc.1-1.17.1"><a href="#name-appendix-b-codex-entry-json" class="internal xref">Appendix B. Codex Entry JSON Schema</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.18">
-            <p id="section-toc.1-1.18.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.18.1"><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1441,12 +1442,12 @@ li > p:last-of-type:only-child {
 <p id="section-4-1">
       This document uses the key words defined in BCP 14 (RFC 2119 and RFC 8174).<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">
-      The key words <span class="bcp14">MUST</span>, <span class="bcp14">MUST NOT</span>, 
-      <span class="bcp14">REQUIRED</span>, <span class="bcp14">SHALL</span>, <span class="bcp14">SHALL NOT</span>, 
-      <span class="bcp14">SHOULD</span>, <span class="bcp14">SHOULD NOT</span>, 
+      The key words <span class="bcp14">MUST</span>, <span class="bcp14">MUST NOT</span>,
+      <span class="bcp14">REQUIRED</span>, <span class="bcp14">SHALL</span>, <span class="bcp14">SHALL NOT</span>,
+      <span class="bcp14">SHOULD</span>, <span class="bcp14">SHOULD NOT</span>,
       <span class="bcp14">RECOMMENDED</span>, <span class="bcp14">MAY</span>, and <span class="bcp14">OPTIONAL</span>
-      in this document are to be interpreted as described in BCP 14 
-      (<span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>, <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span>) 
+      in this document are to be interpreted as described in BCP 14
+      (<span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span>, <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span>)
       when, and only when, they appear in all capitals, as shown here.<a href="#section-4-2" class="pilcrow">¶</a></p>
 </section>
 <section id="section-5">
