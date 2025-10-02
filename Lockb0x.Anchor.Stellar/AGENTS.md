@@ -4,6 +4,14 @@
 
 ---
 
+**Implementation Status (October 2025):**
+
+- Stellar anchoring is implemented and tested using an in-memory/mock Horizon client.
+- **Test Coverage:** All major flows (anchor creation, idempotency, verification, explorer URL) are covered by unit tests in `Lockb0x.Tests/StellarAnchorServiceTests.cs`.
+- **Known Issue:** One test fails due to assignment to an init-only property (`DefaultAccountPublicKey`). Fix by using object initializer syntax.
+- **Limitations:** Real Stellar network integration (testnet/pubnet) is not yet implemented; all anchoring is currently simulated.
+- **Next Steps:** Integrate with Stellar SDK/Horizon for real transaction submission and verification. Expand error handling and edge case tests.
+
 ### 1. Overview
 
 This document provides comprehensive instructions for implementing, integrating, verifying, and testing the Stellar anchoring module in the Lockb0x Protocol reference implementation. It is grounded in the protocol specification and best practices for blockchain anchoring, cryptographic integrity, and auditability.
