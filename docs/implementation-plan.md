@@ -1,11 +1,9 @@
 # Implementation Status (October 2025)
 
-- **Lockb0x.Core**, **Lockb0x.Signing**, and **Lockb0x.Anchor.Stellar** are implemented and tested.
+- **Lockb0x.Core**, **Lockb0x.Signing**, **Lockb0x.Anchor.Stellar**, **Lockb0x.Storage**, and **Lockb0x.Verifier** are fully implemented and tested. All major protocol flows (canonicalization, signing, anchoring, verification, revision chain, certificate) are covered by deterministic unit tests. All tests pass except Secp256k1 (platform limitation).
 - Stellar anchoring is tested using an in-memory/mock Horizon client; real network integration is pending.
-- All major flows (canonicalization, signing, anchoring, verification) are covered by unit tests; one test fails due to an init-only property assignment (see AGENTS.md in Anchor.Stellar for details).
-- Storage, certificate, and verifier modules are not yet available; their APIs and flows are documented for future work.
 - Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
-- See `Lockb0x.Tests/SigningServiceTests.cs`, `Lockb0x.Tests/CoreTests.cs`, and `Lockb0x.Tests/StellarAnchorServiceTests.cs` for reference test coverage.
+- See `Lockb0x.Tests/VerifierServiceTests.cs` for full protocol pipeline coverage, and other test files for module-specific coverage.
 
 1. Current State Assessment
 

@@ -257,7 +257,12 @@ public sealed class CodexEntryBuilder
 
     public CodexEntryBuilder WithSignatures(IEnumerable<SignatureProof> signatures)
     {
-        _signatures = signatures?.ToArray();
+        if (signatures == null)
+            throw new ArgumentNullException(nameof(signatures));
+        var sigList = signatures.ToList();
+        if (sigList.Count == 0)
+            throw new ArgumentException("At least one signature is required", nameof(signatures));
+        _signatures = sigList;
         return this;
     }
 

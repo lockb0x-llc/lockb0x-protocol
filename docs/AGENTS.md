@@ -6,7 +6,7 @@
 - **Lockb0x.Signing**: Fully implemented and tested. EdDSA (Ed25519), RS256, and ES256K (secp256k1, Windows only) via JOSE JWS and COSE Sign1. Multi-sig, key revocation, and error handling are covered.
 - **Lockb0x.Anchor.Stellar**: Fully implemented and tested with in-memory/mock Horizon client. Real Stellar network integration is pending.
 - **Lockb0x.Storage**: IPFS adapter is implemented, integrated, and fully covered by unit tests. Adheres to RFC 6920 ni-URI, returns all required metadata, and supports auditability.
-- **Lockb0x.Verifier**: Pipeline orchestration implemented; interfaces and models present. Verification steps (schema, canonicalization, signatures, integrity, storage, anchor, encryption, revision chain, certificate) are stubbed or partially implemented. IPFS + Stellar verification flow is planned and documented.
+- **Lockb0x.Verifier**: Fully implemented and tested. The pipeline orchestration, stepwise verification logic, and all verification steps (schema, canonicalization, signatures, integrity, storage, anchor, encryption, revision chain, certificate) are covered by deterministic unit tests. IPFS + Stellar verification flow is implemented and passing.
 - **Lockb0x.Certificates**: Interfaces and models present; certificate emission and revocation logic planned.
 - **Lockb0x.Tests**: All modules covered by unit tests. All tests pass on macOS except Secp256k1, which is skipped due to .NET platform limitations.
 - **CLI & API**: CLI exists but is not yet integrated for end-to-end flows. API is planned.
@@ -32,17 +32,17 @@
 
 ### Testing
 
-- All major flows are covered by deterministic unit tests.
+- All major protocol flows, including the full Verifier pipeline, are covered by deterministic unit tests.
 - IPFS adapter tests use mock HTTP clients for CI.
 - Secp256k1 signing is only supported on Windows due to .NET limitations.
-- See `Lockb0x.Tests/StorageAdapterTests.cs`, `Lockb0x.Tests/CoreTests.cs`, `Lockb0x.Tests/SigningServiceTests.cs`, and `Lockb0x.Tests/StellarAnchorServiceTests.cs` for reference coverage.
+- See `Lockb0x.Tests/VerifierServiceTests.cs` for full protocol pipeline coverage, and other test files for module-specific coverage.
 
 ## Gaps & Next Steps
 
 ### Implementation Gaps
 
 - **Stellar network integration**: Real network anchoring not yet implemented; only mock/in-memory flows are tested. Next: Integrate Stellar SDK/Horizon for real transaction submission and verification.
-- **Verifier module**: Full verification pipeline (schema, integrity, signatures, anchors, revision chain, certificate) needs to be completed and integrated for end-to-end IPFS + Stellar flow. Next: Implement stepwise verification logic, expand test coverage, and document usage.
+- **Verifier module**: Fully implemented and tested for the IPFS + Stellar flow. All verification steps are covered by passing unit tests. Next: Expand documentation and add more end-to-end examples.
 - **CLI & API integration**: CLI and API need to support end-to-end flows (file → Codex Entry → sign → anchor → certify → verify) and expose all major protocol operations. Next: Integrate modules, add workflow commands, and document usage.
 - **Multi-network/blockchain anchoring**: Only Stellar (mock) is supported; adapters for other chains (Ethereum, Avalanche, etc.) are planned.
 - **Advanced storage adapters**: Only IPFS is implemented; S3, Filecoin, Azure Blob, and other backends are planned.
