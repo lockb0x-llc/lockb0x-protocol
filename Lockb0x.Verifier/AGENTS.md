@@ -1,5 +1,39 @@
 # Lockb0x.Verifier — AGENTS.md
 
+# Implementation Status (October 2025)
+
+## Current State
+
+- **Specification Alignment:** The technical plan and interfaces are fully aligned with `/spec/verification.md`, `/spec/certificates.md`, `/spec/appendix-a-flows.md`, and all referenced standards (RFC 8785, RFC 6920, RFC 7515, RFC 5280, W3C VC).
+- **Interfaces:** `IVerifierService` and supporting models are defined, matching the protocol requirements for verification, certificate validation, and revision chain traversal.
+- **Integration:** Project references and test scaffolding are in place for integration with Core, Signing, Anchor, Storage, and Certificates modules.
+- **Testing:** Initial unit tests exist in `Lockb0x.Tests/VerifierServiceTests.cs` covering basic verification scenarios (valid/invalid signatures, certificate delegation).
+- **Extensibility:** The design supports pluggable adapters and extension points for storage, anchor, and signature verification.
+
+## Gaps & Progress
+
+- **Verification Pipeline:** Most verification steps (schema, canonicalization, integrity, anchor, encryption, revision chain, certificate validation) are not yet fully implemented; only basic signature and certificate delegation logic is present.
+- **Diagnostics & Error Reporting:** Structured error/warning reporting is planned but not fully implemented; current tests only check for basic error codes.
+- **Integration:** Full integration with CLI, API, and other protocol modules is pending; only project references and test stubs exist.
+- **Documentation:** Contributor guides, usage examples, and OpenAPI/CLI documentation are not yet available.
+- **Testing:** More comprehensive unit and integration tests are needed, including deterministic vectors and edge cases from `/spec/appendix-a-flows.md`.
+
+## Progress Toward Full Implementation
+
+- **Interfaces and models are defined and match the spec.**
+- **Basic signature and certificate verification logic is present and tested.**
+- **Project references and test scaffolding enable integration with all protocol modules.**
+- **Comprehensive technical plan and implementation steps are documented below.**
+
+## Next Steps
+
+1. Implement the full verification pipeline per `/spec/verification.md` and referenced standards.
+2. Add structured diagnostics and error reporting for all verification steps.
+3. Expand unit and integration tests to cover all protocol flows and edge cases.
+4. Integrate Verifier with CLI and API for automated and interactive workflows.
+5. Document contributor setup, usage examples, and extension patterns.
+6. Provide OpenAPI documentation and CLI usage guides.
+
 ## Implementation Plan (October 2025)
 
 This document provides a comprehensive technical and practical development plan for implementing the Lockb0x.Verifier module. The goal is to deliver a robust, standards-compliant verifier for Codex Entries, certificates, and protocol flows, fully integrated with the Lockb0x reference implementation.
@@ -59,6 +93,67 @@ This document provides a comprehensive technical and practical development plan 
 ---
 
 ## 4. Implementation Steps
+
+## Implementation Steps (In Progress)
+
+## Practical Implementation Plan: IPFS + Stellar Verification Pipeline
+
+This plan details the steps to implement the basic verification pipeline for Codex Entries stored in IPFS and anchored on Stellar, as described in `/spec/appendix-a-flows.md`. It covers integration with Core, Storage, Signing, Anchor, and Certificates modules.
+
+### 1. Entry Ingestion & Metadata
+
+- Accept a Codex Entry and (optionally) the referenced file or its hash.
+- Extract required fields: `id`, `storage.protocol`, `storage.integrity_proof`, `identity`, `anchor`, `signatures`.
+
+### 2. Schema Validation
+
+- Use Core module's validator to check the entry against the canonical JSON schema.
+- Reject entries with unknown or missing fields.
+
+### 3. Canonicalization
+
+- Use Core's JCS canonicalizer to produce a deterministic encoding of the entry.
+
+### 4. Integrity Proof Validation (IPFS)
+
+- Use Storage module's IPFS adapter to fetch the file by CID.
+- Recompute the file's hash and compare to the `storage.integrity_proof` (RFC 6920 ni-URI).
+- If the hash matches, proceed; otherwise, fail with a diagnostic error.
+
+### 5. Signature Validation
+
+- Use Signing module to verify all signatures on the canonicalized entry.
+- Enforce multi-sig policies if present.
+
+### 6. Anchor Validation (Stellar)
+
+- Use Anchor module to check that the entry's hash is present in the referenced Stellar transaction (MemoHash).
+- Confirm the transaction exists on the declared chain/network.
+- Optionally, use explorer APIs for additional validation.
+
+### 7. Certificate Validation (if present)
+
+- If a certificate is attached, use Certificates module to validate its format, signatures, and PKI chain (for X.509).
+
+### 8. Diagnostics & Reporting
+
+- Collect and return detailed results for each verification step (success/failure, error codes, warnings).
+- Log all verification attempts for auditability.
+
+### 9. Integration Points
+
+- Core: Schema validation, canonicalization
+- Storage: IPFS adapter for file retrieval and hash validation
+- Signing: Signature verification
+- Anchor: Stellar transaction lookup and validation
+- Certificates: Certificate format and PKI validation
+
+### 10. Testing & Examples
+
+- Implement unit and integration tests using flows from `/spec/appendix-a-flows.md` (IPFS + Stellar, valid/invalid cases).
+- Document expected outcomes and error handling for each step.
+
+---
 
 1. **Define Interfaces & Models**
    - Implement `IVerifierService`, `VerificationResult`, and supporting models.

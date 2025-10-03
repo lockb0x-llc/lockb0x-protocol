@@ -19,13 +19,25 @@ By combining these, developers can create **tamper-evident, verifiable chains of
 
 **Implementation Status (October 2025):**
 
-- The Lockb0x Protocol reference implementation currently includes:
-  - **Core**: Data model, canonicalization, and validation (fully implemented and tested)
-  - **Signing**: Cryptographic signing and verification (Ed25519, ES256K, RS256; fully implemented and tested)
-  - **Other modules** (Storage, Anchor.Stellar, Verifier, Certificates): Documented, with implementation planned or in progress
-- **Test Coverage**: Only Core and Signing modules are covered by automated tests; all tests pass
-- **Verifier Reference Implementation**: Under active development
-- **Limitations**: Secp256k1 (ES256K) support is platform-dependent; other modules are not yet implemented
+The Lockb0x Protocol reference implementation currently includes:
+
+- **Core**: Data model, canonicalization, and validation (fully implemented and tested)
+- **Signing**: Cryptographic signing and verification (Ed25519, ES256K, RS256; fully implemented and tested)
+- **Storage**: IPFS adapter implemented and tested; S3, Filecoin, Azure Blob planned
+- **Anchor.Stellar**: Mock/in-memory anchoring implemented and tested; real Stellar network integration pending
+- **Verifier**: Pipeline orchestration implemented; stepwise verification logic for IPFS + Stellar flow planned and documented
+- **Certificates**: Interfaces and models present; certificate emission and revocation logic planned
+- **CLI & API**: CLI exists but is not yet integrated for end-to-end flows; API is planned
+- **Tests**: All modules covered by unit tests; all tests pass except Secp256k1 (platform limitation)
+
+**Gaps & Next Steps:**
+
+- Integrate real Stellar SDK/Horizon for network anchoring and verification
+- Complete Verifier module for full pipeline (schema, canonicalization, integrity, signatures, anchor, revision chain, certificate)
+- Integrate CLI and API for end-to-end flows and workflow commands
+- Expand storage and blockchain adapters (S3, Filecoin, Azure Blob, Ethereum, Avalanche, etc.)
+- Add contributor guide, CLI usage docs, and end-to-end examples
+- Refactor error handling and implement centralized logging
 
 For details, see [`docs/AGENTS.md`](docs/AGENTS.md) and module-specific documentation.
 
@@ -42,8 +54,22 @@ The lockb0x-protocol, by design supports the standards and ethos of GDPR and is 
 control.
 
 The lockb0x-protocol Verifier Reference Implementation is under development.
-Please fork this repo and contribute by submitting a pull-request.
-You can use the Issues tab to ask questions, discuss, or report "issues".
+
+## Contributor Guidance & Example Flow
+
+Please fork this repo and contribute by submitting a pull-request. Use the Issues tab to ask questions, discuss, or report issues.
+
+**Example IPFS + Stellar Verification Flow:**
+
+1. Store file in IPFS (using IpfsStorageAdapter) → obtain CID and ni-URI integrity proof
+2. Create Codex Entry with required fields (id, storage, integrity_proof, identity)
+3. Canonicalize entry (RFC 8785 JCS)
+4. Anchor entry on Stellar (mock/in-memory for now)
+5. Sign entry with user's private key
+6. Generate certificate (JSON, VC, or X.509)
+7. Verify: recompute file hash, validate signatures, confirm anchor transaction on Stellar
+
+See [Appendix A: Example Flows](spec/appendix-a-flows.md) for more details.
 
 ---
 

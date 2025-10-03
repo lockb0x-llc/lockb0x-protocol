@@ -1,13 +1,15 @@
 # Implementation Status (October 2025) — Update & Gap Analysis
 
-## Current State
+## Current State (October 2025)
 
-- **Lockb0x.Core**: Fully implemented and tested. Provides canonical Codex Entry model, RFC 8785 JCS canonicalization, schema validation, and revision chain management.
-- **Lockb0x.Signing**: Fully implemented and tested. Supports EdDSA (Ed25519), RS256, and ES256K (secp256k1, Windows only) via JOSE JWS and COSE Sign1. Multi-sig, key revocation, and error handling are covered.
+- **Lockb0x.Core**: Fully implemented and tested. Canonical Codex Entry model, RFC 8785 JCS canonicalization, schema validation, and revision chain management.
+- **Lockb0x.Signing**: Fully implemented and tested. EdDSA (Ed25519), RS256, and ES256K (secp256k1, Windows only) via JOSE JWS and COSE Sign1. Multi-sig, key revocation, and error handling are covered.
 - **Lockb0x.Anchor.Stellar**: Fully implemented and tested with in-memory/mock Horizon client. Real Stellar network integration is pending.
 - **Lockb0x.Storage**: IPFS adapter is implemented, integrated, and fully covered by unit tests. Adheres to RFC 6920 ni-URI, returns all required metadata, and supports auditability.
-- **Lockb0x.Tests**: All modules are covered by comprehensive unit tests. All tests pass on macOS except for Secp256k1, which is skipped due to .NET platform limitations.
-- **CLI, Certificate, Verifier modules**: CLI exists but is not yet integrated with Storage or end-to-end flows. Certificate and Verifier modules are stubbed/documented but not implemented.
+- **Lockb0x.Verifier**: Pipeline orchestration implemented; interfaces and models present. Verification steps (schema, canonicalization, signatures, integrity, storage, anchor, encryption, revision chain, certificate) are stubbed or partially implemented. IPFS + Stellar verification flow is planned and documented.
+- **Lockb0x.Certificates**: Interfaces and models present; certificate emission and revocation logic planned.
+- **Lockb0x.Tests**: All modules covered by unit tests. All tests pass on macOS except Secp256k1, which is skipped due to .NET platform limitations.
+- **CLI & API**: CLI exists but is not yet integrated for end-to-end flows. API is planned.
 
 ## Usage Guidance
 
@@ -39,19 +41,19 @@
 
 ### Implementation Gaps
 
-- **Stellar network integration**: Real network anchoring is not yet implemented; only mock/in-memory flows are tested. Next: Integrate with Stellar SDK/Horizon for real transaction submission and verification.
-- **Verifier module**: Full verification pipeline (schema, integrity, signatures, anchors, revision chain) needs to be implemented per spec.
-- **CLI & API integration**: CLI and API need to support end-to-end flows (file → Codex Entry → sign → anchor → certify → verify) and expose all major protocol operations.
+- **Stellar network integration**: Real network anchoring not yet implemented; only mock/in-memory flows are tested. Next: Integrate Stellar SDK/Horizon for real transaction submission and verification.
+- **Verifier module**: Full verification pipeline (schema, integrity, signatures, anchors, revision chain, certificate) needs to be completed and integrated for end-to-end IPFS + Stellar flow. Next: Implement stepwise verification logic, expand test coverage, and document usage.
+- **CLI & API integration**: CLI and API need to support end-to-end flows (file → Codex Entry → sign → anchor → certify → verify) and expose all major protocol operations. Next: Integrate modules, add workflow commands, and document usage.
 - **Multi-network/blockchain anchoring**: Only Stellar (mock) is supported; adapters for other chains (Ethereum, Avalanche, etc.) are planned.
 - **Advanced storage adapters**: Only IPFS is implemented; S3, Filecoin, Azure Blob, and other backends are planned.
 - **Centralized error handling/logging**: Basic error handling is present, but centralized logging and diagnostics are not yet implemented.
 
 ### Documentation Gaps
 
-- **Contributor setup**: No step-by-step guide for setting up testnets, IPFS nodes, or running integration tests.
-- **CLI usage**: No documentation for CLI commands or workflows.
-- **End-to-end examples**: No full example from file ingestion to verification/certification.
-- **Extensibility**: Adapter and extension points are documented, but practical examples are limited.
+- **Contributor setup**: No step-by-step guide for setting up testnets, IPFS nodes, or running integration tests. Next: Add contributor guide and environment setup instructions.
+- **CLI usage**: No documentation for CLI commands or workflows. Next: Document CLI usage and workflow examples.
+- **End-to-end examples**: No full example from file ingestion to verification/certification. Next: Add example flows and test vectors.
+- **Extensibility**: Adapter and extension points are documented, but practical examples are limited. Next: Expand documentation with extension patterns and usage scenarios.
 
 ## Roadmap & Steps to Completion
 
@@ -59,8 +61,9 @@
    - Integrate real Stellar SDK/Horizon for transaction submission and anchor verification.
    - Document setup for testnet/mainnet environments.
 2. **Verifier Module Implementation**
-   - Build out the full verification pipeline per `/spec/verification.md` and `/spec/appendix-a-flows.md`.
+   - Complete stepwise verification pipeline for IPFS + Stellar flow (schema, canonicalization, integrity, signatures, anchor, revision chain, certificate).
    - Add unit and integration tests for all verification steps.
+   - Document usage and provide example flows.
 3. **CLI & API End-to-End Integration**
    - Implement CLI commands and API endpoints for the full workflow: file → Codex Entry → sign → anchor → certify → verify.
    - Provide usage documentation and examples.
@@ -76,12 +79,27 @@
 
 ## Guidance for Contributors & Users
 
-- Review the technical plans in each module's `AGENTS.md` for design and integration details.
+## Guidance for Contributors & Users
+
+- Review technical plans in each module's AGENTS.md for design and integration details.
 - Use the Storage adapter for IPFS-backed Codex Entries; ensure all metadata is captured for audit and verification.
 - For signing, prefer Ed25519 or RS256 for cross-platform compatibility.
 - For anchoring, use the mock Stellar client for now; real network support will be added in future milestones.
+- For verification, follow the documented pipeline in VerifierService and use provided test vectors and example flows.
 - All APIs are async and designed for agent interoperability.
 - Open issues or pull requests for missing features, documentation, or integration improvements.
+
+## Example IPFS + Stellar Verification Flow
+
+1. Store file in IPFS (using IpfsStorageAdapter) → obtain CID and ni-URI integrity proof.
+2. Create Codex Entry with required fields (id, storage, integrity_proof, identity).
+3. Canonicalize entry (RFC 8785 JCS).
+4. Anchor entry on Stellar (mock/in-memory for now).
+5. Sign entry with user's private key.
+6. Generate certificate (JSON, VC, or X.509).
+7. Verify: recompute file hash, validate signatures, confirm anchor transaction on Stellar.
+
+See [Appendix A: Example Flows](../spec/appendix-a-flows.md) for more details.
 
 ## References
 
