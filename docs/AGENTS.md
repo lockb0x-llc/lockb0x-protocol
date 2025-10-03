@@ -1,11 +1,76 @@
-# Implementation Status (October 2025)
+# Implementation Status (October 2025) — Update & Gap Analysis
 
-- **Lockb0x.Core**, **Lockb0x.Signing**, and **Lockb0x.Anchor.Stellar** are implemented and tested.
-- Stellar anchoring is tested using an in-memory/mock Horizon client; real network integration is pending.
-- All major flows (canonicalization, signing, anchoring, verification) are covered by unit tests; one test fails due to an init-only property assignment (see AGENTS.md in Anchor.Stellar for details).
-- Storage, certificate, and verifier modules are not yet implemented; their APIs and flows are documented for future work.
-- Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
-- See `Lockb0x.Tests/SigningServiceTests.cs`, `Lockb0x.Tests/CoreTests.cs`, and `Lockb0x.Tests/StellarAnchorServiceTests.cs` for reference test coverage.
+## Current State
+
+- **Lockb0x.Core**: Fully implemented and tested. Provides canonical Codex Entry model, RFC 8785 JCS canonicalization, schema validation, and revision chain management.
+- **Lockb0x.Signing**: Fully implemented and tested. Supports EdDSA (Ed25519), RS256, and ES256K (secp256k1, Windows only) via JOSE JWS and COSE Sign1. Multi-sig, key revocation, and error handling are covered.
+- **Lockb0x.Anchor.Stellar**: Fully implemented and tested with in-memory/mock Horizon client. Real Stellar network integration is pending.
+- **Lockb0x.Storage**: IPFS adapter is implemented, integrated, and fully covered by unit tests. Adheres to RFC 6920 ni-URI, returns all required metadata, and supports auditability.
+- **Lockb0x.Tests**: All modules are covered by comprehensive unit tests. All tests pass on macOS except for Secp256k1, which is skipped due to .NET platform limitations.
+- **CLI, Certificate, Verifier modules**: CLI exists but is not yet integrated with Storage or end-to-end flows. Certificate and Verifier modules are stubbed/documented but not implemented.
+
+## Usage Guidance
+
+### End-to-End Flow
+
+1. **Store a file in IPFS** using `IpfsStorageAdapter.StoreAsync`. Returns a `StorageDescriptor` with protocol, integrity proof (ni-URI), CID, and metadata.
+2. **Construct a Codex Entry** using the returned metadata and the Core module's builder.
+3. **Canonicalize the entry** with `JcsCanonicalizer`.
+4. **Sign the entry** using the Signing module (`JoseCoseSigningService.SignAsync`).
+5. **Anchor the entry** on Stellar (mock/in-memory only for now) using `StellarAnchorService.AnchorAsync`.
+6. **Verify signatures and anchors** using the respective module APIs.
+7. **Audit and traverse revision chains** using Core utilities.
+
+### Integration Points
+
+- All modules use async APIs and are designed for agent workflows.
+- Storage adapter is fully compatible with Codex Entry builder and validation.
+- Error objects are machine-readable for diagnostics.
+- All data models align with the canonical schema in [`spec/v0.0.1-public-draft.md`](../spec/v0.0.1-public-draft.md).
+
+### Testing
+
+- All major flows are covered by deterministic unit tests.
+- IPFS adapter tests use mock HTTP clients for CI.
+- Secp256k1 signing is only supported on Windows due to .NET limitations.
+- See `Lockb0x.Tests/StorageAdapterTests.cs`, `Lockb0x.Tests/CoreTests.cs`, `Lockb0x.Tests/SigningServiceTests.cs`, and `Lockb0x.Tests/StellarAnchorServiceTests.cs` for reference coverage.
+
+## Gaps & Next Steps
+
+### Implementation Gaps
+
+- **Stellar network integration**: Real network anchoring is not yet implemented; only mock/in-memory flows are tested.
+- **CLI integration**: CLI does not yet support end-to-end flows (file → Codex Entry → sign → anchor → verify).
+- **Certificate and Verifier modules**: APIs are documented, but implementations are pending.
+- **Multi-network/blockchain anchoring**: Only Stellar is supported (mock); adapters for other chains are not implemented.
+- **Advanced storage adapters**: Only IPFS is implemented; S3, Filecoin, and other backends are not yet supported.
+- **Error handling and logging**: Basic error handling is present, but centralized logging and diagnostics are not yet implemented.
+
+### Documentation Gaps
+
+- **Contributor setup**: No step-by-step guide for setting up testnets, IPFS nodes, or running integration tests.
+- **CLI usage**: No documentation for CLI commands or workflows.
+- **End-to-end examples**: No full example from file ingestion to verification.
+- **Extensibility**: Adapter and extension points are documented, but practical examples are limited.
+
+## Guidance for Contributors & Users
+
+- Review the technical plans in each module's `AGENTS.md` for design and integration details.
+- Use the Storage adapter for IPFS-backed Codex Entries; ensure all metadata is captured for audit and verification.
+- For signing, prefer Ed25519 or RS256 for cross-platform compatibility.
+- For anchoring, use the mock Stellar client for now; real network support will be added in future milestones.
+- All APIs are async and designed for agent interoperability.
+- Open issues or pull requests for missing features, documentation, or integration improvements.
+
+## References
+
+- [Storage Adapters Spec](../spec/storage-adapters.md)
+- [Appendix A: Example Flows](../spec/appendix-a-flows.md)
+- [Appendix B: JSON Schema](../spec/appendix-b-schema.md)
+- [RFC 6920: ni-URI](https://datatracker.ietf.org/doc/html/rfc6920)
+- [IPFS Documentation](https://docs.ipfs.tech/)
+
+---
 
 # AGENTS.md
 

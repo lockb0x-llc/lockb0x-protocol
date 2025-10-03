@@ -50,7 +50,7 @@ public class StorageAdapterTests
         using var stream = new MemoryStream(payload);
         var request = new StorageUploadRequest(stream, "hello.txt", "text/plain") { ContentLength = payload.Length };
 
-        var result = await adapter.StoreAsync(request, CancellationToken.None).ConfigureAwait(false);
+        var result = await adapter.StoreAsync(request, CancellationToken.None);
 
         Assert.Equal("ipfs", result.Descriptor.Protocol);
         Assert.Equal(NiUri.Create(sha, "sha-256"), result.Descriptor.IntegrityProof);
@@ -61,7 +61,8 @@ public class StorageAdapterTests
         Assert.Equal("IPFS Cooperative", result.Descriptor.Location.Provider);
         Assert.Equal(cid, result.ContentIdentifier);
         Assert.Equal($"ipfs://{cid}", result.ResourceUri);
-        var nativeMetadata = Assert.NotNull(result.NativeMetadata);
+        Assert.NotNull(result.NativeMetadata);
+        var nativeMetadata = result.NativeMetadata;
         Assert.Contains("Name", nativeMetadata.Keys);
     }
 
@@ -95,7 +96,7 @@ public class StorageAdapterTests
         using var stream = new MemoryStream(payload);
         var request = new StorageUploadRequest(stream, "doc.txt", "text/plain");
 
-        await Assert.ThrowsAsync<StorageAdapterException>(() => adapter.StoreAsync(request, CancellationToken.None)).ConfigureAwait(false);
+        await Assert.ThrowsAsync<StorageAdapterException>(() => adapter.StoreAsync(request, CancellationToken.None));
     }
 
     [Fact]
@@ -149,7 +150,7 @@ public class StorageAdapterTests
             new HttpClient(apiHandler) { BaseAddress = options.ApiEndpoint },
             new HttpClient(gatewayHandler) { BaseAddress = options.GatewayEndpoint });
 
-        var result = await adapter.GetMetadataAsync(cid, CancellationToken.None).ConfigureAwait(false);
+        var result = await adapter.GetMetadataAsync(cid, CancellationToken.None);
 
         Assert.Equal("ipfs", result.Descriptor.Protocol);
         Assert.Equal(NiUri.Create(digest, "sha-256"), result.Descriptor.IntegrityProof);

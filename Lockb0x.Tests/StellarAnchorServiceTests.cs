@@ -70,7 +70,13 @@ public class StellarAnchorServiceTests
         var canonicalizer = new JcsCanonicalizer();
         var horizonClient = new InMemoryStellarHorizonClient();
         var options = StellarAnchorServiceOptions.CreateDefault();
-        options.Networks["testnet"].DefaultAccountPublicKey = DefaultPublicKey;
+        options.Networks["testnet"] = new StellarNetworkOptions
+        {
+            Name = "testnet",
+            ChainId = "stellar:testnet",
+            HorizonEndpoint = new Uri("http://localhost:8000"),
+            DefaultAccountPublicKey = DefaultPublicKey
+        };
 
         var service = new StellarAnchorService(canonicalizer, horizonClient, options: options);
         entry = CreateEntry();
@@ -109,7 +115,15 @@ public class StellarAnchorServiceTests
                 HashAlgorithm = "sha-256",
                 AnchoredAt = DateTimeOffset.UtcNow
             })
-            .WithSignatures(Array.Empty<SignatureProof>())
+            .WithSignatures(new[] {
+                new SignatureProof {
+                    ProtectedHeader = new SignatureProtectedHeader {
+                        Algorithm = "Ed25519",
+                        KeyId = "test-key"
+                    },
+                    Signature = Convert.ToBase64String(new byte[] { 1, 2, 3 })
+                }
+            })
             .Build();
     }
 }

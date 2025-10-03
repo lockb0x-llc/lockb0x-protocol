@@ -345,9 +345,9 @@ public sealed class IpfsStorageAdapter : IStorageAdapter, IAsyncDisposable
 
     private static Uri NormalizeBaseAddress(Uri uri)
     {
-        if (!uri.OriginalString.EndsWith('/', StringComparison.Ordinal))
+        if (!uri.OriginalString.EndsWith("/", StringComparison.Ordinal))
         {
-            return new Uri(uri.OriginalString + '/', UriKind.Absolute);
+            return new Uri(uri.OriginalString + "/", UriKind.Absolute);
         }
 
         return uri;
