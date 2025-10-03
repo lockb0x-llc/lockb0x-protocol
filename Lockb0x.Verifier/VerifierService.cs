@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Lockb0x.Anchor.Stellar;
 using Lockb0x.Certificates;
+using Lockb0x.Certificates.Models;
 using Lockb0x.Core.Canonicalization;
 using Lockb0x.Core.Models;
 using Lockb0x.Core.Revision;

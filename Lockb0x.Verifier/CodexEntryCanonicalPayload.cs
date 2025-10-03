@@ -74,6 +74,8 @@ public static class CodexEntryCanonicalPayload
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public JsonDocument? Extensions { get; init; }
 
+        // signatures intentionally excluded from canonicalization
+
         public static SignableCodexEntry FromEntry(CodexEntry entry)
         {
             return new SignableCodexEntry

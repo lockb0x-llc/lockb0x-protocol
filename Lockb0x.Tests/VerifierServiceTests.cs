@@ -2,25 +2,110 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using Lockb0x.Anchor.Stellar;
-using Lockb0x.Certificates.Models;
+using Lockb0x.Certificates;
 using Lockb0x.Core.Canonicalization;
 using Lockb0x.Core.Models;
 using Lockb0x.Core.Validation;
 using Lockb0x.Signing;
 using Lockb0x.Storage;
 using Lockb0x.Verifier;
+using Lockb0x.Core.Utilities;
+using Lockb0x.Certificates.Models;
 
 namespace Lockb0x.Tests;
 
+
 public class VerifierServiceTests
 {
+    [Fact]
+    public async Task VerifyAsync_Demonstrates_Full_Protocol_Pipeline_With_Mocks()
+    {
+        // Sample Codex Entry (IPFS + Stellar) based on /spec/appendix-a-flows.md
+        var canonicalizer = new JcsCanonicalizer();
+        var validator = new CodexEntryValidator();
+        var keyStore = new InMemoryKeyStore();
+        var signingKey = CreateEd25519Key("did:example:org", "signer-demo");
+        await keyStore.AddKeyAsync(signingKey);
+        var signingService = new JoseCoseSigningService(keyStore);
+        var timestamp = DateTimeOffset.UtcNow;
+        var storage = new StorageDescriptor
+        {
+            Protocol = "ipfs",
+            IntegrityProof = "ni:///sha-256;b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+            Location = new StorageLocation { Region = "us-east", Jurisdiction = "US", Provider = "IPFS" },
+            MediaType = "application/pdf",
+            SizeBytes = 12345
+        };
+        var identity = new IdentityDescriptor
+        {
+            Org = "did:example:org",
+            Process = "did:example:org:subordinate",
+            Artifact = "EmployeeHandbook-v1"
+        };
+        var anchor = new AnchorProof
+        {
+            Chain = "stellar:testnet",
+            TransactionHash = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+            HashAlgorithm = "sha-256",
+            AnchoredAt = timestamp
+        };
+        var encryption = CreateEncryptionDescriptor(signingKey.KeyId);
+        // Build entry with placeholder signature for canonicalization
+        var placeholderSignature = new string('0', 86); // Ed25519 signature is 64 bytes, base64url is up to 86 chars
+        var unsignedEntry = BuildEntry(anchor, storage, encryption, identity, timestamp, signingKey.KeyId, placeholderSignature);
+        var payload = CodexEntryCanonicalPayload.CreatePayload(canonicalizer, unsignedEntry);
+        var signature = await signingService.SignAsync(payload, signingKey, signingKey.Type);
+        // Attach real signature to entry
+        var entry = BuildEntry(anchor, storage, encryption, identity, timestamp, signingKey.KeyId, signature.Signature);
+
+        var storageLocation = "ipfs://QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o";
+        var storageAdapter = new StubStorageAdapter(entry.Storage, storageLocation);
+        var anchorHash = CodexEntryCanonicalPayload.CreateHash(canonicalizer, entry, System.Security.Cryptography.HashAlgorithmName.SHA256);
+        var anchorService = new StubAnchorService(canonicalizer, anchorHash, entry.Anchor);
+
+        var dependencies = new VerifierDependencies
+        {
+            Validator = validator,
+            Canonicalizer = canonicalizer,
+            SigningService = signingService,
+            AnchorService = anchorService,
+            StorageAdapters = new Dictionary<string, IStorageAdapter>(StringComparer.OrdinalIgnoreCase)
+            {
+                [entry.Storage.Protocol] = storageAdapter
+            },
+            StorageLocationResolver = (e, _) => Task.FromResult<string?>(storageLocation),
+            DefaultAnchorNetwork = "testnet"
+        };
+
+
+        var verifier = new VerifierService(dependencies);
+        var result = await verifier.VerifyAsync(entry);
+
+        // Assert all major pipeline steps succeeded
+        if (!result.IsValid || result.Errors.Count > 0)
+        {
+            var errorDetails = string.Join("\n", result.Errors.Select(e => $"{e.Code}: {e.Message}"));
+            throw new Xunit.Sdk.XunitException($"Verification failed. Errors:\n{errorDetails}");
+        }
+        Assert.Contains(result.Steps, step => step.Name == "Schema validation" && step.Status == VerificationStepStatus.Succeeded);
+        Assert.Contains(result.Steps, step => step.Name == "Canonicalization" && step.Status == VerificationStepStatus.Succeeded);
+        Assert.Contains(result.Steps, step => step.Name == "Signature validation" && step.Status == VerificationStepStatus.Succeeded);
+        Assert.Contains(result.Steps, step => step.Name == "Integrity proof validation" && step.Status == VerificationStepStatus.Succeeded);
+        Assert.Contains(result.Steps, step => step.Name == "Storage verification" && step.Status == VerificationStepStatus.Succeeded);
+        Assert.Contains(result.Steps, step => step.Name == "Anchor validation" && step.Status == VerificationStepStatus.Succeeded);
+        // Encryption and revision chain may be skipped if not present
+        Assert.Contains(result.Steps, step => step.Name == "Encryption policy validation");
+        Assert.Contains(result.Steps, step => step.Name == "Revision chain validation");
+    }
     [Fact]
     public async Task VerifyAsync_ReturnsSuccess_ForValidEntry()
     {
         var canonicalizer = new JcsCanonicalizer();
         var validator = new CodexEntryValidator();
-        var signingService = new JoseCoseSigningService();
+        var keyStore = new InMemoryKeyStore();
         var signingKey = CreateEd25519Key("did:example:org", "signer-1");
+        await keyStore.AddKeyAsync(signingKey);
+        var signingService = new JoseCoseSigningService(keyStore);
         var timestamp = DateTimeOffset.UtcNow;
         var storage = CreateStorageDescriptor();
         var encryption = CreateEncryptionDescriptor(signingKey.KeyId);
@@ -64,8 +149,10 @@ public class VerifierServiceTests
     {
         var canonicalizer = new JcsCanonicalizer();
         var validator = new CodexEntryValidator();
-        var signingService = new JoseCoseSigningService();
+        var keyStore = new InMemoryKeyStore();
         var signingKey = CreateEd25519Key("did:example:org", "signer-1");
+        await keyStore.AddKeyAsync(signingKey);
+        var signingService = new JoseCoseSigningService(keyStore);
         var timestamp = DateTimeOffset.UtcNow;
         var storage = CreateStorageDescriptor();
         var encryption = CreateEncryptionDescriptor(signingKey.KeyId);
@@ -255,8 +342,11 @@ public class VerifierServiceTests
             .WithEncryption(encryption)
             .WithIdentity(identity)
             .WithTimestamp(timestamp)
-            .WithAnchor(anchor)
-            .WithSignatures(new[]
+            .WithAnchor(anchor);
+
+        if (!string.IsNullOrEmpty(signatureValue))
+        {
+            builder.WithSignatures(new[]
             {
                 new SignatureProof
                 {
@@ -268,6 +358,7 @@ public class VerifierServiceTests
                     Signature = signatureValue
                 }
             });
+        }
 
         if (!string.IsNullOrWhiteSpace(previousId))
         {
@@ -292,7 +383,7 @@ public class VerifierServiceTests
         };
     }
 
-    private sealed class StubStorageAdapter : IStorageAdapter
+    internal sealed class StubStorageAdapter : IStorageAdapter
     {
         private readonly StorageDescriptor _descriptor;
         private readonly string _location;
@@ -328,7 +419,7 @@ public class VerifierServiceTests
         }
     }
 
-    private sealed class StubAnchorService : IStellarAnchorService
+    internal sealed class StubAnchorService : IStellarAnchorService
     {
         private readonly IJsonCanonicalizer _canonicalizer;
         private readonly byte[] _expectedHash;
@@ -354,12 +445,13 @@ public class VerifierServiceTests
                 return Task.FromResult(false);
             }
 
-            var hash = _canonicalizer.Hash(CodexEntryCanonicalPayload.CreateSnapshot(entry), HashAlgorithmName.SHA256);
+            var payload = CodexEntryCanonicalPayload.CreatePayload(_canonicalizer, entry);
+            var hash = SHA256.HashData(payload);
             return Task.FromResult(anchor.TransactionHash.Equals(_anchor.TransactionHash, StringComparison.OrdinalIgnoreCase) && hash.AsSpan().SequenceEqual(_expectedHash));
         }
     }
 
-    private sealed class StubCertificateService : ICertificateService
+    internal sealed class StubCertificateService : ICertificateService
     {
         private readonly bool _success;
 

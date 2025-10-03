@@ -37,6 +37,12 @@ public sealed class CodexEntry
     [JsonPropertyName("anchor")]
     public required AnchorProof Anchor { get; init; }
 
+
+    [JsonPropertyName("signature")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Signature { get; init; }
+
+    // Optional: Ancillary signatures for multi-sig, endorsements, etc.
     [JsonPropertyName("signatures")]
     public required IReadOnlyList<SignatureProof> Signatures { get; init; }
 
@@ -163,6 +169,9 @@ public sealed class SignatureProtectedHeader
 
 public sealed class SignatureProof
 {
+    [JsonPropertyName("type")]
+    public string Type { get; init; } = "internal"; // "internal", "zkp", "endorsement", etc.
+
     [JsonPropertyName("protected")]
     public required SignatureProtectedHeader ProtectedHeader { get; init; }
 
