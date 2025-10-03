@@ -474,7 +474,10 @@ public sealed class CertificateService : ICertificateService
         var notBefore = issuedAt.AddMinutes(-5);
         var notAfter = options.ExpiresAt ?? issuedAt.AddYears(1);
         using var certificate = request.CreateSelfSigned(notBefore, notAfter);
-        certificate.FriendlyName = $"Lockb0x Certificate {certificateId}";
+        if (OperatingSystem.IsWindows())
+        {
+            certificate.FriendlyName = $"Lockb0x Certificate {certificateId}";
+        }
         return new X509CertificateRepresentation(certificate.Export(X509ContentType.Cert), _hashAlgorithm.Name.ToLowerInvariant(), entryHashBytes);
     }
 

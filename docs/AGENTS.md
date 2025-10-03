@@ -39,19 +39,40 @@
 
 ### Implementation Gaps
 
-- **Stellar network integration**: Real network anchoring is not yet implemented; only mock/in-memory flows are tested.
-- **CLI integration**: CLI does not yet support end-to-end flows (file → Codex Entry → sign → anchor → verify).
-- **Certificate and Verifier modules**: APIs are documented, but implementations are pending.
-- **Multi-network/blockchain anchoring**: Only Stellar is supported (mock); adapters for other chains are not implemented.
-- **Advanced storage adapters**: Only IPFS is implemented; S3, Filecoin, and other backends are not yet supported.
-- **Error handling and logging**: Basic error handling is present, but centralized logging and diagnostics are not yet implemented.
+- **Stellar network integration**: Real network anchoring is not yet implemented; only mock/in-memory flows are tested. Next: Integrate with Stellar SDK/Horizon for real transaction submission and verification.
+- **Verifier module**: Full verification pipeline (schema, integrity, signatures, anchors, revision chain) needs to be implemented per spec.
+- **CLI & API integration**: CLI and API need to support end-to-end flows (file → Codex Entry → sign → anchor → certify → verify) and expose all major protocol operations.
+- **Multi-network/blockchain anchoring**: Only Stellar (mock) is supported; adapters for other chains (Ethereum, Avalanche, etc.) are planned.
+- **Advanced storage adapters**: Only IPFS is implemented; S3, Filecoin, Azure Blob, and other backends are planned.
+- **Centralized error handling/logging**: Basic error handling is present, but centralized logging and diagnostics are not yet implemented.
 
 ### Documentation Gaps
 
 - **Contributor setup**: No step-by-step guide for setting up testnets, IPFS nodes, or running integration tests.
 - **CLI usage**: No documentation for CLI commands or workflows.
-- **End-to-end examples**: No full example from file ingestion to verification.
+- **End-to-end examples**: No full example from file ingestion to verification/certification.
 - **Extensibility**: Adapter and extension points are documented, but practical examples are limited.
+
+## Roadmap & Steps to Completion
+
+1. **Stellar Network Integration**
+   - Integrate real Stellar SDK/Horizon for transaction submission and anchor verification.
+   - Document setup for testnet/mainnet environments.
+2. **Verifier Module Implementation**
+   - Build out the full verification pipeline per `/spec/verification.md` and `/spec/appendix-a-flows.md`.
+   - Add unit and integration tests for all verification steps.
+3. **CLI & API End-to-End Integration**
+   - Implement CLI commands and API endpoints for the full workflow: file → Codex Entry → sign → anchor → certify → verify.
+   - Provide usage documentation and examples.
+4. **Expand Storage & Blockchain Adapters**
+   - Implement S3, Filecoin, Azure Blob, and other storage adapters.
+   - Add support for additional blockchains (Ethereum, Avalanche, etc.).
+5. **Documentation & Contributor Guides**
+   - Write step-by-step guides for setup, integration testing, and workflow usage.
+   - Add end-to-end examples and practical extension patterns.
+6. **Centralized Error Handling & Logging**
+   - Refactor error handling for consistency and auditability.
+   - Implement centralized logging and diagnostics across modules.
 
 ## Guidance for Contributors & Users
 
