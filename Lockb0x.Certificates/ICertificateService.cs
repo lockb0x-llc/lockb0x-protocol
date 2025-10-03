@@ -1,50 +1,32 @@
+using System.Threading;
 using System.Threading.Tasks;
-using Lockb0x.Core;
+using Lockb0x.Certificates.Models;
+using Lockb0x.Core.Models;
 
 namespace Lockb0x.Certificates;
 
+/// <summary>
+/// Defines the certificate issuance, retrieval, and validation contract for Lockb0x Codex entries.
+/// </summary>
 public interface ICertificateService
 {
-    Task<Certificate> IssueCertificateAsync(CodexEntry entry);
-    Task<bool> VerifyCertificateAsync(Certificate certificate, CodexEntry entry);
-}
+    /// <summary>
+    /// Issues a certificate for the supplied Codex entry using the provided options.
+    /// </summary>
+    Task<CertificateDescriptor> IssueCertificateAsync(CodexEntry entry, CertificateOptions options, CancellationToken cancellationToken = default);
 
-public class Certificate
-{
-    public string Id { get; set; } = string.Empty;
-    public string Type { get; set; } = "Lockb0xCertificate";
-    public string Issuer { get; set; } = string.Empty;
-    public string Subject { get; set; } = string.Empty;
-    public string Jws { get; set; } = string.Empty; // JWS binding
-    public DateTimeOffset IssuedAt { get; set; }
-    public DateTimeOffset? RevokedAt { get; set; }
-    public string? Vc { get; set; } // Optional VC binding
-    public string? X509 { get; set; } // Optional X.509 binding
-}
+    /// <summary>
+    /// Validates the supplied certificate against the given Codex entry.
+    /// </summary>
+    Task<CertificateValidationResult> ValidateCertificateAsync(CertificateDescriptor certificate, CodexEntry entry, CancellationToken cancellationToken = default);
 
-// Stub implementation
-public class CertificateService : ICertificateService
-{
-    public async Task<Certificate> IssueCertificateAsync(CodexEntry entry)
-    {
-        // TODO: Real issuer/subject resolution, JWS/VC/X.509 generation
-        var cert = new Certificate
-        {
-            Id = $"urn:uuid:{Guid.NewGuid()}",
-            Issuer = "did:example:issuer", // TODO: Real issuer
-            Subject = entry.Id ?? "did:example:subject", // TODO: Real subject
-            IssuedAt = DateTimeOffset.UtcNow,
-            Jws = "stub-jws-for-entry" // TODO: Real JWS binding
-        };
-        return await Task.FromResult(cert);
-    }
+    /// <summary>
+    /// Marks the certificate as revoked and records an audit event.
+    /// </summary>
+    Task<bool> RevokeCertificateAsync(string certificateId, string? reason = null, CancellationToken cancellationToken = default);
 
-    public async Task<bool> VerifyCertificateAsync(Certificate certificate, CodexEntry entry)
-    {
-        // TODO: Real JWS/VC/X.509 verification
-        if (string.IsNullOrEmpty(certificate.Jws))
-            return await Task.FromResult(false);
-        // Stub: check subject matches entry id
-        return await Task.FromResult(certificate.Subject == entry.Id || string.IsNullOrEmpty(entry.Id));
-    }
+    /// <summary>
+    /// Retrieves a previously issued certificate by identifier.
+    /// </summary>
+    Task<CertificateDescriptor?> GetCertificateAsync(string certificateId, CancellationToken cancellationToken = default);
 }
