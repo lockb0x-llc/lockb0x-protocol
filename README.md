@@ -44,11 +44,12 @@ For details, see [`docs/AGENTS.md`](docs/AGENTS.md) and module-specific document
 Plain English: Store any kind of data, encrypted or not, on any storage media/platform and use any blockchain. With the lockb0x-protocol and a Codex Entry, you can always prove it hasn't been tampered with, when it was created and by "whom", and who has control or "custody" of the data/asset. If the control ever changes, the protocol follows it. The lockb0x-protocol is not a storage specification.
 
 It is a solution for data sovereignty that also provides the basis for Controllable Electronic Records, or a CER.
+
 The lockb0x CER is in compliance with and serves as of machine-readable implementation of a CER as defined under United States Uniform Commercial Code Sections 12, 9, 8, and 1.
 
 Which was revised in 2022 to address and regulate using blockchain accounts and cryptocurrency in commerce. In addition to defining custody by control as a proof of ownership. I.E., your keys, your tokens; or data/documents/assets as the case may be.
 
-It has been adopted by all 50 states and territoies of the U.S.
+It has been adopted by all 50 states and territories of the U.S. and the lockb0x protocol is intended to be used as a reference implmentation of these modernized transaction processing capabilities for use in commerce.
 
 The lockb0x-protocol, by design supports the standards and ethos of GDPR and is an enabler of personal data ownership and
 control.
