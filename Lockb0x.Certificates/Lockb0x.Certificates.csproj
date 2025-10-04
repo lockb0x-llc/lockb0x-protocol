@@ -5,8 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
+    <ProjectReference Include="..\Lockb0x.Signing\Lockb0x.Signing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Formats.Cbor" Version="9.0.9" />
+  </ItemGroup>
 
 </Project>

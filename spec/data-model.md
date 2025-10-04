@@ -1,13 +1,15 @@
 # 3. Data Model (Normative)
 
-The Lockb0x Protocol defines a structured JSON object called a **Codex Entry**.  
+The Lockb0x Protocol defines a structured JSON object called a **Codex Entry**.
 This is the fundamental unit of the protocol, capturing proofs of integrity, storage, identity, and blockchain anchoring.
+
+The reference implementation enforces strict schema validation and provides extension points for custom metadata and provenance adapters. All major APIs are async-ready, and the CodexEntry supports arrays for signatures and certificates, matching the protocol requirements and test coverage.
 
 ---
 
 ## 3.1 Codex Entry Schema
 
-A Codex Entry MUST be expressed as JSON. The following example shows a  
+A Codex Entry MUST be expressed as JSON. The following example shows a
 comprehensive Codex Entry with all possible fields:
 
 ```json
@@ -51,7 +53,7 @@ comprehensive Codex Entry with all possible fields:
   },
   "signatures": [
     {
-      "protected": {"alg": "EdDSA", "kid": "stellar:GA123..."},
+      "protected": { "alg": "EdDSA", "kid": "stellar:GA123..." },
       "signature": "base64url-edsig..."
     }
   ],
@@ -59,21 +61,21 @@ comprehensive Codex Entry with all possible fields:
 }
 ```
 
-**Note:** The above example shows a comprehensive entry with all possible fields.  
-Many fields are optional, including the entire `encryption` object which MUST be  
-omitted when assets are stored without encryption. See Section 3.2 for required  
+**Note:** The above example shows a comprehensive entry with all possible fields.
+Many fields are optional, including the entire `encryption` object which MUST be
+omitted when assets are stored without encryption. See Section 3.2 for required
 fields and Section 3.3 for optional fields.
 
 ---
 
 ## 3.2 Required Fields
 
-- `id` MUST be a UUID v4.  
-- `version` MUST indicate the protocol version.  
+- `id` MUST be a UUID v4.
+- `version` MUST indicate the protocol version.
 - `storage.protocol` MUST declare the backend adapter.
 - `storage.integrity_proof` MUST be expressed as a canonical [RFC 6920] Named Information URI (ni-URI) derived from the stored payload. Provider-specific identifiers (such as IPFS CIDs or S3 ETags) MUST be canonically mapped to ni-URIs by storage adapters before inclusion in the Codex Entry.
-- `storage.media_type` MUST use [RFC 6838] IANA-registered MIME types.  
-- `storage.size_bytes` MUST indicate the exact file size.  
+- `storage.media_type` MUST use [RFC 6838] IANA-registered MIME types.
+- `storage.size_bytes` MUST indicate the exact file size.
 - `storage.location` MUST specify region, jurisdiction, and provider.
 - When the `encryption` object is present (i.e., when encryption is applied):
   - `encryption.algorithm` MUST declare the encryption scheme.
@@ -86,9 +88,9 @@ fields and Section 3.3 for optional fields.
 - `identity.artifact` MUST be present for workflows, work orders, or provenance tracks and represents a stable identifier for the operational workflow in which the entry participates.
 - `identity.subject` MAY reference the individual, entity, or asset that is the subject of the record; when present it MUST be expressed as a DID or account identifier.
 - The identity hierarchy is: `org` → `process` → `artifact` → `subject`, where `artifact` is required for workflows/work orders, and `subject` is optional for entity/asset/person.
-- `timestamp` MUST be UTC ISO 8601.  
-- `anchor.chain` MUST use [CAIP-2] identifiers.  
-- `anchor.tx_hash` MUST contain a blockchain transaction reference.  
+- `timestamp` MUST be UTC ISO 8601.
+- `anchor.chain` MUST use [CAIP-2] identifiers.
+- `anchor.tx_hash` MUST contain a blockchain transaction reference.
 - `signatures` MUST use [JOSE JWS] or [COSE Sign1] objects; signatures are created **after anchoring** and MUST cover the full Codex Entry including the anchor object.
 - `previous_id` MUST link to the UUID of the immediate prior Codex Entry when the record is a revision; it MUST be omitted for the first entry in a chain.
 
@@ -98,10 +100,10 @@ The `identity` object forms a provenance hierarchy: `org` anchors the controllin
 
 ## 3.3 Optional Fields
 
-- `encryption.public_keys` MAY list public keys for multi-sig or escrow.  
+- `encryption.public_keys` MAY list public keys for multi-sig or escrow.
 - Codex Entries MUST omit the entire `encryption` object when assets are stored without encryption. When the object is provided, it MUST satisfy the constraints defined in Section 3.2.
-- `encryption.policy` MAY be omitted for single-key ownership but MUST be present for multi-sig control models.  
-- `identity.process` MAY specify a sub-identity.  
+- `encryption.policy` MAY be omitted for single-key ownership but MUST be present for multi-sig control models.
+- `identity.process` MAY specify a sub-identity.
 - `identity.artifact` MAY link to a business or compliance context (e.g., work order, case ID, transaction).
 - `identity.subject` MAY reference a DID for a person, organization, or asset that the Codex Entry concerns.
 - `extensions` MAY use JSON-LD for additional metadata.
@@ -160,9 +162,9 @@ Codex Entries stored without encryption MUST omit the entire `encryption` object
 
 `encryption.key_ownership` values MUST align with recognized key management roles:
 
-- `org-managed` → Keys are held solely by the declaring organization.  
-- `multi-sig` → Keys are held by multiple parties; operations require quorum.  
-- `custodian` → Keys are held by a third-party custodian.  
+- `org-managed` → Keys are held solely by the declaring organization.
+- `multi-sig` → Keys are held by multiple parties; operations require quorum.
+- `custodian` → Keys are held by a third-party custodian.
 
 Mappings SHOULD align with [NIST SP 800-57 Part 1] roles.
 
@@ -170,6 +172,6 @@ Mappings SHOULD align with [NIST SP 800-57 Part 1] roles.
 
 ## 3.5 Revision Chains
 
-Codex Entries MAY form a revision chain by referencing a `previous_id`.  
-This creates an immutable, linked sequence of records.  
-Verifiers MUST be able to traverse backward through `previous_id` links to reconstruct the full history of an asset or CER (Controllable Electronic Record).  
+Codex Entries MAY form a revision chain by referencing a `previous_id`.
+This creates an immutable, linked sequence of records.
+Verifiers MUST be able to traverse backward through `previous_id` links to reconstruct the full history of an asset or CER (Controllable Electronic Record).

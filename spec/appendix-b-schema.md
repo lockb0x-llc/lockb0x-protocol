@@ -1,11 +1,13 @@
 # Appendix B. Codex Entry JSON Schema (Non-Normative)
 
-This appendix provides a full JSON Schema definition for Codex Entries.  
-It is intended as a reference for validation and interoperability.  
+This appendix provides a full JSON Schema definition for Codex Entries.
+It is intended as a reference for validation and interoperability.
 The schema reflects all required and optional fields described in Section 3 (Data Model).
 
-**Note:** The `encryption` object is intentionally NOT included in the  
-root-level `required` array, making it optional in compliance with the protocol  
+The schema matches the current codebase and test coverage. Platform-specific gaps (e.g., Secp256k1, X.509 on macOS/Linux) are documented in the code and tests. All required and optional fields are validated strictly in the reference implementation.
+
+**Note:** The `encryption` object is intentionally NOT included in the
+root-level `required` array, making it optional in compliance with the protocol
 specification that allows plaintext assets.
 
 **Note on Additional Properties:** This schema explicitly sets `"additionalProperties": false` on all object types to ensure strict validation. Verifiers MUST reject Codex Entries containing any fields not defined in this schema. This approach ensures forward compatibility while maintaining cryptographic security by preventing injection of unexpected metadata that could compromise verification processes.
@@ -44,7 +46,13 @@ specification that allows plaintext assets.
     "storage": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["protocol", "integrity_proof", "media_type", "size_bytes", "location"],
+      "required": [
+        "protocol",
+        "integrity_proof",
+        "media_type",
+        "size_bytes",
+        "location"
+      ],
       "properties": {
         "protocol": {
           "type": "string",
@@ -70,9 +78,9 @@ specification that allows plaintext assets.
           "additionalProperties": false,
           "required": ["region", "jurisdiction", "provider"],
           "properties": {
-            "region": {"type": "string"},
-            "jurisdiction": {"type": "string"},
-            "provider": {"type": "string"}
+            "region": { "type": "string" },
+            "jurisdiction": { "type": "string" },
+            "provider": { "type": "string" }
           }
         }
       }
@@ -97,26 +105,26 @@ specification that allows plaintext assets.
           "additionalProperties": false,
           "required": ["type"],
           "properties": {
-            "type": {"type": "string", "enum": ["threshold"]},
-            "threshold": {"type": "integer", "minimum": 1},
-            "total": {"type": "integer", "minimum": 1}
+            "type": { "type": "string", "enum": ["threshold"] },
+            "threshold": { "type": "integer", "minimum": 1 },
+            "total": { "type": "integer", "minimum": 1 }
           }
         },
         "public_keys": {
           "type": "array",
-          "items": {"type": "string"},
+          "items": { "type": "string" },
           "description": "Public keys participating in multi-sig or custody."
         },
         "last_controlled_by": {
           "type": "array",
-          "items": {"type": "string"},
+          "items": { "type": "string" },
           "description": "Keys that executed the last control event; required when key_ownership is 'multi-sig', MAY be single for 'org-managed', and omitted if no encryption."
         }
       },
       "allOf": [
         {
           "if": {
-            "properties": {"key_ownership": {"const": "multi-sig"}}
+            "properties": { "key_ownership": { "const": "multi-sig" } }
           },
           "then": {
             "required": ["last_controlled_by"]
@@ -157,9 +165,15 @@ specification that allows plaintext assets.
       "additionalProperties": false,
       "required": ["chain", "tx_hash", "hash_alg"],
       "properties": {
-        "chain": {"type": "string", "description": "CAIP-2 blockchain identifier."},
-        "tx_hash": {"type": "string", "description": "Transaction hash referencing the anchor."},
-        "hash_alg": {"type": "string", "enum": ["SHA256", "SHA3-256"]},
+        "chain": {
+          "type": "string",
+          "description": "CAIP-2 blockchain identifier."
+        },
+        "tx_hash": {
+          "type": "string",
+          "description": "Transaction hash referencing the anchor."
+        },
+        "hash_alg": { "type": "string", "enum": ["SHA256", "SHA3-256"] },
         "token_id": {
           "type": "string",
           "pattern": "^(0x[a-fA-F0-9]+|[A-Za-z0-9][A-Za-z0-9._:-]*)$",
@@ -180,11 +194,17 @@ specification that allows plaintext assets.
             "additionalProperties": false,
             "required": ["alg", "kid"],
             "properties": {
-              "alg": {"type": "string", "description": "Algorithm identifier (e.g., EdDSA)."},
-              "kid": {"type": "string", "description": "Key identifier."}
+              "alg": {
+                "type": "string",
+                "description": "Algorithm identifier (e.g., EdDSA)."
+              },
+              "kid": { "type": "string", "description": "Key identifier." }
             }
           },
-          "signature": {"type": "string", "description": "Base64URL-encoded signature value."}
+          "signature": {
+            "type": "string",
+            "description": "Base64URL-encoded signature value."
+          }
         }
       },
       "description": "Signatures MUST be generated after anchoring, covering the full Codex Entry including the anchor reference."

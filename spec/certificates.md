@@ -1,8 +1,10 @@
 # 9. Certificates (Normative)
 
-Certificates are human- or machine-readable documents derived from Codex Entries.  
-They provide verifiable evidence of custodianship, integrity, and anchoring events.  
+Certificates are human- or machine-readable documents derived from Codex Entries.
+They provide verifiable evidence of custodianship, integrity, and anchoring events.
 Certificates may serve as compliance artifacts under frameworks such as UCC Section 12, eIDAS, or industry-specific regulations.
+
+The reference implementation supports JSON, JWT, VC, and X.509 formats, with platform-specific notes (e.g., X.509 on macOS/Linux) documented in the code and tests. Certificate generation and validation are fully integrated with the protocol pipeline and covered by deterministic unit and integration tests.
 
 ---
 
@@ -10,34 +12,36 @@ Certificates may serve as compliance artifacts under frameworks such as UCC Sect
 
 A Certificate MUST be generated in at least one of the following formats:
 
-- **JSON Certificate**:  
-  - Based directly on the Codex Entry JSON structure.  
-  - Signed using [JOSE JWS].  
-  - Intended for machine consumption and programmatic verification.  
+- **JSON Certificate**:
 
-- **W3C Verifiable Credential (VC)**:  
-  - Conforming to the [W3C VC Data Model].  
-  - Allows interoperability with decentralized identity systems.  
-  - MAY include semantic extensions (e.g., JSON-LD contexts).  
+  - Based directly on the Codex Entry JSON structure.
+  - Signed using [JOSE JWS].
+  - Intended for machine consumption and programmatic verification.
 
-- **X.509 / X.50x Certificate Binding**:  
-  - An optional binding of Codex Entry metadata to an X.509v3 certificate or equivalent PKI artifact.  
-  - Provides compatibility with existing TLS/PKI infrastructure.  
-  - MUST use an extension field (OID) to carry the Codex Entry hash or anchor reference.  
+- **W3C Verifiable Credential (VC)**:
+
+  - Conforming to the [W3C VC Data Model].
+  - Allows interoperability with decentralized identity systems.
+  - MAY include semantic extensions (e.g., JSON-LD contexts).
+
+- **X.509 / X.50x Certificate Binding**:
+  - An optional binding of Codex Entry metadata to an X.509v3 certificate or equivalent PKI artifact.
+  - Provides compatibility with existing TLS/PKI infrastructure.
+  - MUST use an extension field (OID) to carry the Codex Entry hash or anchor reference.
 
 ---
 
 ## 9.2 Generation Requirements
 
-- Certificates MUST clearly bind to a unique Codex Entry `id`.  
+- Certificates MUST clearly bind to a unique Codex Entry `id`.
 - Certificates MUST include:
-  - Integrity proof (`storage.integrity_proof`).  
-  - Anchor reference (`anchor.tx_hash`, `anchor.chain`).  
-  - Signatures from authorized entities.  
-- Certificates MUST reflect encryption metadata if present in the Codex Entry, and omit it if not.  
-- If the Codex Entry includes a `last_controlled_by` field, it MUST be reproduced in the certificate.  
-- Signatures MUST be created after anchoring and MUST cover the full Codex Entry including the anchor reference.  
-- Where X.509 binding is used, the certificate MUST include the Codex Entry hash in a critical extension to prevent misuse.  
+  - Integrity proof (`storage.integrity_proof`).
+  - Anchor reference (`anchor.tx_hash`, `anchor.chain`).
+  - Signatures from authorized entities.
+- Certificates MUST reflect encryption metadata if present in the Codex Entry, and omit it if not.
+- If the Codex Entry includes a `last_controlled_by` field, it MUST be reproduced in the certificate.
+- Signatures MUST be created after anchoring and MUST cover the full Codex Entry including the anchor reference.
+- Where X.509 binding is used, the certificate MUST include the Codex Entry hash in a critical extension to prevent misuse.
 
 ---
 
@@ -45,22 +49,22 @@ A Certificate MUST be generated in at least one of the following formats:
 
 Verifiers MUST:
 
-1. Confirm the certificate format is supported and valid (JSON, VC, X.509).  
-2. Validate all included signatures according to Section 6.  
-3. Cross-check that the Codex Entry referenced by the certificate is itself valid (per Section 8).  
-4. For X.509-bound certificates, validate the PKI chain of trust in addition to Codex Entry validation.  
+1. Confirm the certificate format is supported and valid (JSON, VC, X.509).
+2. Validate all included signatures according to Section 6.
+3. Cross-check that the Codex Entry referenced by the certificate is itself valid (per Section 8).
+4. For X.509-bound certificates, validate the PKI chain of trust in addition to Codex Entry validation.
 
-If any of these checks fail, the certificate MUST be rejected.  
+If any of these checks fail, the certificate MUST be rejected.
 
 ---
 
 ## 9.4 Revocation and Expiry
 
-- Certificates MAY include an expiry date.  
+- Certificates MAY include an expiry date.
 - Certificates MAY be revoked using standard mechanisms:
-  - For JSON/VC: by publishing a revocation list or status endpoint.  
-  - For X.509: by CRL or OCSP.  
-- Revocation MUST NOT retroactively invalidate historical Codex Entries already anchored.  
+  - For JSON/VC: by publishing a revocation list or status endpoint.
+  - For X.509: by CRL or OCSP.
+- Revocation MUST NOT retroactively invalidate historical Codex Entries already anchored.
 
 ---
 
@@ -68,28 +72,30 @@ If any of these checks fail, the certificate MUST be rejected.
 
 Different certificate formats serve different operational and compliance needs:
 
-- **JSON Certificates**  
-  - Best suited for developer tooling, APIs, and automated verification.  
-  - Lightweight and easy to parse in any environment.  
-  - Limited interoperability with identity frameworks outside JSON ecosystems.  
+- **JSON Certificates**
+
+  - Best suited for developer tooling, APIs, and automated verification.
+  - Lightweight and easy to parse in any environment.
+  - Limited interoperability with identity frameworks outside JSON ecosystems.
   - Certificates MUST conform to Codex Entry schema rules for optional fields like encryption and identity.
 
-- **W3C Verifiable Credentials (VCs)**  
-  - Ideal for decentralized identity, self-sovereign identity (SSI), and Web3 systems.  
-  - Strong interoperability with DID methods and JSON-LD vocabularies.  
-  - Heavier processing requirements due to JSON-LD and semantic validation.  
+- **W3C Verifiable Credentials (VCs)**
+
+  - Ideal for decentralized identity, self-sovereign identity (SSI), and Web3 systems.
+  - Strong interoperability with DID methods and JSON-LD vocabularies.
+  - Heavier processing requirements due to JSON-LD and semantic validation.
   - Certificates MUST conform to Codex Entry schema rules for optional fields like encryption and identity.
 
-- **X.509 Certificates**  
-  - Appropriate when integration with existing TLS/PKI infrastructure is required (e.g., corporate IT, HTTPS, VPNs).  
-  - Provides backward compatibility with regulators, enterprises, and legacy compliance systems.  
-  - Heavier reliance on centralized certificate authorities (CAs) compared to JSON/VC approaches.  
+- **X.509 Certificates**
+  - Appropriate when integration with existing TLS/PKI infrastructure is required (e.g., corporate IT, HTTPS, VPNs).
+  - Provides backward compatibility with regulators, enterprises, and legacy compliance systems.
+  - Heavier reliance on centralized certificate authorities (CAs) compared to JSON/VC approaches.
 
 ### Choosing a format
 
-- Use **JSON Certificates** when working with APIs, developer tools, and blockchain-native systems.  
-- Use **VCs** when operating in ecosystems where decentralized identity and SSI are priorities.  
-- Use **X.509 bindings** when bridging to traditional IT or regulatory systems that already mandate PKI.  
+- Use **JSON Certificates** when working with APIs, developer tools, and blockchain-native systems.
+- Use **VCs** when operating in ecosystems where decentralized identity and SSI are priorities.
+- Use **X.509 bindings** when bridging to traditional IT or regulatory systems that already mandate PKI.
 
 Implementers MAY support multiple formats in parallel, allowing the same Codex Entry to generate different certificates depending on the target environment or audience.
 
@@ -116,8 +122,8 @@ A single Codex Entry can generate multiple certificates for different consumers:
  For APIs, CLI tools,        For decentralized ID
  and blockchain-native        ecosystems, SSI,
  systems.                    and Web3 workflows.
-     
-     
+
+
                +-----------------+
                |     X.509       |
                |   Certificate   |
@@ -271,5 +277,5 @@ Certificate:
 
 ---
 
-[JOSE JWS]: https://www.rfc-editor.org/rfc/rfc7515  
+[JOSE JWS]: https://www.rfc-editor.org/rfc/rfc7515
 [W3C VC Data Model]: https://www.w3.org/TR/vc-data-model/
