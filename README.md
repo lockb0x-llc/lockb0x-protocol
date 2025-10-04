@@ -95,7 +95,7 @@ See [Appendix A: Example Flows](spec/appendix-a-flows.md) for more details.
 
 ## Specification
 
-The full technical specification lives in [`spec/v0.0.1-public-draft.md`](spec/v0.0.1-public-draft.md).
+The full technical specification lives in [`spec/v0.0.2-public-draft.md`](spec/v0.0.2-public-draft.md).
 Each section of the spec is broken out into its own file in the [`spec/`](spec/) folder for clarity.
 
 ---

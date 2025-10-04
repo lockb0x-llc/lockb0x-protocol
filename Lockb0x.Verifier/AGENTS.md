@@ -215,7 +215,7 @@ This plan details the steps to implement the basic verification pipeline for Cod
 - [Appendix A: Example Flows](../../spec/appendix-a-flows.md)
 - [Data Model](../../spec/data-model.md)
 - [Reference Implementation](../../spec/reference-implementation.md)
-- [Lockb0x Protocol Specification](../../spec/v0.0.1-public-draft.md)
+- [Lockb0x Protocol Specification](../../spec/v0.0.2-public-draft.md)
 - [RFC 8785: JCS](https://datatracker.ietf.org/doc/html/rfc8785)
 - [RFC 6920: ni-URI](https://datatracker.ietf.org/doc/html/rfc6920)
 - [RFC 7515: JOSE](https://datatracker.ietf.org/doc/html/rfc7515)

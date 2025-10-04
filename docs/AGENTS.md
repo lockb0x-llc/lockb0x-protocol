@@ -28,7 +28,7 @@
 - All modules use async APIs and are designed for agent workflows.
 - Storage adapter is fully compatible with Codex Entry builder and validation.
 - Error objects are machine-readable for diagnostics.
-- All data models align with the canonical schema in [`spec/v0.0.1-public-draft.md`](../spec/v0.0.1-public-draft.md).
+- All data models align with the canonical schema in [`spec/v0.0.2-public-draft.md`](../spec/v0.0.2-public-draft.md).
 
 ### Testing
 
@@ -231,7 +231,7 @@ This document provides detailed technical design specifications for the Lockb0x 
 - All modules expose async APIs for integration with agent workflows.
 - Error objects are machine-readable for automated diagnostics.
 - Extension points are documented for agent interoperability.
-- All data models align with the canonical schema in [`spec/v0.0.1-public-draft.md`](../spec/v0.0.1-public-draft.md).
+- All data models align with the canonical schema in [`spec/v0.0.2-public-draft.md`](../spec/v0.0.2-public-draft.md).
 
 ---
 
