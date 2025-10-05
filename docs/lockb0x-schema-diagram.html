@@ -1,0 +1,91 @@
+
+Lockb0x Protocol — JSON Schema & CER/Data Sovereignty Map
+Spec v0.0.2 (public draft) — abstract systems view (not to scale)
+Schema Overview
+Lockb0x Codex Entry schema (abbrev.) showing required fields for identity, integrity (ni‑URI), signatures, and anchors that together form a UCC Article 12 Controllable Electronic Record (CER).
+Required ★
+Integrity: RFC 6920 ni‑URI
+Anchors: on/off‑chain
+Signatures: detached/linked
+{
+  "version": "0.0.2",                               ★
+  "identity": {                                     ★
+    "organization": "org:example:acme",             ★
+    "subject": "subj:projects/rooftop",             ★
+    "artifact": "file:designs/pv-array.dwg"         ★
+  },
+  "content": {
+    "media_type": "application/vnd.dwg",
+    "length": 842193
+  },
+  "integrity": {                                    ★
+    "ni_uri": "ni:///sha-256;Qm... (RFC 6920)",     ★
+    "canonicalization": "lockb0x/1 canonical bytes"
+  },
+  "signatures": [                                   ★
+    {
+      "alg": "ed25519",
+      "key_id": "did:example:acme#ops-signing",
+      "sig": "b64url-…"
+    }
+  ],
+  "anchors": [                                      ★
+    {
+      "type": "ledger",
+      "network": "Stellar:PubNet",
+      "tx_id": "8b6…f42",
+      "evidence": "ni:///sha-256;…"
+    },
+    {
+      "type": "ipfs",
+      "cid": "bafy…",
+      "gateway": "https://…"
+    }
+  ],
+  "provenance": {
+    "timestamp": "2025-10-04T01:23:45Z",
+    "actor": "did:example:acme#buildbot"
+  }
+}
+Visual Map
+Data flows: solid = CER‑critical; dashed = auxiliary/transport.
+Identity & Content
+identity
+organization • subject • artifact
+namesp.
+content
+media_type • length • (optional: url)
+Integrity (RFC 6920)
+integrity
+ni_uri (sha-256) ★
+canonicalization: "lockb0x/1"
+content-addressed
+Authenticity
+signatures[]
+alg • key_id (DID) • sig
+detached / linked data
+verifies integrity.ni_uri & identity
+CER: Controllable Electronic Record
+= identity + integrity + signatures
+UCC Article 12
+control: who can update/anchor
+The CER is the sovereign core of each entry.
+Anchors & Evidence
+anchors[]
+ledger • ipfs • cloud • custom
+Ledger Anchor
+network: Stellar / EVM / others
+tx_id + evidence: ni:///sha-256;…
+IPFS Anchor
+cid + optional gateway
+Cloud/Object Store
+provider ref (e.g., S3 ETag → ni)
+Storage & Adapter Layer
+ipfs-adapter
+stellar-ledger-anchor
+evm-ledger-anchor
+s3-object-proof
+Adapters normalize provider evidence → canonical ni‑URI for anchors.
+They do not define the CER; they supply verifiable evidence linked by the CER.
+How to use this diagram
+Embed this HTML in docs or serve it as a static page. The left pane summarizes the JSON structure (fields marked ★ are required by the public draft). The right pane shows the CER at the center, fed by identity, integrity (ni‑URI), and signatures, with anchors and adapters providing durable, multi‑network evidence.
