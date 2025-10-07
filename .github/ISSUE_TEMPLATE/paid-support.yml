@@ -1,0 +1,33 @@
+name: "💼 Paid Support / Enterprise Inquiry"
+description: Route requests that require SLAs or integration time.
+title: "[Support] <brief description>"
+labels: ["paid-support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reaching out! If this is a **bug** or **feature request** for the open-source repo, please use the standard templates.
+        If you need **commercial support** (SLAs, consulting, roadmap input), please complete the form below.
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you need?
+      placeholder: e.g., integration help with Filecoin adapter; timeline; scope
+  - type: input
+    id: company
+    attributes:
+      label: Company / Team
+  - type: input
+    id: contact
+    attributes:
+      label: Contact email
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Are you already a sponsor?
+      options:
+        - "No"
+        - "Yes - Community"
+        - "Yes - Builder"
+        - "Yes - Team"
+        - "Yes - Enterprise"
