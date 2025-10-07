@@ -1,31 +1,6 @@
 ![Lockb0x Protocol](signed-sealed-delivered.png)
 
 # Lockb0x Protocol
-
-[![Sponsor](https://img.shields.io/badge/Sponsor-Lockb0x%20Protocol-pink.svg)](https://github.com/sponsors/lockb0x-llc)
-
-The **Lockb0x Protocol** is an open standard for proving the **existence, integrity, and custodianship** of digital data.
-It’s designed for developers who need **verifiable audit trails** without locking into a single vendor, storage backend, or blockchain.
-
-## 💚 Support Lockb0x Protocol
-
-Lockb0x is an open, standards-first protocol for verifiable data sovereignty.
-If this project helps you, please consider sponsoring to sustain maintenance and new features.
-
-[⬆️ Become a Sponsor](https://github.com/sponsors/lockb0x-llc)
-·
-[📄 Commercial Support](./SUPPORT.md)
-·
-[🤝 Contributors](./CONTRIBUTING.md)
-
----
-
-### Sponsor Tiers (high level)
-- **Community ($5/mo)** – Name listed in [SPONSORS.md](./SPONSORS.md)
-- **Builder ($25/mo)** – Priority tag on one issue per month
-- **Team ($250/mo)** – 1h/mo integration Q&A + logo here
-- **Enterprise ($2,000/mo)** – 4h/mo solutioning + feature prioritization window
-
 At its core, Lockb0x provides a portable, signed JSON structure called a **Codex Entry**.
 Each entry links together:
 
@@ -130,6 +105,8 @@ Lockb0x is at an early stage and we welcome feedback, contributions, and discuss
 - Join the discussion on standards alignment and compliance use cases.
 
 ---
+
+
 
 ## License
 
