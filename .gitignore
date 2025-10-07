@@ -108,7 +108,9 @@ Thumbs.db
 # MCP and development tooling configs
 .msp.json
 .vscode/
-.github/
+# Allow repository metadata (issue templates, funding, etc.)
+!.github/
+!.github/**
 
 # Exclude secrets and sensitive files
 .env
@@ -123,3 +125,10 @@ secrets.json
 !CONTRIBUTING.md
 !CODE_OF_CONDUCT.md
 !SETUP.md
+
+# Grant management artifacts (ignore sensitive contents by default)
+grant-management/**
+!grant-management/
+!grant-management/README.md
+!grant-management/*/
+!grant-management/**/README.md

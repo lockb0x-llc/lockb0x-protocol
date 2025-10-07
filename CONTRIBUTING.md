@@ -16,6 +16,7 @@ We welcome contributions from the community to help improve the specification, r
 - **Issues:**
   - Use the [GitHub Issues](https://github.com/lockb0x-llc/lockb0x-protocol/issues) tab to ask questions, discuss ideas, or report bugs.
   - Please search existing issues before opening a new one.
+  - Need guaranteed timelines, integration help, or training? See **[SUPPORT.md](./SUPPORT.md)** for commercial options.
 
 ## Code of Conduct
 
