@@ -38,6 +38,9 @@ artifacts/
 *.suo
 *.user
 *.userosscache
+
+# Lockb0x Protocol: Ignore grant-management folder
+grant-management/
 *.sln.docstates
 
 # NuGet
@@ -106,11 +109,9 @@ Thumbs.db
 *.temp
 
 # MCP and development tooling configs
-.msp.json
+.mcp.json
 .vscode/
-# Allow repository metadata (issue templates, funding, etc.)
-!.github/
-!.github/**
+.github/
 
 # Exclude secrets and sensitive files
 .env
@@ -125,10 +126,3 @@ secrets.json
 !CONTRIBUTING.md
 !CODE_OF_CONDUCT.md
 !SETUP.md
-
-# Grant management artifacts (ignore sensitive contents by default)
-grant-management/**
-!grant-management/
-!grant-management/README.md
-!grant-management/*/
-!grant-management/**/README.md
