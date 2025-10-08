@@ -1,10 +1,6 @@
 ![Lockb0x Protocol](signed-sealed-delivered.png)
 
 # Lockb0x Protocol
-
-The **Lockb0x Protocol** is an open standard for proving the **existence, integrity, and custodianship** of digital data.
-It’s designed for developers who need **verifiable audit trails** without locking into a single vendor, storage backend, or blockchain.
-
 At its core, Lockb0x provides a portable, signed JSON structure called a **Codex Entry**.
 Each entry links together:
 
@@ -109,6 +105,8 @@ Lockb0x is at an early stage and we welcome feedback, contributions, and discuss
 - Join the discussion on standards alignment and compliance use cases.
 
 ---
+
+
 
 ## License
 

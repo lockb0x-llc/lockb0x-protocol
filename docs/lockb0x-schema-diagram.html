@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lockb0x Protocol — JSON Schema & CER/Data Sovereignty Map</title>
+<style>
+  :root{
+    --bg:#0b1020;
+    --panel:#121a30;
+    --ink:#e6f1ff;
+    --muted:#9bb3ce;
+    --accent:#4fd1c5;
+    --accent2:#7aa2f7;
+    --warn:#f6ad55;
+    --ok:#68d391;
+    --danger:#f56565;
+    --line:#26324d;
+    --chip:#1a2440;
+  }
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;}
+  a{color:var(--accent)}
+  .wrap{max-width:1200px;margin:20px auto;padding:16px}
+  .grid{display:grid;grid-template-columns: 360px 1fr; gap:16px}
+  @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.25);overflow:hidden}
+  .card h2, .card h3{margin:0;padding:16px 16px 8px 16px}
+  .card p{margin:0;padding:0 16px 16px 16px;color:var(--muted)}
+  .code{background:#0a0f1e;border-top:1px solid var(--line);padding:16px 16px 24px 16px;overflow:auto}
+  pre{margin:0;white-space:pre;tab-size:2}
+  .legend{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 16px}
+  .chip{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
+  /* SVG styling */
+  svg{width:100%;height:auto;display:block;background:linear-gradient(180deg, rgba(18,26,48,.9), rgba(11,16,32,1));}
+  .box{fill:#10172a;stroke:#2a3655;stroke-width:1.2}
+  .boxTitle{font-weight:700;fill:#e6f1ff}
+  .boxText{fill:#a9c0db}
+  .groupTitle{fill:#9bb3ce;font-weight:700}
+  .link{stroke:#4fd1c5;stroke-width:1.8;marker-end:url(#arrow)}
+  .link2{stroke:#7aa2f7;stroke-width:1.4;stroke-dasharray:6 4;marker-end:url(#arrow2)}
+  .halo{filter:url(#glow)}
+  .badge{fill:#1a2440;stroke:#2b3b62;stroke-width:1}
+  .badgeText{fill:#9bb3ce;font-size:12px}
+  .pill{fill:#13203e;stroke:#2b3b62;stroke-width:1}
+  .pillText{fill:#9ed1ff;font-size:11px}
+  .anchorFlyout{fill:#0d1a33;stroke:#2a3655;stroke-width:1.2}
+  .anchorTitle{fill:#e6f1ff;font-weight:700}
+  .anchorText{fill:#9bb3ce}
+  .accentStroke{stroke:#68d391;stroke-width:2}
+  .mini{font-size:11px;fill:#a9c0db}
+  .caption{font-size:13px;fill:#9bb3ce}
+  .panelHdr{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .dot{width:8px;height:8px;border-radius:999px;background:var(--accent)}
+  .subtitle{color:var(--muted);font-size:13px;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panelHdr card">
+    <div class="dot"></div>
+    <div>
+      <div style="font-weight:700">Lockb0x Protocol — JSON Schema & CER/Data Sovereignty Map</div>
+      <div class="subtitle">Spec v0.0.2 (public draft) — abstract systems view (not to scale)</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT: Schema Summary & Example -->
+    <div class="card">
+      <h2>Schema Overview</h2>
+      <p>Lockb0x <em>Codex Entry</em> schema (abbrev.) showing required fields for identity, integrity (ni-URI), signatures, and anchors that together form a UCC Article&nbsp;12 <strong>Controllable Electronic Record (CER)</strong>.</p>
+      <div class="legend">
+        <div class="chip">Required ★</div>
+        <div class="chip">Integrity: RFC&nbsp;6920 ni-URI</div>
+        <div class="chip">Anchors: on/off-chain</div>
+        <div class="chip">Signatures: detached/linked</div>
+      </div>
+      <div class="code">
+<pre><code>{
+  "version": "0.0.2",                               ★
+  "identity": {                                     ★
+    "organization": "org:example:acme",             ★
+    "subject": "subj:projects/rooftop",             ★
+    "artifact": "file:designs/pv-array.dwg"         ★
+  },
+  "content": {
+    "media_type": "application/vnd.dwg",
+    "length": 842193
+  },
+  "integrity": {                                    ★
+    "ni_uri": "ni:///sha-256;Qm... (RFC 6920)",     ★
+    "canonicalization": "lockb0x/1 canonical bytes"
+  },
+  "signatures": [                                   ★
+    {
+      "alg": "ed25519",
+      "key_id": "did:example:acme#ops-signing",
+      "sig": "b64url-…"
+    }
+  ],
+  "anchors": [                                      ★
+    {
+      "type": "ledger",
+      "network": "Stellar:PubNet",
+      "tx_id": "8b6…f42",
+      "evidence": "ni:///sha-256;…"
+    },
+    {
+      "type": "ipfs",
+      "cid": "bafy…",
+      "gateway": "https://…"
+    }
+  ],
+  "provenance": {
+    "timestamp": "2025-10-04T01:23:45Z",
+    "actor": "did:example:acme#buildbot"
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- RIGHT: Diagram -->
+    <div class="card">
+      <h2>Visual Map</h2>
+      <p class="caption">Data flows: <span style="color:var(--accent)">solid</span> = CER-critical; <span style="color:var(--accent2)">dashed</span> = auxiliary/transport.</p>
+      <svg viewBox="0 0 1200 760" role="img" aria-label="Lockb0x protocol conceptual map">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L9,3 L0,6 Z" fill="#4fd1c5"/>
+          </marker>
+          <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L9,3 L0,6 Z" fill="#7aa2f7"/>
+          </marker>
+        </defs>
+
+        <!-- Group: Identity & Content -->
+        <g transform="translate(40,40)">
+          <text class="groupTitle" x="0" y="-10">Identity & Content</text>
+          <rect class="box halo" x="0" y="0" width="360" height="160" rx="12"/>
+          <text class="boxTitle" x="16" y="30">identity</text>
+          <text class="boxText mini" x="16" y="52">organization • subject • artifact</text>
+          <rect class="badge" x="270" y="12" width="74" height="24" rx="12"/>
+          <text class="badgeText" x="283" y="28">namesp.</text>
+
+          <text class="boxTitle" x="16" y="90">content</text>
+          <text class="boxText mini" x="16" y="112">media_type • length • (optional: url)</text>
+        </g>
+
+        <!-- Group: Integrity (ni-URI) -->
+        <g transform="translate(40,240)">
+          <text class="groupTitle" x="0" y="-10">Integrity (RFC 6920)</text>
+          <rect class="box halo" x="0" y="0" width="360" height="140" rx="12"/>
+          <text class="boxTitle" x="16" y="30">integrity</text>
+          <text class="boxText mini" x="16" y="52">ni_uri (sha-256) ★</text>
+          <text class="boxText mini" x="16" y="72">canonicalization: "lockb0x/1"</text>
+          <rect class="pill" x="220" y="18" width="120" height="24" rx="12"/>
+          <text class="pillText" x="230" y="34">content-addressed</text>
+        </g>
+
+        <!-- Group: Signatures -->
+        <g transform="translate(40,420)">
+          <text class="groupTitle" x="0" y="-10">Authenticity</text>
+          <rect class="box halo" x="0" y="0" width="360" height="160" rx="12"/>
+          <text class="boxTitle" x="16" y="30">signatures[]</text>
+          <text class="boxText mini" x="16" y="52">alg • key_id (DID) • sig</text>
+          <rect class="pill" x="200" y="18" width="160" height="24" rx="12"/>
+          <text class="pillText" x="210" y="34">detached / linked data</text>
+          <text class="boxText mini" x="16" y="82">verifies integrity.ni_uri & identity</text>
+        </g>
+
+        <!-- Group: CER (center) -->
+        <g transform="translate(460,260)">
+          <rect class="box halo" x="0" y="0" width="300" height="200" rx="16"/>
+          <text class="boxTitle" x="20" y="36">CER: Controllable Electronic Record</text>
+          <text class="boxText" x="20" y="62">= identity + integrity + signatures</text>
+          <rect class="badge" x="20" y="84" width="120" height="24" rx="12"/>
+          <text class="badgeText" x="30" y="100">UCC Article 12</text>
+          <rect class="pill" x="20" y="122" width="200" height="24" rx="12"/>
+          <text class="pillText" x="30" y="138">control: who can update/anchor</text>
+          <text class="caption" x="20" y="170">The CER is the sovereign core of each entry.</text>
+        </g>
+
+        <!-- Group: Anchors (right) -->
+        <g transform="translate(820,60)">
+          <text class="groupTitle" x="0" y="-10">Anchors & Evidence</text>
+          <rect class="box halo" x="0" y="0" width="340" height="300" rx="16"/>
+          <text class="boxTitle" x="16" y="34">anchors[]</text>
+          <text class="boxText mini" x="16" y="56">ledger • ipfs • cloud • custom</text>
+
+          <!-- Anchor flyouts -->
+          <g transform="translate(16,76)">
+            <rect class="anchorFlyout" x="0" y="0" width="308" height="70" rx="10"/>
+            <text class="anchorTitle" x="12" y="24">Ledger Anchor</text>
+            <text class="anchorText mini" x="12" y="44">network: Stellar / EVM / others</text>
+            <text class="anchorText mini" x="12" y="60">tx_id + evidence: ni:///sha-256;…</text>
+          </g>
+          <g transform="translate(16,156)">
+            <rect class="anchorFlyout" x="0" y="0" width="308" height="60" rx="10"/>
+            <text class="anchorTitle" x="12" y="24">IPFS Anchor</text>
+            <text class="anchorText mini" x="12" y="44">cid + optional gateway</text>
+          </g>
+          <g transform="translate(16,226)">
+            <rect class="anchorFlyout" x="0" y="0" width="308" height="60" rx="10"/>
+            <text class="anchorTitle" x="12" y="24">Cloud/Object Store</text>
+            <text class="anchorText mini" x="12" y="44">provider ref (e.g., S3 ETag → ni)</text>
+          </g>
+        </g>
+
+        <!-- Group: Storage Adapters -->
+        <g transform="translate(460,500)">
+          <text class="groupTitle" x="0" y="-10">Storage & Adapter Layer</text>
+          <rect class="box halo" x="0" y="0" width="700" height="180" rx="16"/>
+          <g transform="translate(16,20)">
+            <rect class="badge" x="0" y="0" width="140" height="26" rx="13"/>
+            <text class="badgeText" x="12" y="17">ipfs-adapter</text>
+          </g>
+          <g transform="translate(176,20)">
+            <rect class="badge" x="0" y="0" width="160" height="26" rx="13"/>
+            <text class="badgeText" x="12" y="17">stellar-ledger-anchor</text>
+          </g>
+          <g transform="translate(356,20)">
+            <rect class="badge" x="0" y="0" width="160" height="26" rx="13"/>
+            <text class="badgeText" x="12" y="17">evm-ledger-anchor</text>
+          </g>
+          <g transform="translate(536,20)">
+            <rect class="badge" x="0" y="0" width="148" height="26" rx="13"/>
+            <text class="badgeText" x="12" y="17">s3-object-proof</text>
+          </g>
+          <text class="caption" x="16" y="66">Adapters normalize provider evidence → canonical ni-URI for anchors.</text>
+          <text class="caption" x="16" y="88">They do not define the CER; they supply verifiable evidence linked by the CER.</text>
+        </g>
+
+        <!-- Data flow lines -->
+        <line class="link" x1="400" y1="200" x2="460" y2="280"/>
+        <line class="link" x1="220" y1="310" x2="460" y2="300"/>
+        <line class="link" x1="360" y1="520" x2="460" y2="360"/>
+        <line class="link" x1="760" y1="340" x2="820" y2="210"/>
+        <line class="link2" x1="610" y1="460" x2="610" y2="500"/>
+        <line class="link2" x1="920" y1="540" x2="920" y2="360"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>How to use this diagram</h3>
+    <p>Embed this HTML in docs or serve it as a static page. The left pane summarizes the JSON structure (fields marked ★ are required by the public draft). The right pane shows the <strong>CER</strong> at the center, fed by <em>identity</em>, <em>integrity (ni-URI)</em>, and <em>signatures</em>, with <em>anchors</em> and <em>adapters</em> providing durable, multi-network evidence.</p>
+  </div>
+</div>
+</body>
+</html>
