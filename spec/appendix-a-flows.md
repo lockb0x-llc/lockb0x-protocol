@@ -182,4 +182,50 @@ Platform-specific notes: Secp256k1 and X.509 have limitations on macOS/Linux; se
 
 ---
 
-These example flows show how the Lockb0x Protocol can be applied across storage backends, multi-sig contexts, and revision chains.
+---
+
+## A.9 Ethereum Anchor and Verifier (EVM-compatible)
+
+**Purpose:** Record and verify Lockb0x Codex Entry digests on Ethereum or compatible EVM networks.
+
+1. Compute canonical SHA-256 digest of target media or CER JSON.
+2. Construct ni-URI per RFC 6920 (`ni:///sha-256;<b64url>`).
+3. Invoke `Lockb0x_Anchor_Eth.anchor(digest, metadata)` on-chain, where:
+   - `digest` is the bytes32 hash (SHA-256 or Keccak256)
+   - `metadata` is a JSON string (can include cerId, niUri, externalRef, alg, etc.)
+4. Record emitted `Anchored` event with hash and metadata.
+5. To verify:
+   - Retrieve anchor by hash via `getAnchor(digest)`.
+   - Recompute digest off-chain per Lockb0x canonical rules.
+   - Compare on-chain digest vs. recomputed digest.
+   - If match → integrity verified.
+
+**Example JSON Test Vector:**
+
+```json
+{
+  "flow": "ethereum-anchor",
+  "input": {
+    "digest": "0x61dfaa61c9e6b3a8d9ec8c28b90e6931d7c43ed9869d3a13ec099d19b5a74e3a",
+    "niUri": "ni:///sha-256;Yd-qYcnms6jZ7Iwo2Q5pMdfEPtrGnToT7AmdGbWnTjo",
+    "cerId": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "externalRef": "ipfs://bafybeigdyr...",
+    "alg": "SHA256"
+  },
+  "output": {
+    "hash": "0x61dfaa61c9e6b3a8d9ec8c28b90e6931d7c43ed9869d3a13ec099d19b5a74e3a",
+    "metadata": "{\"cerId\":\"0x000...000\",\"niUri\":\"ni:///sha-256;Yd-qY...\",\"externalRef\":\"ipfs://bafybeigdyr...\",\"alg\":\"SHA256\"}",
+    "transactionHash": "0xe56a....",
+    "timestamp": 1738968100,
+    "submitter": "0xAEc9...8b3"
+  }
+}
+```
+
+**Notes:**
+
+- The contract does not use anchorId or getById; the hash is the unique key.
+- Metadata should be a JSON string containing all relevant fields.
+- Verification is always by hash, matching contract and SDK logic.
+
+These example flows show how the Lockb0x Protocol can be applied across storage backends, multi-sig contexts, revision chains, and EVM-compatible blockchains.

@@ -1,5 +1,5 @@
 // scripts/deploy.js
-const hre = require("hardhat");
+const hre = require("hardhat"); // Uses config from hardhat.config.cjs by default
 
 async function main() {
   const Lockb0xAnchor = await hre.ethers.getContractFactory("Lockb0x_Anchor_Eth");

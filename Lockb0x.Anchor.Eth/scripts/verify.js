@@ -1,5 +1,5 @@
 // scripts/verify.js
-const hre = require("hardhat");
+const hre = require("hardhat"); // Uses config from hardhat.config.cjs by default
 
 async function main() {
   const contractAddress = process.argv[2];

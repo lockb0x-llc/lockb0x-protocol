@@ -31,7 +31,7 @@ Lockb0x.Anchor.Eth/
 │   ├── lbx-eth-anchor.js
 │   └── examples/
 │       └── cli.mjs
-├── hardhat.config.js
+├── hardhat.config.cjs
 ├── package.json
 ├── scripts/
 │   ├── deploy.js
@@ -53,11 +53,11 @@ Lockb0x.Anchor.Eth/
    ```
 2. **Compile contract:**
    ```sh
-   npx hardhat compile
+   npx hardhat compile --config hardhat.config.cjs
    ```
 3. **Run tests:**
    ```sh
-   npx hardhat test
+   npx hardhat test --config hardhat.config.cjs
    ```
 4. **Deploy contract:**
    ```sh
