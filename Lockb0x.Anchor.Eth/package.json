@@ -1,0 +1,19 @@
+{
+  "name": "lockb0x-ethereum-anchor",
+  "version": "0.1.0",
+  "description": "Ethereum Anchor & Verifier modules for Lockb0x Protocol",
+  "main": "sdk/lbx-eth-anchor.js",
+  "type": "module",
+  "scripts": {
+    "test": "npx hardhat test",
+    "deploy": "node scripts/deploy.js",
+    "verify": "node scripts/verify.js"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.0",
+    "hardhat": "^2.20.0"
+  },
+  "dependencies": {
+    "ethers": "^5.8.0"
+  }
+}

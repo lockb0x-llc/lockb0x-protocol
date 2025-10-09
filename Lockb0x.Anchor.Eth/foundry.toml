@@ -1,0 +1,8 @@
+[profile.default]
+src = "contracts"
+test = "test"
+out = "out"
+libraries = []
+
+[fmt]
+line_length = 120
