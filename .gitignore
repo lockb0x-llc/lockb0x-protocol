@@ -122,7 +122,6 @@ secrets.json
 *.pfx
 
 # Do not ignore documentation, config, or setup files
-!README.md
 !CONTRIBUTING.md
 !CODE_OF_CONDUCT.md
 !SETUP.md
