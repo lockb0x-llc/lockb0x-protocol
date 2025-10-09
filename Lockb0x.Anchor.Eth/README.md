@@ -72,10 +72,6 @@ Lockb0x.Anchor.Eth/
    node sdk/examples/cli.mjs get <hash>
    ```
 
-## Grant Reference
-
-See [GG24 Grant Submission Plan](../grant-management/GG24/GRANT-SUBMISSION-PLAN.md) and [AGENTS.md](../grant-management/GG24/AGENTS.md) for context, roadmap, and deliverables. This module fulfills the Ethereum anchor and verifier requirements for the GG24 Developer Tooling & Infrastructure grant.
-
 ## License
 
 MIT / Open Specification
