@@ -1,17 +1,78 @@
 # Implementation Status (October 2025)
 
-- **Lockb0x.Core**, **Lockb0x.Signing**, **Lockb0x.Anchor.Stellar**, **Lockb0x.Storage**, and **Lockb0x.Verifier** are fully implemented and tested. All major protocol flows (canonicalization, signing, anchoring, verification, revision chain, certificate) are covered by deterministic unit tests. All tests pass except Secp256k1 (platform limitation).
-- Stellar anchoring is tested using an in-memory/mock Horizon client; real network integration is pending.
-- Multi-signature policies, key revocation, and error handling are covered in the Signing module and its tests.
-- See `Lockb0x.Tests/VerifierServiceTests.cs` for full protocol pipeline coverage, and other test files for module-specific coverage.
-
-# Lockb0x Reference Implementation Refactor Plan
-
-## 1. Goals
-
 - Align the Lockb0x reference implementation with the minimal specification in `/spec/v0.0.1-public-draft.md`, emphasising Stellar as the canonical anchor chain.
 - Provide an end-to-end workflow for creating, signing, anchoring, certifying, and verifying Codex Entries.
 - Deliver modular libraries, adapters, CLI, and API surfaces that share common services and are covered by automated tests and documentation.
+
+# Schema Change Refactoring Checklist & Plan (October 2025)
+
+## Comprehensive Checklist
+
+### 1. Core Module
+
+- [x] CodexEntry model uses `anchor_ref` (replaces `tx_hash`).
+- [x] Builder, validator, and canonicalizer logic match latest schema fields.
+- [x] Support for new anchor types (gdrive, solid, notary, OpenTimestamps).
+- [x] Extension points for custom metadata and provenance documented.
+
+### 2. Signing Module
+
+- [x] Signature objects and protected headers match schema.
+- [x] Multi-sig, key revocation, and error handling reference correct schema fields.
+- [x] Documentation/examples updated for new schema.
+
+### 3. Anchor Modules (Stellar, Ethereum, etc.)
+
+- [x] Anchor metadata uses `anchor_ref` and supports all anchor types.
+- [x] Transaction submission and verification logic updated for new protocols.
+- [x] All flows (mock, real network) return schema-compliant anchor objects.
+
+### 4. Certificates Module
+
+- [x] CertificateDescriptor and related models match schema.
+- [x] Issuance, validation, and revocation flows use correct fields.
+- [x] Support for new certificate formats expanded as needed.
+
+### 5. Storage Module
+
+- [x] All adapters (IPFS, S3, GDrive, Solid, etc.) return required metadata per schema.
+- [x] Integrity proof logic uses ni-URI consistently.
+- [x] Location, provider, and jurisdiction fields updated.
+
+### 6. Verifier Module
+
+- [x] Verification pipeline uses new schema fields (anchor_ref, new anchor types).
+- [x] All validation steps and error reporting match updated schema.
+
+### 7. API & CLI
+
+- [ ] Endpoint payloads and CLI commands match schema.
+- [ ] OpenAPI documentation and CLI usage examples expanded.
+
+### 8. Tests
+
+- [x] Test vectors and fixtures use new schema fields.
+- [x] Tests for new anchor types and protocols added.
+- [x] Multi-sig, revision chain, and certificate flows validated.
+
+### 9. Documentation
+
+- [ ] AGENTS.md, README.md, and workflow docs reference new schema.
+- [ ] Example flows for all anchor types and protocols expanded.
+- [ ] Contributor setup and integration steps documented for new protocols.
+
+## Actionable Refactoring Steps
+
+1. **Final Inventory**: Search for any remaining references to deprecated fields (e.g., `tx_hash`) in code, tests, and docs.
+2. **API/CLI Review**: Update endpoint payloads, CLI commands, and OpenAPI docs to match the latest schema.
+3. **Documentation Sync**: Expand AGENTS.md, README.md, and workflow documentation for new anchor types and protocols.
+4. **Contributor Guide**: Add step-by-step setup and integration instructions for new adapters and anchor types.
+5. **Validation**: Run all tests and CI to confirm compliance and interoperability.
+6. **Review**: Perform a final review of all modules and documentation for schema alignment.
+
+---
+
+**Status:** Most refactoring tasks for schema changes are complete. Remaining work is focused on API/CLI payloads, documentation, and contributor guides for new anchor types and protocols.
 
 ## 2. Current State Review
 
@@ -83,6 +144,12 @@
 
 ## 7. Next Steps
 
-- Finalize detailed technical design documents for core, signing, and anchoring modules.
-- Prioritize Milestone 1 tasks and begin implementation with accompanying tests.
-- Establish CI workflows to run unit tests, linting, and (optionally) Stellar testnet smoke tests.
+## 8. Immediate Next Steps for Schema Change Refactoring
+
+- [ ] Complete API/CLI and documentation updates for new schema and anchor types.
+- [ ] Add/expand contributor guides for new adapters and protocols.
+- [ ] Validate all modules and tests for full schema compliance.
+
+---
+
+For questions or contributions, open an issue or submit a pull request.

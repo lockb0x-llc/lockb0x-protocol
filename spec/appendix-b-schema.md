@@ -56,8 +56,17 @@ specification that allows plaintext assets.
       "properties": {
         "protocol": {
           "type": "string",
-          "enum": ["ipfs", "s3", "azureblob", "gcs", "ftp", "local"],
-          "description": "Storage backend protocol (IPFS, S3, Azure Blob, Google Cloud Storage, FTP, Local)."
+          "enum": [
+            "ipfs",
+            "s3",
+            "azureblob",
+            "gcs",
+            "ftp",
+            "local",
+            "gdrive",
+            "solid"
+          ],
+          "description": "Storage backend protocol (IPFS, S3, Azure Blob, Google Cloud Storage, Google Drive, FTP, Solid Pod, Local)."
         },
         "integrity_proof": {
           "type": "string",
@@ -163,15 +172,15 @@ specification that allows plaintext assets.
     "anchor": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["chain", "tx_hash", "hash_alg"],
+      "required": ["chain", "anchor_ref", "hash_alg"],
       "properties": {
         "chain": {
           "type": "string",
-          "description": "CAIP-2 blockchain identifier."
+          "description": "Anchor type or network identifier (CAIP-2 for blockchains, or 'gdrive', 'notary', 'opentimestamps', 'rfc3161', etc. for non-blockchain anchors)."
         },
-        "tx_hash": {
+        "anchor_ref": {
           "type": "string",
-          "description": "Transaction hash referencing the anchor."
+          "description": "Reference to the anchor (transaction hash, revision ID, attestation URI, etc.)."
         },
         "hash_alg": { "type": "string", "enum": ["SHA256", "SHA3-256"] },
         "token_id": {
