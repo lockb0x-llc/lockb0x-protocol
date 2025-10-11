@@ -115,20 +115,21 @@ var entry = new CodexEntryBuilder()
 		Artifact = "EmployeeHandbook-v1"
 	})
 	.WithTimestamp(DateTimeOffset.UtcNow)
-	.WithAnchor(new AnchorProof {
-		Chain = "stellar:pubnet",
-		TransactionHash = "abcdef123456",
-		HashAlgorithm = "sha-256"
-	})
-	.WithSignatures(new[] {
-		new SignatureProof {
-			ProtectedHeader = new SignatureProtectedHeader {
-				Algorithm = "EdDSA"
-			},
-			Signature = "deadbeef"
-		}
-	})
-	.Build();
+        .WithAnchor(new AnchorProof {
+                Chain = "stellar:pubnet",
+                Reference = "abcdef123456",
+                HashAlgorithm = "SHA256"
+        })
+        .WithSignatures(new[] {
+                new SignatureProof {
+                        Protected = new SignatureProtectedHeader {
+                                Algorithm = "EdDSA",
+                                KeyId = "did:example:issuer#ed25519"
+                        },
+                        Signature = "deadbeef"
+                }
+        })
+        .Build();
 ```
 
 ### Canonicalizing and Hashing a Codex Entry

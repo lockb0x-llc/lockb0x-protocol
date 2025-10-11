@@ -1,6 +1,79 @@
 @Lockb0x.Api_HostAddress = http://localhost:5004
 
-GET {{Lockb0x.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Create (validate + canonicalize) a Codex Entry
+POST {{Lockb0x.Api_HostAddress}}/api/codex/create
+Content-Type: application/json
 
-###
+{
+  "id": "2d5f4b5e-1bfa-43ea-9d0a-6d6b79b3a9b2",
+  "version": "1.0",
+  "storage": {
+    "protocol": "ipfs",
+    "integrity_proof": "ni:///sha-256;abcdef",
+    "media_type": "application/json",
+    "size_bytes": 1024,
+    "location": {
+      "region": "us-east-1",
+      "jurisdiction": "US",
+      "provider": "ipfs"
+    }
+  },
+  "identity": {
+    "org": "did:example:issuer",
+    "artifact": "example-artifact"
+  },
+  "timestamp": "2025-10-01T00:00:00Z",
+  "anchor": {
+    "chain": "stellar:testnet",
+    "anchor_ref": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "hash_alg": "SHA256"
+  },
+  "signatures": [
+    {
+      "protected": {
+        "alg": "EdDSA",
+        "kid": "did:example:issuer#ed25519"
+      },
+      "signature": "base64urlsignature"
+    }
+  ]
+}
+
+### Validate only
+POST {{Lockb0x.Api_HostAddress}}/api/codex/validate?anchor_network=stellar:testnet
+Content-Type: application/json
+
+{
+  "id": "2d5f4b5e-1bfa-43ea-9d0a-6d6b79b3a9b2",
+  "version": "1.0",
+  "storage": {
+    "protocol": "ipfs",
+    "integrity_proof": "ni:///sha-256;abcdef",
+    "media_type": "application/json",
+    "size_bytes": 1024,
+    "location": {
+      "region": "us-east-1",
+      "jurisdiction": "US",
+      "provider": "ipfs"
+    }
+  },
+  "identity": {
+    "org": "did:example:issuer",
+    "artifact": "example-artifact"
+  },
+  "timestamp": "2025-10-01T00:00:00Z",
+  "anchor": {
+    "chain": "stellar:testnet",
+    "anchor_ref": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "hash_alg": "SHA256"
+  },
+  "signatures": [
+    {
+      "protected": {
+        "alg": "EdDSA",
+        "kid": "did:example:issuer#ed25519"
+      },
+      "signature": "base64urlsignature"
+    }
+  ]
+}

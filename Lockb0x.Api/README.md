@@ -4,21 +4,33 @@ Lockb0x.Api exposes the Lockb0x protocol as a web API for agentic, automated, an
 
 ## Key Features
 
-- RESTful endpoints for protocol operations
-- Integration with all core modules (Core, Signing, Storage, Anchor, Certificates, Verifier)
-- Configurable for development and production
-- Extensible controller and middleware architecture
+- `POST /api/codex/create` validates a Codex Entry payload (with `anchor_ref`, protected signature headers, ni-URI storage descriptors) and returns canonical JSON plus a base64url SHA-256 hash.
+- `POST /api/codex/validate` returns structured validation results (errors + warnings) with optional anchor network hints.
+- `GET /api/codex/template` supplies a schema-aligned template entry for agent onboarding.
+- Swagger/OpenAPI metadata enabled in development for quick contract discovery.
 
 ## Usage
 
-- Use API endpoints to automate protocol flows
-- Integrate with agentic clients, CLI, and external systems
-- See OpenAPI documentation for endpoint details
+### Validate and Canonicalize an Entry
+
+```bash
+curl -X POST http://localhost:5000/api/codex/create \
+  -H "Content-Type: application/json" \
+  -d @entry.json
+```
+
+### Validation Only
+
+```bash
+curl -X POST "http://localhost:5000/api/codex/validate?anchor_network=stellar:testnet" \
+  -H "Content-Type: application/json" \
+  -d @entry.json
+```
 
 ## Implementation Status
 
-- Core endpoints scaffolded and ready for extension
-- Full protocol pipeline integration in progress
+- Schema-aligned Codex endpoints implemented.
+- Signing, anchoring, and certification endpoints will layer on shared services in future milestones.
 
 ## Role in Lockb0x Protocol
 

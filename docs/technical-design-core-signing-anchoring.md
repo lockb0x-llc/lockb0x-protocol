@@ -99,14 +99,14 @@ The following specification sections inform this design:
 
 - Derive Codex Entry hashes from canonical payloads and construct Stellar transactions that fit memo constraints while maintaining traceability (§5.1–§5.2.1).【F:spec/anchoring.md†L9-L47】
 - Encode memo identifiers using the MD5+public key strategy recommended for Stellar and persist canonical SHA-256 digests in the `anchor` object (`hash_alg`) for verifier use (§5.2.1).【F:spec/anchoring.md†L25-L40】
-- Submit transactions to Horizon, capture `tx_hash`, ledger sequence, and timestamp, and surface them to `Lockb0x.Core` for inclusion in Codex Entries (§5.3).【F:spec/anchoring.md†L49-L65】
+- Submit transactions to Horizon, capture `anchor_ref` (transaction hash), ledger sequence, and timestamp, and surface them to `Lockb0x.Core` for inclusion in Codex Entries (§5.3).【F:spec/anchoring.md†L49-L65】
 - Provide verification utilities that recompute memo identifiers, query Horizon for transaction details, and cross-check ledger timestamps with Codex Entry expectations (§5.4).【F:spec/anchoring.md†L67-L87】
 
 ### 4.2 Data Flow Overview
 
 1. Accept canonical hash material from `Lockb0x.Core`.
 2. Generate Stellar memo identifiers (MD5 digest + signer key), craft transactions, and broadcast via Horizon (testnet or mainnet based on configuration).
-3. Return anchor artifacts: `chain` (`stellar:pubnet` or `stellar:testnet`), `tx_hash`, memo identifier, ledger timestamp, and optional `token_id` for NFT-based anchors.
+3. Return anchor artifacts: `chain` (`stellar:pubnet` or `stellar:testnet`), `anchor_ref`, memo identifier, ledger timestamp, and optional `token_id` for NFT-based anchors.
 4. During verification, reconstruct memo identifier, fetch transaction data, validate inclusion of digest, confirm timestamp ordering, and reconcile signing accounts.
 
 ### 4.3 API Contracts

@@ -18,4 +18,8 @@
     <PackageReference Include="System.CommandLine" Version="2.0.0-rc.1.25451.107" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Lockb0x.Core\Lockb0x.Core.csproj" />
+  </ItemGroup>
+
 </Project>
