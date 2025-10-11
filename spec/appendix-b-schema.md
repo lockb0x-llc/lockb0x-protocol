@@ -180,7 +180,7 @@ specification that allows plaintext assets.
         },
         "anchor_ref": {
           "type": "string",
-          "description": "Reference to the anchor (transaction hash, revision ID, attestation URI, etc.)."
+          "description": "Reference to the anchor (contract address, transaction hash, revision ID, attestation URI, etc.)."
         },
         "hash_alg": { "type": "string", "enum": ["SHA256", "SHA3-256"] },
         "token_id": {
