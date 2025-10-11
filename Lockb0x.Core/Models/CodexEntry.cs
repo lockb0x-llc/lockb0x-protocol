@@ -139,8 +139,8 @@ public sealed class AnchorProof
     [JsonPropertyName("chain")]
     public required string Chain { get; init; }
 
-    [JsonPropertyName("tx_hash")]
-    public required string TransactionHash { get; init; }
+    [JsonPropertyName("anchor_ref")]
+    public required string Reference { get; init; }
 
     [JsonPropertyName("hash_alg")]
     public required string HashAlgorithm { get; init; }
@@ -160,8 +160,7 @@ public sealed class SignatureProtectedHeader
     public required string Algorithm { get; init; }
 
     [JsonPropertyName("kid")]
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public string? KeyId { get; init; }
+    public required string KeyId { get; init; }
 
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalParameters { get; init; }
@@ -169,11 +168,8 @@ public sealed class SignatureProtectedHeader
 
 public sealed class SignatureProof
 {
-    [JsonPropertyName("type")]
-    public string Type { get; init; } = "internal"; // "internal", "zkp", "endorsement", etc.
-
     [JsonPropertyName("protected")]
-    public required SignatureProtectedHeader ProtectedHeader { get; init; }
+    public required SignatureProtectedHeader Protected { get; init; }
 
     [JsonPropertyName("signature")]
     public required string Signature { get; init; }

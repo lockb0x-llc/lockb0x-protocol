@@ -45,8 +45,8 @@ public class VerifierServiceTests
         var anchor = new AnchorProof
         {
             Chain = "stellar:testnet",
-            TransactionHash = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
-            HashAlgorithm = "sha-256",
+            Reference = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+            HashAlgorithm = "SHA256",
             AnchoredAt = timestamp
         };
         var encryption = CreateEncryptionDescriptor(signingKey.KeyId);
@@ -131,8 +131,8 @@ public class VerifierServiceTests
         var anchor = new AnchorProof
         {
             Chain = "stellar:testnet",
-            TransactionHash = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
-            HashAlgorithm = "sha-256",
+            Reference = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+            HashAlgorithm = "SHA256",
             AnchoredAt = timestamp
         };
         var encryption = CreateEncryptionDescriptor(signingKey.KeyId);
@@ -216,8 +216,8 @@ public class VerifierServiceTests
         var anchor = new AnchorProof
         {
             Chain = "stellar:testnet",
-            TransactionHash = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-            HashAlgorithm = "sha-256",
+            Reference = "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+            HashAlgorithm = "SHA256",
             AnchoredAt = timestamp
         };
 
@@ -294,8 +294,8 @@ public class VerifierServiceTests
         var placeholderAnchor = new AnchorProof
         {
             Chain = "stellar:testnet",
-            TransactionHash = "placeholder",
-            HashAlgorithm = "sha-256",
+            Reference = "placeholder",
+            HashAlgorithm = "SHA256",
             AnchoredAt = timestamp
         };
 
@@ -306,7 +306,7 @@ public class VerifierServiceTests
         return new AnchorProof
         {
             Chain = placeholderAnchor.Chain,
-            TransactionHash = hash,
+            Reference = hash,
             HashAlgorithm = placeholderAnchor.HashAlgorithm,
             AnchoredAt = placeholderAnchor.AnchoredAt
         };
@@ -331,8 +331,7 @@ public class VerifierServiceTests
         {
             new SignatureProof
             {
-                Type = "internal",
-                ProtectedHeader = new SignatureProtectedHeader
+                Protected = new SignatureProtectedHeader
                 {
                     Algorithm = "EdDSA",
                     KeyId = keyId
@@ -417,7 +416,7 @@ public class VerifierServiceTests
             => Task.FromResult(_anchor);
 
         public Task<string> GetTransactionUrlAsync(AnchorProof anchor, string network = "testnet", CancellationToken cancellationToken = default)
-            => Task.FromResult($"https://stellar.example/{anchor.TransactionHash}");
+            => Task.FromResult($"https://stellar.example/{anchor.Reference}");
 
         public Task<bool> VerifyAnchorAsync(AnchorProof anchor, CodexEntry entry, string network = "testnet", string? stellarPublicKey = null, CancellationToken cancellationToken = default)
         {
@@ -428,7 +427,7 @@ public class VerifierServiceTests
 
             var payload = CodexEntryCanonicalPayload.CreatePayload(_canonicalizer, entry);
             var hash = SHA256.HashData(payload);
-            return Task.FromResult(anchor.TransactionHash.Equals(_anchor.TransactionHash, StringComparison.OrdinalIgnoreCase) && hash.AsSpan().SequenceEqual(_expectedHash));
+            return Task.FromResult(anchor.Reference.Equals(_anchor.Reference, StringComparison.OrdinalIgnoreCase) && hash.AsSpan().SequenceEqual(_expectedHash));
         }
     }
 

@@ -138,7 +138,7 @@ public sealed class VerifierService : IVerifierService
 
             foreach (var signature in entry.Signatures)
             {
-                if (signature?.ProtectedHeader is null)
+                if (signature?.Protected is null)
                 {
                     context.AddError("verifier.signatures.invalid", "Signature proof is missing required header metadata.");
                     continue;
@@ -148,14 +148,14 @@ public sealed class VerifierService : IVerifierService
                 {
                     if (await _signingService.VerifyAsync(canonicalPayload, signature).ConfigureAwait(false))
                     {
-                        if (!string.IsNullOrWhiteSpace(signature.ProtectedHeader.KeyId))
+                        if (!string.IsNullOrWhiteSpace(signature.Protected.KeyId))
                         {
-                            validSignatureKeyIds.Add(signature.ProtectedHeader.KeyId);
+                            validSignatureKeyIds.Add(signature.Protected.KeyId);
                         }
                     }
                     else
                     {
-                        context.AddError("verifier.signatures.invalid", $"Signature with kid '{signature.ProtectedHeader.KeyId}' failed verification.", "signatures");
+                        context.AddError("verifier.signatures.invalid", $"Signature with kid '{signature.Protected.KeyId}' failed verification.", "signatures");
                     }
                 }
                 catch (Exception ex)

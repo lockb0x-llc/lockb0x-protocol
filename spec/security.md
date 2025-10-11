@@ -36,7 +36,7 @@ This section defines mandatory security measures and recommended practices for i
 
 ## 11.4 Replay and Forgery Protections
 
-- Anchors MUST include unique identifiers (tx_hash) to prevent replay.  
+- Anchors MUST include unique identifiers (`anchor_ref`) to prevent replay.
 - Codex Entries MUST use canonicalization ([RFC 8785]) to prevent signature forgery via structural variations.  
 - Implementations SHOULD employ nonce or timestamp fields to further protect against replay.  
 

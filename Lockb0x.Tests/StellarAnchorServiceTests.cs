@@ -17,8 +17,8 @@ public class StellarAnchorServiceTests
         var proof = await service.AnchorAsync(entry, "testnet", DefaultPublicKey);
 
         Assert.Equal("stellar:testnet", proof.Chain);
-        Assert.Equal("sha-256", proof.HashAlgorithm);
-        Assert.False(string.IsNullOrWhiteSpace(proof.TransactionHash));
+        Assert.Equal("SHA256", proof.HashAlgorithm);
+        Assert.False(string.IsNullOrWhiteSpace(proof.Reference));
         Assert.True(proof.AnchoredAt.HasValue);
     }
 
@@ -29,7 +29,7 @@ public class StellarAnchorServiceTests
         var first = await service.AnchorAsync(entry, "testnet", DefaultPublicKey);
         var second = await service.AnchorAsync(entry, "testnet", DefaultPublicKey);
 
-        Assert.Equal(first.TransactionHash, second.TransactionHash);
+        Assert.Equal(first.Reference, second.Reference);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class StellarAnchorServiceTests
         var anchor = await service.AnchorAsync(entry, "testnet", DefaultPublicKey);
 
         var url = await service.GetTransactionUrlAsync(anchor, "testnet");
-        Assert.Contains(anchor.TransactionHash, url);
+        Assert.Contains(anchor.Reference, url);
         Assert.Contains("stellar.expert", url);
     }
 
@@ -111,13 +111,13 @@ public class StellarAnchorServiceTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:testnet",
-                TransactionHash = "placeholder",
-                HashAlgorithm = "sha-256",
+                Reference = "placeholder",
+                HashAlgorithm = "SHA256",
                 AnchoredAt = DateTimeOffset.UtcNow
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
+                    Protected = new SignatureProtectedHeader {
                         Algorithm = "Ed25519",
                         KeyId = "test-key"
                     },

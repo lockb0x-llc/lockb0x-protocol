@@ -105,7 +105,7 @@ public sealed class StellarAnchorService : IStellarAnchorService
             return false;
         }
 
-        if (!string.Equals(anchor.HashAlgorithm, "sha-256", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(anchor.HashAlgorithm, "SHA256", StringComparison.OrdinalIgnoreCase))
         {
             return false;
         }
@@ -113,7 +113,7 @@ public sealed class StellarAnchorService : IStellarAnchorService
         var account = ResolvePublicKey(stellarPublicKey, networkOptions);
         var memo = _memoStrategy.CreateMemo(entry, account, _canonicalizer);
 
-        var record = await _horizonClient.GetTransactionAsync(anchor.TransactionHash, networkOptions, cancellationToken).ConfigureAwait(false);
+        var record = await _horizonClient.GetTransactionAsync(anchor.Reference, networkOptions, cancellationToken).ConfigureAwait(false);
         if (record is null)
         {
             return false;
@@ -148,7 +148,7 @@ public sealed class StellarAnchorService : IStellarAnchorService
         }
 
         var networkOptions = ResolveNetwork(network);
-        var url = networkOptions.GetExplorerUrl(anchor.TransactionHash);
+        var url = networkOptions.GetExplorerUrl(anchor.Reference);
         return Task.FromResult(url);
     }
 
@@ -210,8 +210,8 @@ public sealed class StellarAnchorService : IStellarAnchorService
         return new AnchorProof
         {
             Chain = network.ChainId,
-            TransactionHash = record.Hash,
-            HashAlgorithm = "sha-256",
+            Reference = record.Hash,
+            HashAlgorithm = "SHA256",
             AnchoredAt = record.LedgerCloseTime ?? _clock.UtcNow
         };
     }

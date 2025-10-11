@@ -46,8 +46,8 @@
 
 ### 7. API & CLI
 
-- [ ] Endpoint payloads and CLI commands match schema.
-- [ ] OpenAPI documentation and CLI usage examples expanded.
+- [x] Endpoint payloads and CLI commands match schema.
+- [x] OpenAPI documentation and CLI usage examples expanded.
 
 ### 8. Tests
 
@@ -57,8 +57,8 @@
 
 ### 9. Documentation
 
-- [ ] AGENTS.md, README.md, and workflow docs reference new schema.
-- [ ] Example flows for all anchor types and protocols expanded.
+- [x] AGENTS.md, README.md, and workflow docs reference new schema.
+- [x] Example flows for all anchor types and protocols expanded.
 - [ ] Contributor setup and integration steps documented for new protocols.
 
 ## Actionable Refactoring Steps
@@ -146,7 +146,7 @@
 
 ## 8. Immediate Next Steps for Schema Change Refactoring
 
-- [ ] Complete API/CLI and documentation updates for new schema and anchor types.
+- [x] Complete API/CLI and documentation updates for new schema and anchor types.
 - [ ] Add/expand contributor guides for new adapters and protocols.
 - [ ] Validate all modules and tests for full schema compliance.
 

@@ -48,7 +48,7 @@ comprehensive Codex Entry with all possible fields:
   "timestamp": "2025-09-14T12:00:00Z",
   "anchor": {
     "chain": "stellar:pubnet",
-    "tx_hash": "abcdef123456...",
+    "anchor_ref": "abcdef123456...",
     "hash_alg": "SHA256"
   },
   "signatures": [
@@ -90,7 +90,7 @@ fields and Section 3.3 for optional fields.
 - The identity hierarchy is: `org` → `process` → `artifact` → `subject`, where `artifact` is required for workflows/work orders, and `subject` is optional for entity/asset/person.
 - `timestamp` MUST be UTC ISO 8601.
 - `anchor.chain` MUST use [CAIP-2] identifiers.
-- `anchor.tx_hash` MUST contain a blockchain transaction reference.
+- `anchor.anchor_ref` MUST contain a durable anchor reference (transaction hash, attestation identifier, revision URI, etc.).
 - `signatures` MUST use [JOSE JWS] or [COSE Sign1] objects; signatures are created **after anchoring** and MUST cover the full Codex Entry including the anchor object.
 - `previous_id` MUST link to the UUID of the immediate prior Codex Entry when the record is a revision; it MUST be omitted for the first entry in a chain.
 

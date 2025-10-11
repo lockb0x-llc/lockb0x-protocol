@@ -9,7 +9,7 @@ namespace Lockb0x.Core.Validation;
 public sealed class CodexEntryValidator : ICodexEntryValidator
 {
     private static readonly Regex MediaTypePattern = new("^[a-z0-9!#$&^_.+-]+/[a-z0-9!#$&^_.+-]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    private static readonly Regex HexPattern = new("^[0-9a-f]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    private static readonly Regex StellarHashPattern = new("^[0-9a-f]{64}$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
     public ValidationResult Validate(CodexEntry entry, CodexEntryValidationContext? context = null)
     {
@@ -254,9 +254,9 @@ public sealed class CodexEntryValidator : ICodexEntryValidator
         }
         else
         {
-            if (!IsValidCaip2(anchor.Chain))
+            if (!IsValidAnchorChain(anchor.Chain))
             {
-                errors.Add(new("core.anchor.invalid_chain", "anchor.chain must be a valid CAIP-2 identifier", "anchor.chain"));
+                errors.Add(new("core.anchor.invalid_chain", "anchor.chain must be a valid CAIP-2 identifier or supported anchor type", "anchor.chain"));
             }
 
             if (!string.IsNullOrWhiteSpace(context?.Network) && !string.Equals(context.Network, anchor.Chain, StringComparison.Ordinal))
@@ -264,20 +264,24 @@ public sealed class CodexEntryValidator : ICodexEntryValidator
                 errors.Add(new("core.anchor.network_mismatch", $"anchor.chain '{anchor.Chain}' does not match configured network '{context!.Network}'", "anchor.chain"));
             }
 
-            if (anchor.Chain.StartsWith("stellar:", StringComparison.OrdinalIgnoreCase) && !anchor.HashAlgorithm.Equals("sha-256", StringComparison.OrdinalIgnoreCase))
+            if (anchor.Chain.StartsWith("stellar:", StringComparison.OrdinalIgnoreCase) && !StellarHashPattern.IsMatch(anchor.Reference))
             {
-                errors.Add(new("core.anchor.invalid_hash_algorithm", "Stellar anchors must use SHA-256", "anchor.hash_alg"));
+                errors.Add(new("core.anchor.invalid_anchor_ref", "stellar anchors must supply a 64-character hexadecimal anchor_ref", "anchor.anchor_ref"));
             }
         }
 
-        if (string.IsNullOrWhiteSpace(anchor.TransactionHash) || !HexPattern.IsMatch(anchor.TransactionHash))
+        if (string.IsNullOrWhiteSpace(anchor.Reference))
         {
-            errors.Add(new("core.anchor.invalid_tx_hash", "anchor.tx_hash must be a hexadecimal transaction hash", "anchor.tx_hash"));
+            errors.Add(new("core.anchor.missing_anchor_ref", "anchor.anchor_ref is required", "anchor.anchor_ref"));
         }
 
         if (string.IsNullOrWhiteSpace(anchor.HashAlgorithm))
         {
             errors.Add(new("core.anchor.missing_hash_algorithm", "anchor.hash_alg is required", "anchor.hash_alg"));
+        }
+        else if (!IsSupportedHashAlgorithm(anchor.HashAlgorithm))
+        {
+            errors.Add(new("core.anchor.invalid_hash_algorithm", "anchor.hash_alg must be one of: SHA256, SHA3-256", "anchor.hash_alg"));
         }
 
         if (anchor.AnchoredAt is { } anchoredAt && anchoredAt.Offset != TimeSpan.Zero)
@@ -303,15 +307,20 @@ public sealed class CodexEntryValidator : ICodexEntryValidator
                 continue;
             }
 
-            if (signature.ProtectedHeader is null)
+            if (signature.Protected is null)
             {
                 errors.Add(new("core.signatures.missing_protected", "Signature must include protected header", $"signatures[{i}].protected"));
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(signature.ProtectedHeader.Algorithm))
+                if (string.IsNullOrWhiteSpace(signature.Protected.Algorithm))
                 {
                     errors.Add(new("core.signatures.missing_algorithm", "Signature protected header must declare alg", $"signatures[{i}].protected.alg"));
+                }
+
+                if (string.IsNullOrWhiteSpace(signature.Protected.KeyId))
+                {
+                    errors.Add(new("core.signatures.missing_kid", "Signature protected header must declare kid", $"signatures[{i}].protected.kid"));
                 }
             }
 
@@ -322,10 +331,32 @@ public sealed class CodexEntryValidator : ICodexEntryValidator
         }
     }
 
+    private static bool IsValidAnchorChain(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        if (IsSupportedNonBlockchainAnchor(value)) return true;
+        return IsValidCaip2(value);
+    }
+
     private static bool IsValidCaip2(string value)
     {
         if (string.IsNullOrWhiteSpace(value)) return false;
         var parts = value.Split(':', StringSplitOptions.RemoveEmptyEntries);
         return parts.Length == 2 || parts.Length == 3;
+    }
+
+    private static bool IsSupportedNonBlockchainAnchor(string value)
+    {
+        return value.Equals("gdrive", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("solid", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("notary", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("opentimestamps", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("rfc3161", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsSupportedHashAlgorithm(string value)
+    {
+        return value.Equals("SHA256", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("SHA3-256", StringComparison.OrdinalIgnoreCase);
     }
 }

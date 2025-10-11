@@ -83,7 +83,7 @@ public sealed class JoseCoseSigningService : ISigningService
 
         return new SignatureProof
         {
-            ProtectedHeader = new SignatureProtectedHeader
+            Protected = new SignatureProtectedHeader
             {
                 Algorithm = normalizedAlgorithm,
                 KeyId = key.KeyId
@@ -96,15 +96,15 @@ public sealed class JoseCoseSigningService : ISigningService
     {
         ArgumentNullException.ThrowIfNull(canonicalPayload);
         ArgumentNullException.ThrowIfNull(signature);
-        ArgumentNullException.ThrowIfNull(signature.ProtectedHeader);
+        ArgumentNullException.ThrowIfNull(signature.Protected);
 
         if (canonicalPayload.Length == 0)
         {
             return false;
         }
 
-        var normalizedAlgorithm = SigningAlgorithms.Normalize(signature.ProtectedHeader.Algorithm);
-        var keyId = signature.ProtectedHeader.KeyId;
+        var normalizedAlgorithm = SigningAlgorithms.Normalize(signature.Protected.Algorithm);
+        var keyId = signature.Protected.KeyId;
         if (string.IsNullOrWhiteSpace(keyId))
         {
             return false;
@@ -197,12 +197,12 @@ public sealed class JoseCoseSigningService : ISigningService
         var usedKeys = new HashSet<string>(StringComparer.Ordinal);
         foreach (var proof in proofs)
         {
-            if (proof?.ProtectedHeader is null)
+            if (proof?.Protected is null)
             {
                 continue;
             }
 
-            var keyId = proof.ProtectedHeader.KeyId;
+            var keyId = proof.Protected.KeyId;
             if (string.IsNullOrWhiteSpace(keyId))
             {
                 continue;

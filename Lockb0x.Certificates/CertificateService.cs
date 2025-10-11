@@ -349,14 +349,14 @@ public sealed class CertificateService : ICertificateService
 
         var canonical = _canonicalizer.Canonicalize(vcWithoutProof);
         var canonicalSignature = await _signingService.SignAsync(Encoding.UTF8.GetBytes(canonical), options.SigningKey, options.SigningAlgorithm).ConfigureAwait(false);
-        var jws = await CreateJwsAsync(canonicalSignature.ProtectedHeader, canonical, options, "vc+jwt").ConfigureAwait(false);
+        var jws = await CreateJwsAsync(canonicalSignature.Protected, canonical, options, "vc+jwt").ConfigureAwait(false);
 
         var proof = new VerifiableCredentialProof
         {
             Type = "JsonWebSignature2020",
             Created = issuedAt,
             ProofPurpose = "assertionMethod",
-            VerificationMethod = canonicalSignature.ProtectedHeader.KeyId ?? options.SigningKey.KeyId ?? issuer,
+            VerificationMethod = canonicalSignature.Protected.KeyId ?? options.SigningKey.KeyId ?? issuer,
             Jws = jws
         };
 
@@ -439,8 +439,8 @@ public sealed class CertificateService : ICertificateService
         writer.WriteByteString(entryHashBytes);
         writer.WriteInt32(1001); // Anchor chain
         writer.WriteTextString(entry.Anchor.Chain);
-        writer.WriteInt32(1002); // Anchor transaction hash
-        writer.WriteTextString(entry.Anchor.TransactionHash);
+        writer.WriteInt32(1002); // Anchor reference
+        writer.WriteTextString(entry.Anchor.Reference);
         writer.WriteInt32(1003); // Purpose
         writer.WriteTextString(options.Purpose.ToString().ToLowerInvariant());
         writer.WriteEndMap();
@@ -531,10 +531,10 @@ public sealed class CertificateService : ICertificateService
         var signingInput = Encoding.UTF8.GetBytes($"{parts[0]}.{parts[1]}");
         var signature = new SignatureProof
         {
-            ProtectedHeader = new SignatureProtectedHeader
+            Protected = new SignatureProtectedHeader
             {
-                Algorithm = representation.Signature.ProtectedHeader.Algorithm,
-                KeyId = representation.Signature.ProtectedHeader.KeyId
+                Algorithm = representation.Signature.Protected.Algorithm,
+                KeyId = representation.Signature.Protected.KeyId
             },
             Signature = parts[2]
         };
@@ -657,7 +657,7 @@ public sealed class CertificateService : ICertificateService
 
         var signature = new SignatureProof
         {
-            ProtectedHeader = new SignatureProtectedHeader
+            Protected = new SignatureProtectedHeader
             {
                 Algorithm = header.Algorithm,
                 KeyId = header.KeyId

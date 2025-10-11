@@ -42,13 +42,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "abcdef123456",
-                HashAlgorithm = "sha-256"
+                Reference = "abcdef123456",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "deadbeef"
                 }
@@ -90,13 +91,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "abcdef123456",
-                HashAlgorithm = "sha-256"
+                Reference = "abcdef123456",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "deadbeef"
                 }
@@ -185,13 +187,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "invalidchain",
-                TransactionHash = "nothex",
+                Reference = "nothex",
                 HashAlgorithm = ""
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = ""
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "",
+                        KeyId = ""
                     },
                     Signature = ""
                 }
@@ -233,19 +236,21 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "abcdef123456",
-                HashAlgorithm = "sha-256"
+                Reference = "abcdef123456",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "deadbeef"
                 },
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#secondary"
                     },
                     Signature = "cafebabe"
                 }
@@ -287,13 +292,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "a",
-                HashAlgorithm = "sha-256"
+                Reference = "a",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "sig1"
                 }
@@ -377,13 +383,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "a",
-                HashAlgorithm = "sha-256"
+                Reference = "a",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "sig1"
                 }
@@ -428,13 +435,14 @@ public class CoreTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "abcdef123456",
-                HashAlgorithm = "sha-256"
+                Reference = "abcdef123456",
+                HashAlgorithm = "SHA256"
             })
             .WithSignatures(new[] {
                 new SignatureProof {
-                    ProtectedHeader = new SignatureProtectedHeader {
-                        Algorithm = "EdDSA"
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:keys#primary"
                     },
                     Signature = "deadbeef"
                 }

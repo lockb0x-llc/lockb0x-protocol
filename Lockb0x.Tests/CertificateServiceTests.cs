@@ -155,7 +155,7 @@ public class CertificateServiceTests
             .WithAnchor(new AnchorProof
             {
                 Chain = entry.Anchor.Chain,
-                TransactionHash = entry.Anchor.TransactionHash,
+                Reference = entry.Anchor.Reference,
                 HashAlgorithm = entry.Anchor.HashAlgorithm,
                 AnchoredAt = entry.Anchor.AnchoredAt,
                 TokenId = entry.Anchor.TokenId
@@ -238,8 +238,8 @@ public class CertificateServiceTests
             .WithAnchor(new AnchorProof
             {
                 Chain = "stellar:pubnet",
-                TransactionHash = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
-                HashAlgorithm = "sha-256",
+                Reference = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+                HashAlgorithm = "SHA256",
                 AnchoredAt = timestamp,
                 TokenId = "lockb0x-token"
             })
@@ -247,7 +247,7 @@ public class CertificateServiceTests
             {
                 new SignatureProof
                 {
-                    ProtectedHeader = new SignatureProtectedHeader
+                    Protected = new SignatureProtectedHeader
                     {
                         Algorithm = "EdDSA",
                         KeyId = "entry-signer"

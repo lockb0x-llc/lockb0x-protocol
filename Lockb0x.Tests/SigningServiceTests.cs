@@ -19,8 +19,8 @@ public class SigningServiceTests
 
         var proof = await service.SignAsync(SamplePayload, key, "EdDSA");
 
-        Assert.Equal("EdDSA", proof.ProtectedHeader.Algorithm);
-        Assert.Equal("k-ed25519", proof.ProtectedHeader.KeyId);
+        Assert.Equal("EdDSA", proof.Protected.Algorithm);
+        Assert.Equal("k-ed25519", proof.Protected.KeyId);
         Assert.True(await service.VerifyAsync(SamplePayload, proof));
     }
 
@@ -44,7 +44,7 @@ public class SigningServiceTests
         var service = new JoseCoseSigningService();
         var proof = await service.SignAsync(SamplePayload, key, "ES256K");
 
-        Assert.Equal("ES256K", proof.ProtectedHeader.Algorithm);
+        Assert.Equal("ES256K", proof.Protected.Algorithm);
         var signatureBytes = DecodeBase64Url(proof.Signature);
         Assert.Equal(64, signatureBytes.Length);
         Assert.True(await service.VerifyAsync(SamplePayload, proof));
@@ -65,7 +65,7 @@ public class SigningServiceTests
         var service = new JoseCoseSigningService();
         var proof = await service.SignAsync(SamplePayload, key, "RS256");
 
-        Assert.Equal("RS256", proof.ProtectedHeader.Algorithm);
+        Assert.Equal("RS256", proof.Protected.Algorithm);
         Assert.True(await service.VerifyAsync(SamplePayload, proof));
     }
 

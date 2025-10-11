@@ -34,9 +34,9 @@ A Certificate MUST be generated in at least one of the following formats:
 ## 9.2 Generation Requirements
 
 - Certificates MUST clearly bind to a unique Codex Entry `id`.
-- Certificates MUST include:
-  - Integrity proof (`storage.integrity_proof`).
-  - Anchor reference (`anchor.tx_hash`, `anchor.chain`).
+  - Certificates MUST include:
+    - Integrity proof (`storage.integrity_proof`).
+    - Anchor reference (`anchor.anchor_ref`, `anchor.chain`).
   - Signatures from authorized entities.
 - Certificates MUST reflect encryption metadata if present in the Codex Entry, and omit it if not.
 - If the Codex Entry includes a `last_controlled_by` field, it MUST be reproduced in the certificate.
@@ -170,7 +170,7 @@ A single Codex Entry can generate multiple certificates for different consumers:
   },
   "anchor": {
     "chain": "stellar:pubnet",
-    "tx_hash": "abcdef123456...",
+    "anchor_ref": "abcdef123456...",
     "hash_alg": "SHA256"
   },
   "signatures": [
