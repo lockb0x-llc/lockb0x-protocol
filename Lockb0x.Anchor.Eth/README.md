@@ -1,8 +1,29 @@
 # Lockb0x.Anchor.Eth — Ethereum Anchor & Verifier Modules
 
-This module provides the Ethereum anchoring and verification workflow for the Lockb0x Protocol, supporting the GG24 grant deliverables. It enables any dApp, DAO, or developer to anchor content integrity proofs on Ethereum and verify them independently, following the Lockb0x specification.
+This module provides the Ethereum anchoring and verification workflow for the Lockb0x Protocol, supporting the GG24 grant deliverables. It enables any dApp, DAO, or developer to anchor content integrity proofs on Ethereum and verify them independently, following the Lockb0x specification and schema.
 
-This module implements the Ethereum anchoring workflow for the Lockb0x Protocol, as described in the GG24 grant submission.
+## Current Status (October 2025)
+
+- **Protocol Compliance:** Smart contract, SDK, CLI, and tests are implemented and align with the Lockb0x Protocol specification. Anchors are indexed by hash and metadata, supporting the protocol's `anchor_ref` field for interoperability.
+- **Testnet Deployment:** Contract and SDK are tested and deployed on Ethereum testnet. Mainnet deployment is planned.
+- **Verification:** Anchor and verification workflows are covered by Hardhat and Foundry tests. Verification logic matches protocol requirements for hash and metadata comparison.
+- **Interoperability:** Ethereum anchors are compatible with the Lockb0x Codex Entry schema and can be used alongside other anchor types (Stellar, GDrive, notary, OpenTimestamps, etc.).
+- **Limitations:** Multi-anchor flows and advanced metadata (e.g., cross-chain, certificate integration) are planned. Mainnet deployment and full protocol pipeline integration are pending.
+- **Known Issues:** No major issues; platform limitations may affect advanced features. See protocol documentation for schema details.
+
+## Interoperability & Schema Alignment
+
+- Anchors created by this module are compatible with the Lockb0x Protocol Codex Entry schema (`anchor_ref` field) and can be used in multi-anchor workflows (Stellar, GDrive, notary, OpenTimestamps, etc.).
+- For full protocol compliance, ensure metadata matches the latest schema in [`spec/v0.0.2-public-draft.md`](../spec/v0.0.2-public-draft.md).
+- See protocol documentation for details on anchor types, schema fields, and verification flows.
+
+## Gaps & Next Steps
+
+- Integrate mainnet deployment and advanced metadata support (cross-chain anchors, certificate integration).
+- Expand documentation for multi-anchor workflows and protocol pipeline integration.
+- Add more end-to-end examples and contributor guidance for Ethereum anchoring in the context of the Lockb0x Protocol.
+
+For questions or contributions, open an issue or submit a pull request.
 
 ## Overview
 
