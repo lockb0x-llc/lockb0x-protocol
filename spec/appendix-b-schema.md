@@ -180,13 +180,18 @@ specification that allows plaintext assets.
         },
         "anchor_ref": {
           "type": "string",
-          "description": "Reference to the anchor (contract address, transaction hash, revision ID, attestation URI, etc.)."
+          "description": "Reference to the anchor (transaction hash, revision ID, attestation URI, etc.)."
         },
         "hash_alg": { "type": "string", "enum": ["SHA256", "SHA3-256"] },
         "token_id": {
           "type": "string",
           "pattern": "^(0x[a-fA-F0-9]+|[A-Za-z0-9][A-Za-z0-9._:-]*)$",
-          "description": "Optional NFT identifier; accepts 0x-prefixed hex or alphanumeric strings with separators (:, -, _, .)."
+          "description": "Optional NFT identifier; accepts 0x-prefixed hex or alphanumeric strings with separators (:, -, _, .). Required for NFT-based anchors."
+        },
+        "contract_address": {
+          "type": "string",
+          "pattern": "^(0x[a-fA-F0-9]{40}|[A-Za-z0-9][A-Za-z0-9._:-]+)$",
+          "description": "Optional smart contract address hosting the NFT; accepts 0x-prefixed hex (Ethereum-style) or alphanumeric strings with separators. Required when token_id is present (NFT-based anchors)."
         }
       }
     },

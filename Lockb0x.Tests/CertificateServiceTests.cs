@@ -158,7 +158,8 @@ public class CertificateServiceTests
                 Reference = entry.Anchor.Reference,
                 HashAlgorithm = entry.Anchor.HashAlgorithm,
                 AnchoredAt = entry.Anchor.AnchoredAt,
-                TokenId = entry.Anchor.TokenId
+                TokenId = entry.Anchor.TokenId,
+                ContractAddress = entry.Anchor.ContractAddress
             })
             .WithSignatures(entry.Signatures)
             .Build();
@@ -241,7 +242,8 @@ public class CertificateServiceTests
                 Reference = "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
                 HashAlgorithm = "SHA256",
                 AnchoredAt = timestamp,
-                TokenId = "lockb0x-token"
+                TokenId = "lockb0x-token",
+                ContractAddress = "stellar:GCKSNX4Q73H5RU2BTZVFWIVFXLHBTMRZNK2GXYZ7E4M7JKGVFCNZWVR3"
             })
             .WithSignatures(new[]
             {

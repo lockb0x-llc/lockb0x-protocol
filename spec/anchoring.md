@@ -14,6 +14,7 @@ This provides cryptographic proof that the Codex Entry existed at or before a sp
   - `anchor_ref`: the transaction hash containing the anchor payload.
   - `hash_alg`: the algorithm used to produce the Codex Entry hash, which MUST correspond to the integrity proof scheme (ni-URI) declared in the Codex Entry.
 - Anchors MAY include a `token_id` when referencing a specific on-chain asset; this field is REQUIRED for NFT-based anchors.
+- NFT-based anchors MUST also include a `contract_address` field to unambiguously identify the smart contract hosting the NFT.
 
 - The Codex Entry content MUST be hashed and included in the blockchain transaction, either directly or via a Merkle root.  
 - Anchors MUST be reproducible: the same Codex Entry must yield the same anchor hash when re-hashed.  
@@ -57,6 +58,7 @@ Stellar transaction memos are limited to 28 bytes maximum. Due to this constrain
 Implementations MAY use Non-Fungible Tokens (NFTs) as anchor carriers.
 In this model, the Codex Entry hash is embedded in the NFT’s metadata or in the minting transaction payload.
 When an NFT is used, the `token_id` field in the anchor object becomes mandatory and MUST reference the on-chain token identifier.
+Additionally, the `contract_address` field becomes mandatory to unambiguously identify which smart contract hosts the NFT.
 
 Anchors using NFTs MUST declare:
 
@@ -64,6 +66,7 @@ Anchors using NFTs MUST declare:
 - `anchor_ref`: the transaction hash of the NFT minting or transfer that includes the Codex Entry hash.
 - `hash_alg`: the algorithm used to produce the Codex Entry hash.
 - `token_id`: the unique identifier of the NFT on-chain.
+- `contract_address`: the smart contract address hosting the NFT.
 
 Examples:
 
@@ -84,13 +87,14 @@ NFT anchor:
   "chain": "eip155:1",
   "anchor_ref": "0xabc123...",
   "token_id": "123456789",
+  "contract_address": "0x1234567890abcdef1234567890abcdef12345678",
   "hash_alg": "SHA256"
 }
 ```
 
 Verifiers MUST confirm:
 
-1. The NFT exists at the declared `token_id` on the declared `chain`.  
+1. The NFT exists at the declared `token_id` and `contract_address` on the declared `chain`.  
 2. The NFT’s metadata or minting transaction contains the declared Codex Entry hash.  
 3. The transaction is final and timestamped consistently with the blockchain’s block time.  
 

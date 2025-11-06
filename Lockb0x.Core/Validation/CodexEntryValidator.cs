@@ -288,6 +288,12 @@ public sealed class CodexEntryValidator : ICodexEntryValidator
         {
             errors.Add(new("core.anchor.timestamp_not_utc", "anchor.anchored_at must be expressed in UTC", "anchor.anchored_at"));
         }
+
+        // NFT anchors require contract_address
+        if (!string.IsNullOrWhiteSpace(anchor.TokenId) && string.IsNullOrWhiteSpace(anchor.ContractAddress))
+        {
+            errors.Add(new("core.anchor.missing_contract_address", "anchor.contract_address is required when token_id is present (NFT anchors)", "anchor.contract_address"));
+        }
     }
 
     private static void ValidateSignatures(IReadOnlyList<SignatureProof> signatures, List<CodexEntryValidationError> errors)

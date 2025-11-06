@@ -149,6 +149,10 @@ public sealed class AnchorProof
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? TokenId { get; init; }
 
+    [JsonPropertyName("contract_address")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ContractAddress { get; init; }
+
     [JsonPropertyName("anchored_at")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public DateTimeOffset? AnchoredAt { get; init; }
