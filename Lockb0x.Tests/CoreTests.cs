@@ -262,6 +262,102 @@ public class CoreTests
         Assert.True(result.Success);
     }
 
+    [Fact]
+    public void CodexEntryValidator_Requires_ContractAddress_For_NFT_Anchors()
+    {
+        // NFT anchor WITH contract_address should pass validation
+        var validNftEntry = new CodexEntryBuilder()
+            .WithId(Guid.NewGuid())
+            .WithVersion("1.0")
+            .WithStorage(new StorageDescriptor
+            {
+                Protocol = "ipfs",
+                IntegrityProof = NiUri.Create(new byte[] { 1, 2, 3 }),
+                MediaType = "application/json",
+                SizeBytes = 1024,
+                Location = new StorageLocation
+                {
+                    Region = "us-east-1",
+                    Jurisdiction = "US",
+                    Provider = "IPFS"
+                }
+            })
+            .WithIdentity(new IdentityDescriptor
+            {
+                Org = "did:example:nftorg",
+                Artifact = "NFT-Metadata-1"
+            })
+            .WithTimestamp(DateTimeOffset.UtcNow)
+            .WithAnchor(new AnchorProof
+            {
+                Chain = "eip155:1",
+                Reference = "0xabc123def456",
+                HashAlgorithm = "SHA256",
+                TokenId = "42",
+                ContractAddress = "0x1234567890abcdef1234567890abcdef12345678"
+            })
+            .WithSignatures(new[] {
+                new SignatureProof {
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:nftkeys#1"
+                    },
+                    Signature = "nftsignature"
+                }
+            })
+            .Build();
+
+        var validator = new CodexEntryValidator();
+        var validResult = validator.Validate(validNftEntry);
+        Assert.True(validResult.Success);
+
+        // NFT anchor WITHOUT contract_address should fail validation
+        var invalidNftEntry = new CodexEntryBuilder()
+            .WithId(Guid.NewGuid())
+            .WithVersion("1.0")
+            .WithStorage(new StorageDescriptor
+            {
+                Protocol = "ipfs",
+                IntegrityProof = NiUri.Create(new byte[] { 1, 2, 3 }),
+                MediaType = "application/json",
+                SizeBytes = 1024,
+                Location = new StorageLocation
+                {
+                    Region = "us-east-1",
+                    Jurisdiction = "US",
+                    Provider = "IPFS"
+                }
+            })
+            .WithIdentity(new IdentityDescriptor
+            {
+                Org = "did:example:nftorg",
+                Artifact = "NFT-Metadata-2"
+            })
+            .WithTimestamp(DateTimeOffset.UtcNow)
+            .WithAnchor(new AnchorProof
+            {
+                Chain = "eip155:1",
+                Reference = "0xdef456abc123",
+                HashAlgorithm = "SHA256",
+                TokenId = "99"
+                // Missing ContractAddress
+            })
+            .WithSignatures(new[] {
+                new SignatureProof {
+                    Protected = new SignatureProtectedHeader {
+                        Algorithm = "EdDSA",
+                        KeyId = "did:example:nftkeys#2"
+                    },
+                    Signature = "anothersignature"
+                }
+            })
+            .Build();
+
+        var invalidResult = validator.Validate(invalidNftEntry);
+        Assert.False(invalidResult.Success);
+        Assert.Contains(invalidResult.Errors, e => e.Code == "core.anchor.missing_contract_address");
+    }
+
     // 5. Revision & Provenance
 
     [Fact]
